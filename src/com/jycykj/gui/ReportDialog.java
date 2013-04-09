@@ -4,6 +4,9 @@
  */
 package com.jycykj.gui;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
+
 /**
  *
  * @author lenovo
@@ -102,6 +105,9 @@ public class ReportDialog extends javax.swing.JDialog {
                         System.exit(0);
                     }
                 });
+           //     dialog.setPreferredSize(new Dimension(600,800));
+                dialog.setBounds(new Rectangle(50, 5, 800, 780));
+                dialog.setResizable(false);
                 dialog.setVisible(true);
             }
         });
