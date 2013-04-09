@@ -32,10 +32,16 @@ public class ReportManager {
      public List<WorkLoad> getWorkerWorkLoad(int year,int month) {
          return componetDao.getWorkerWorkLoad(year,month);
      }
-
+     
+     public List<WorkLoad> getWorkerWorkLoad(String startTimeString, String endTimeString) {
+        return componetDao.getWorkerWorkLoad(startTimeString, endTimeString);
+    }
+     
     public List<FinishedComponent> getComponentWorkLoad(int year, int month) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+   
      
      
 }
