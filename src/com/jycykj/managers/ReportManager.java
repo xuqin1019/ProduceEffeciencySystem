@@ -5,6 +5,7 @@
 package com.jycykj.managers;
 
 import com.jycykj.dao.ComponentDao;
+import com.jycykj.model.FinishedComponent;
 import com.jycykj.model.WorkLoad;
 import java.util.List;
 
@@ -31,6 +32,10 @@ public class ReportManager {
      public List<WorkLoad> getWorkerWorkLoad(int year,int month) {
          return componetDao.getWorkerWorkLoad(year,month);
      }
+
+    public List<FinishedComponent> getComponentWorkLoad(int year, int month) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
      
      
 }
