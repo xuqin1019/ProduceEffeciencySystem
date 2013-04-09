@@ -19,7 +19,7 @@ public class WorkLoadTableModel extends AbstractTableModel {
     protected String [] headers;
     protected List<WorkLoad> datas;
     
-    public WorkLoadTableModel(int year , int month) {
+    public WorkLoadTableModel(String startTimeString , String endTimeString) {
         reportManager = ReportManager.newInstance();
     }
     

@@ -9,10 +9,10 @@ package com.jycykj.tables;
  */
 public class WorkerWorkLoadTableModel extends WorkLoadTableModel { //某月员工冲次排名
     
-    public WorkerWorkLoadTableModel(int year , int month) {
-        super(year, month);
+    public WorkerWorkLoadTableModel(String startTimeString , String endTimeString) {
+        super(startTimeString, endTimeString);
         headers = new String[] {"排名","姓名","冲次数","平均冲次数"};
-        datas = reportManager.getWorkerWorkLoad(year, month);
+        datas = reportManager.getWorkerWorkLoad(startTimeString, endTimeString);
 //        Collections.sort(datas, new Comparator<WorkLoad>(){
 //            public int compare(WorkLoad workLoad1 , WorkLoad workLoad2) {
 //               if(workLoad2.getWorkLoad() < workLoad1.getWorkLoad()) {
