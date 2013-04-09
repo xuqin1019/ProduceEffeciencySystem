@@ -147,6 +147,7 @@
         <Component class="javax.swing.JTextField" name="componentIdTextField">
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="componentIdTextFieldActionPerformed"/>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="componentIdTextFieldFocusLost"/>
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="List&lt;String&gt; componentIdsString = produceCardManager.getComponentIds();&#xa;Util.setupAutoComplete(componentIdTextField, componentIdsString);"/>

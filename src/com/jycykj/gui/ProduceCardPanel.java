@@ -113,6 +113,11 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 componentIdTextFieldActionPerformed(evt);
             }
         });
+        componentIdTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                componentIdTextFieldFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
@@ -315,8 +320,8 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         
         componentProcedureTableModel.fireTableRowsInserted(componentProcedureTableModel.getRowCount()-1, componentProcedureTableModel.getRowCount()-1);   //refresh
         
-         List<String> procedureNames = produceCardManager.getProcedureNames(componentIdTextField.getText().trim());    //add procedure in combox
-         List<String> workerNames = produceCardManager.getWorkerNames();
+        List<String> procedureNames = produceCardManager.getProcedureNames(componentIdTextField.getText().trim());    //add procedure in combox
+        List<String> workerNames = produceCardManager.getWorkerNames();
          
          
        
@@ -449,6 +454,22 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     private void componentIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_componentIdTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_componentIdTextFieldActionPerformed
+    
+    
+    //失去焦点的时候根据componentId填充表格
+    private void componentIdTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentIdTextFieldFocusLost
+        // TODO add your handling code here:
+        System.out.println("Lose Focus : " + componentIdTextField.getText().trim());
+        
+        componentInfoTableModel = new ComponentInfoTableModel(componentIdTextField.getText().trim());
+        componentInfoTable.setModel(componentInfoTableModel);
+        
+        componentNameLabel.setText(componentInfoTableModel.getComponent().getName());
+        
+        componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim());
+        componentProcedureTable.setModel(componentProcedureTableModel);
+        
+    }//GEN-LAST:event_componentIdTextFieldFocusLost
 
      private class MyMouseAdapter extends MouseAdapter {      //listen for the componentProcedureTable click event 
         public void mousePressed(MouseEvent e) {  
