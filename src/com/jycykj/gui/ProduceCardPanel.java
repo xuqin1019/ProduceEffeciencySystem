@@ -80,6 +80,8 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         componentNameLabel = new javax.swing.JLabel();
         componentIdTextField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        batchIdTextField = new javax.swing.JTextField();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         componentInfoTable = new javax.swing.JTable();
@@ -119,29 +121,37 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel2.setText("批次号：");
+
         javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
         headerPanelLayout.setHorizontalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerPanelLayout.createSequentialGroup()
-                .addGap(390, 390, 390)
-                .addComponent(componentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(95, 95, 95))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
+            .addGroup(headerPanelLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(101, 101, 101)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(componentNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addComponent(jLabel4)
+                .addComponent(componentNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(componentIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel4)
+                .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(headerPanelLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(componentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(headerPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(componentIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(batchIdTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         headerPanelLayout.setVerticalGroup(
@@ -154,7 +164,9 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4)
                     .addComponent(componentNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(componentIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(componentIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(batchIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(385, 385, 385)
                 .addComponent(componentLabel))
         );
@@ -454,23 +466,20 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     private void componentIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_componentIdTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_componentIdTextFieldActionPerformed
-    
-    
-    //失去焦点的时候根据componentId填充表格
+
     private void componentIdTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentIdTextFieldFocusLost
         // TODO add your handling code here:
-        System.out.println("Lose Focus : " + componentIdTextField.getText().trim());
-        
+        System.out.println("lose focus");
         componentInfoTableModel = new ComponentInfoTableModel(componentIdTextField.getText().trim());
         componentInfoTable.setModel(componentInfoTableModel);
-        
         componentNameLabel.setText(componentInfoTableModel.getComponent().getName());
         
         componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim());
         componentProcedureTable.setModel(componentProcedureTableModel);
         
     }//GEN-LAST:event_componentIdTextFieldFocusLost
-
+    
+    
      private class MyMouseAdapter extends MouseAdapter {      //listen for the componentProcedureTable click event 
         public void mousePressed(MouseEvent e) {  
             if (componentProcedureTable.equals(e.getSource())) {  
@@ -500,6 +509,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addRowButton;
+    private javax.swing.JTextField batchIdTextField;
     private javax.swing.JButton cancelButton;
     private javax.swing.JTextField componentIdTextField;
     private javax.swing.JTable componentInfoTable;
@@ -509,6 +519,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     private javax.swing.JButton deleteRowButton;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JPanel headerPanel;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
