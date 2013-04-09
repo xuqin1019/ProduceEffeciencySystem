@@ -107,8 +107,10 @@ public class Util {
 			public void actionPerformed(ActionEvent e) {
 				if (!isAdjusting(cbInput)) {
 					if (cbInput.getSelectedItem() != null) {
-						txtInput.setText(cbInput.getSelectedItem().toString());
-					}
+                                            txtInput.setText(cbInput.getSelectedItem().toString());
+                                        }
+                                    //     txtInput.setFocusable(false);
+                                     //    txtInput.setFocusable(true);
 				}
 			}
 		});
@@ -127,7 +129,14 @@ public class Util {
 					e.setSource(cbInput);
 					cbInput.dispatchEvent(e);
 					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						txtInput.setText(cbInput.getSelectedItem().toString());
+                                                
+                                                if(cbInput!=null && cbInput.getSelectedItem()!=null) {
+                                                    txtInput.setText(cbInput.getSelectedItem().toString());
+                                                } 
+                                                
+                                                //按下回车时触发loseFocuse事件来更新table model
+                                                txtInput.setFocusable(false);   
+                                                txtInput.setFocusable(true);
 						cbInput.setPopupVisible(false);
 					}
 				}
@@ -140,14 +149,18 @@ public class Util {
 		txtInput.getDocument().addDocumentListener(new DocumentListener() {
 			public void insertUpdate(DocumentEvent e) {
 				updateList();
+                                
+                                System.out.println("insertUpdate");
 			}
 
 			public void removeUpdate(DocumentEvent e) {
 				updateList();
+                                 System.out.println("removeUpdate");
 			}
 
 			public void changedUpdate(DocumentEvent e) {
 				updateList();
+                                 System.out.println("changedUpdate");
 			}
 
 			private void updateList() {
@@ -164,10 +177,13 @@ public class Util {
                                 
                                 cbInput.setPopupVisible(model.getSize() > 0);
                                setAdjusting(cbInput, false);
+                               
 			}
 		});
 		txtInput.setLayout(new BorderLayout());
 		txtInput.add(cbInput, BorderLayout.SOUTH);
+                
+                
 	}
     
          private static void setAdjusting(JComboBox cbInput, boolean adjusting) {
