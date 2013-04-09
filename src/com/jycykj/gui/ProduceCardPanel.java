@@ -18,9 +18,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
+
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
@@ -37,7 +41,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     private ComponentInfoTableModel componentInfoTableModel = null;
     private ComponentProcedureTableModel componentProcedureTableModel = null;
     
-    String [] componentIds = null;     //used to show in the list
+    //String [] componentIds = null;     //used to show in the list
     
     boolean deleteRowButtonLastStatus = false;
     int deleteRowIndex = -1;
@@ -52,9 +56,8 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         this.produceCardDialog = produceCardDialog;
         produceCardManager = ProduceCardManager.newInstance();
         
-        List<String> componentIdsString = produceCardManager.getComponentIds();
-        int size = componentIdsString.size(); 
-        componentIds = (String [])componentIdsString.toArray(new String[size]);       //calculate the list in the construction method to save time
+      //  int size = componentIdsString.size(); 
+     //   componentIds = (String [])componentIdsString.toArray(new String[size]);       //calculate the list in the construction method to save time
         initComponents();
         
         this.timeLabel.setText(produceCardManager.getCurrentTime());
@@ -76,7 +79,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         componentLabel = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         componentNameLabel = new javax.swing.JLabel();
-        componentIdsComboBox = new javax.swing.JComboBox(componentIds);
+        componentIdTextField = new javax.swing.JTextField();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         componentInfoTable = new javax.swing.JTable();
@@ -103,9 +106,11 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         jLabel4.setText("图号：");
 
-        componentIdsComboBox.addActionListener(new java.awt.event.ActionListener() {
+        List<String> componentIdsString = produceCardManager.getComponentIds();
+        Util.setupAutoComplete(componentIdTextField, componentIdsString);
+        componentIdTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                componentIdsComboBoxActionPerformed(evt);
+                componentIdTextFieldActionPerformed(evt);
             }
         });
 
@@ -118,22 +123,21 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 .addComponent(componentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
-                .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(headerPanelLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(headerPanelLayout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(101, 101, 101)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(componentNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
-                        .addComponent(jLabel4)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(componentIdsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(95, 95, 95))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(101, 101, 101)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(componentNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(componentIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         headerPanelLayout.setVerticalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,7 +149,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4)
                     .addComponent(componentNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(componentIdsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(componentIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(385, 385, 385)
                 .addComponent(componentLabel))
         );
@@ -156,14 +160,15 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             }
         });
 
-        componentInfoTableModel = new ComponentInfoTableModel((String)componentIdsComboBox.getSelectedItem());
+        componentInfoTableModel = new ComponentInfoTableModel(componentIdTextField.getText().trim());
         componentInfoTable.setModel(componentInfoTableModel);
         componentNameLabel.setText(componentInfoTableModel.getComponent().getName());
         jScrollPane1.setViewportView(componentInfoTable);
 
         jTabbedPane1.addTab("零件原材料", jScrollPane1);
 
-        componentProcedureTableModel = new ComponentProcedureTableModel((String)componentIdsComboBox.getSelectedItem());
+        componentProcedureTable.setRowHeight(20);
+        componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim());
         componentProcedureTable.setModel(componentProcedureTableModel);
         componentProcedureTable.addMouseListener(new MyMouseAdapter());
         jScrollPane2.setViewportView(componentProcedureTable);
@@ -269,27 +274,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         produceCardDialog.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
     
-    
-    private void componentIdsComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_componentIdsComboBoxActionPerformed
-        String componentId = (String)componentIdsComboBox.getSelectedItem();
         
-        //change the infoTable
-        componentInfoTableModel= new ComponentInfoTableModel(componentId);
-        componentInfoTable.setModel(componentInfoTableModel);
-        componentNameLabel.setText(componentInfoTableModel.getComponent().getName());
-        
-        //change the procedureTable
-        componentProcedureTableModel = new ComponentProcedureTableModel(componentId);
-        componentProcedureTable.setModel(componentProcedureTableModel);
-        
-        deleteRowButton.setEnabled(false);     //change the Component_ids , change the status of button
-        if(jTabbedPane1.getSelectedIndex()==1) {
-            addRowButton.setEnabled(true);
-        }
-        saveButton.setEnabled(false);
-        save();
-    }//GEN-LAST:event_componentIdsComboBoxActionPerformed
-    
    
     
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
@@ -330,18 +315,27 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         
         componentProcedureTableModel.fireTableRowsInserted(componentProcedureTableModel.getRowCount()-1, componentProcedureTableModel.getRowCount()-1);   //refresh
         
-         List<String> procedureNames = produceCardManager.getProcedureNames((String)componentIdsComboBox.getSelectedItem());    //add procedure in combox
+         List<String> procedureNames = produceCardManager.getProcedureNames(componentIdTextField.getText().trim());    //add procedure in combox
          List<String> workerNames = produceCardManager.getWorkerNames();
          
          
+       
          renderColumnAsCombox(1,procedureNames,addedProducedProcedure);
-         renderColumnAsCombox(3, workerNames,addedProducedProcedure);
+      //   renderColumnAsCombox(3, workerNames,addedProducedProcedure);
+         renderColumnAsTextField(3,workerNames,addedProducedProcedure);
          
          nothingAdded = false;
          
          addRowButton.setEnabled(false);          //add record one by one
          saveButton.setEnabled(true);
     }//GEN-LAST:event_addRowButtonActionPerformed
+    void renderColumnAsTextField(int columnIndex , List<String> items, ProducedProcedure producedProcedure) {
+         TableColumn col = componentProcedureTable.getColumnModel().getColumn(columnIndex);
+         JTextField textField = new JTextField();
+         Util.setupAutoComplete(textField, items);
+         col.setCellEditor(new DefaultCellEditor(textField));
+    }
+    
     
     void renderColumnAsCombox(int columnIndex , List<String> items,ProducedProcedure producedProcedure) {
         TableColumn col = componentProcedureTable.getColumnModel().getColumn(columnIndex);
@@ -349,10 +343,10 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         for(String item : items) {
            comboBox.addItem(item);
         }
-        
         comboBox.addActionListener(new MyComboxActionListener(columnIndex,comboBox,producedProcedure));
         col.setCellEditor(new DefaultCellEditor(comboBox));
     }
+   
     
     class MyComboxActionListener implements ActionListener {  // listen for the select event of the combox
         private JComboBox jComboBox;
@@ -399,7 +393,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             if(!notSaved()) { 
                 //produceCardManager.deleteProduceWork()
                 //System.out.println("delete one row from db");
-                componentProcedureTableModel.getWorks().get(deleteRowIndex).getComponent().setComponentId((String)componentIdsComboBox.getSelectedItem());
+                componentProcedureTableModel.getWorks().get(deleteRowIndex).getComponent().setComponentId(componentIdTextField.getText().trim());
                 if(!produceCardManager.deleteProduceWork(componentProcedureTableModel.getWorks().get(deleteRowIndex))) {
                     Util.showMessageDialog(this, "删除记录出错，请联系开发人员！！");
                     return;
@@ -411,6 +405,8 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             componentProcedureTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
             addRowButton.setEnabled(true);
             deleteRowButton.setEnabled(false);
+            
+            deleteRowButtonLastStatus = false;
         }
     }//GEN-LAST:event_deleteRowButtonActionPerformed
 
@@ -440,19 +436,22 @@ public class ProduceCardPanel extends javax.swing.JPanel {
              Util.showMessageDialog(this, "输入时间有误，请重新输入");
             return;
         } else {
-            addedProducedProcedure.getComponent().setComponentId((String)componentIdsComboBox.getSelectedItem());
+            addedProducedProcedure.getComponent().setComponentId(componentIdTextField.getText().trim());
             produceCardManager.putProducedProcedure(addedProducedProcedure);
             Util.showMessageDialog(this, "录入数据成功!!");
             addedProducedProcedure=null;
+            addRowButton.setEnabled(true);
             saveButton.setEnabled(false);
         }
         save();
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private void componentIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_componentIdTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_componentIdTextFieldActionPerformed
+
      private class MyMouseAdapter extends MouseAdapter {      //listen for the componentProcedureTable click event 
-  
         public void mousePressed(MouseEvent e) {  
-              
             if (componentProcedureTable.equals(e.getSource())) {  
                 deleteRowIndex = componentProcedureTable.rowAtPoint(e.getPoint());  
                 deleteRowButton.setEnabled(true);
@@ -481,7 +480,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addRowButton;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JComboBox componentIdsComboBox;
+    private javax.swing.JTextField componentIdTextField;
     private javax.swing.JTable componentInfoTable;
     private javax.swing.JLabel componentLabel;
     private javax.swing.JLabel componentNameLabel;
