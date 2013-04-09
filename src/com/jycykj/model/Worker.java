@@ -9,6 +9,7 @@ package com.jycykj.model;
  * @author lenovo
  */
 public class Worker {
+    private String workerId;
     private String workerName;
     private Group group;
     private String info;
@@ -36,6 +37,19 @@ public class Worker {
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public String getWorkerId() {
+        return workerId;
+    }
+
+    public void setWorkerId(String workerId) {
+        this.workerId = workerId;
+    }
+
+    public boolean valid() {
+     //  return workerId!=null && workerName!=null && group!=null &&
+        return true;
     }
     
     
