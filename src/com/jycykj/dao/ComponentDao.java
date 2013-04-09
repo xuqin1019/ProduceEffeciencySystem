@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -72,7 +73,7 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
         
         return works;
@@ -94,10 +95,8 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
-
-
         return ids;
     }
 
@@ -123,7 +122,7 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
         return component;
     }
@@ -146,7 +145,7 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
         return procedureNames;
     }
@@ -170,7 +169,7 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
         
         return names;
@@ -193,7 +192,7 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
         return 0;
     }
@@ -236,7 +235,7 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
         return "-1";
     }
@@ -261,8 +260,9 @@ public class ComponentDao {
             if(batchId==-1) {
                 return false;
             }
-            this.putBatchComponent(batchId ,component.getComponentId());    //store the batch_component
         }
+        
+        this.putBatchComponent(batchId ,component.getComponentId());    //store the batch_component
         
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -331,7 +331,7 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
         return -1;
     }
@@ -349,7 +349,7 @@ public class ComponentDao {
             statement.executeUpdate();
             System.out.println("insert batch_component success");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+           // throw new RuntimeException(e);
         } finally {
             DBManager.getDBManager().close(rs, statement);
         }
@@ -454,9 +454,43 @@ public class ComponentDao {
         }
         return workerWorkLoads;
     }
+    
+    public boolean executeUpdate(String sql) {
+         boolean success = false;
+         PreparedStatement statement = null;
+         Connection connection = null;
+          try {
+            connection = DBManager.getDBManager().getConnection();
+            statement=connection.prepareStatement(sql);
+            success = statement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBManager.getDBManager().close(statement);
+        }
+        return success;
+    }
+    
+     public String getNextWorkerId() {
+        return "";
+    }
+     
+     public List<Worker> getWorkers() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 
+    public Map<String, Integer> getGroups() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+    
     public static void main(String [] args) {
         ComponentDao componentDao = ComponentDao.getInstance();
         componentDao.getWorkerWorkLoad(2012,10);
     }
+
+    
+
+   
+
+    
 }
