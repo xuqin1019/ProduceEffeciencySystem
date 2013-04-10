@@ -41,6 +41,10 @@ public class ReportManager {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    public List<WorkLoad> getGroupWorkLoad(String startDateString, String endDateString) {
+        return componetDao.getGroupWorkLoad(startDateString,endDateString);
+    }
+
    
      
      
