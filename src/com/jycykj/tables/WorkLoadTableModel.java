@@ -15,7 +15,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class WorkLoadTableModel extends AbstractTableModel {
     protected ReportManager reportManager=null;
-    protected Class [] types = {Integer.class , String.class, Integer.class};
+    protected Class [] types = {Integer.class , String.class, Integer.class,Integer.class};
     protected String [] headers;
     protected List<WorkLoad> datas;
     
