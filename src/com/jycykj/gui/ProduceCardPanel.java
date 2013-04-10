@@ -123,6 +123,12 @@ public class ProduceCardPanel extends javax.swing.JPanel {
 
         jLabel2.setText("批次号：");
 
+        batchIdTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                batchIdTextFieldFocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
         headerPanelLayout.setHorizontalGroup(
@@ -159,14 +165,15 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
                 .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
-                .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(timeLabel)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4)
-                    .addComponent(componentNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(componentIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(batchIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(componentNameLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(timeLabel)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addComponent(componentIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)
+                        .addComponent(batchIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(385, 385, 385)
                 .addComponent(componentLabel))
         );
@@ -476,8 +483,15 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         
         componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim());
         componentProcedureTable.setModel(componentProcedureTableModel);
-        
+       
+        //component的TextField的lostFocus时间触发BatchId TextField的内容填充
+        List<String> batchIdsString = produceCardManager.getComponentBatchIds(componentIdTextField.getText().trim());
+        Util.setupAutoComplete(batchIdTextField, batchIdsString);
     }//GEN-LAST:event_componentIdTextFieldFocusLost
+
+    private void batchIdTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_batchIdTextFieldFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_batchIdTextFieldFocusLost
     
     
      private class MyMouseAdapter extends MouseAdapter {      //listen for the componentProcedureTable click event 
