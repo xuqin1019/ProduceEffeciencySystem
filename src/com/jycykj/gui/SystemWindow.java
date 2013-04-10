@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package com.jycykj.gui;
+import java.awt.Rectangle;
 import javax.swing.JOptionPane;
 
 /**
@@ -239,6 +240,8 @@ public class SystemWindow extends javax.swing.JFrame {
          java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 ReportDialog dialog = new ReportDialog(ReportType.WorkerWorkLoad,SystemWindow.this, true);
+                dialog.setBounds(new Rectangle(50, 5, 800, 780));
+                dialog.setResizable(false);
                 dialog.setVisible(true);
             }
         });
@@ -249,6 +252,8 @@ public class SystemWindow extends javax.swing.JFrame {
          java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 ReportDialog dialog = new ReportDialog(ReportType.GroupWorkLoad,SystemWindow.this, true);
+                dialog.setBounds(new Rectangle(50, 5, 800, 780));
+                dialog.setResizable(false);
                 dialog.setVisible(true);
             }
         });
