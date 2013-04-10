@@ -5,6 +5,7 @@
 package com.jycykj.gui;
 
 import com.jycykj.helper.Util;
+import com.jycykj.tables.GroupWorkLoadTableModel;
 import com.jycykj.tables.WorkLoadTableModel;
 import com.jycykj.tables.WorkerWorkLoadTableModel;
 import com.qt.datapicker.DatePicker;
@@ -27,11 +28,11 @@ public class ReportPanel extends javax.swing.JPanel {
      * Creates new form WorkerLoadReportPanel
      */
    
-    private JDialog jDialog = null;
+    private ReportDialog jDialog = null;
     private String[] years = new String[]{"2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020"};
     private String[] months = new String[] {"1","2","3","4","5","6","7","8","9","10","11","12"};
             
-    public ReportPanel(JDialog jDialog) {
+    public ReportPanel(ReportDialog jDialog) {
         this.jDialog = jDialog;
         initComponents();
         exportButton.setEnabled(false);
@@ -218,8 +219,17 @@ public class ReportPanel extends javax.swing.JPanel {
             Util.showMessageDialog(this, "起始日期不能晚于终止日期，按确定重新选择");
             return;
         }
-        WorkLoadTableModel workLoadTableModel = new WorkerWorkLoadTableModel(startTimeString,endTimeString);
-        titleLabel.setText(startTimeString + " 到 " + endTimeString + " 员工冲次统计表");
+        
+        ReportType reportType = this.jDialog.reportType;
+         WorkLoadTableModel workLoadTableModel = null;
+        if(reportType==ReportType.WorkerWorkLoad) {
+            workLoadTableModel = new WorkerWorkLoadTableModel(startTimeString,endTimeString);
+            titleLabel.setText(startTimeString + " 到 " + endTimeString + " 员工冲次统计表");
+        } else if(reportType==ReportType.GroupWorkLoad) {
+            workLoadTableModel = new GroupWorkLoadTableModel(startTimeString, endTimeString);
+            titleLabel.setText(startTimeString + " 到 " + endTimeString + " 班组冲次统计表");
+        }
+       
         if(workLoadTableModel.getRowCount()==0) {
             titleLabel.setText(titleLabel.getText()+"(没有数据)");
             exportButton.setEnabled(false);
