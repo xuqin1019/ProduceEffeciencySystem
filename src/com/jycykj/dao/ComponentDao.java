@@ -35,7 +35,7 @@ public class ComponentDao {
         return instance;
     }
 
-    public List<ProducedProcedure> getWorks(String componentId) {
+    public List<ProducedProcedure> getWorks(String componentId,String batchName) {
         List<ProducedProcedure> works = new ArrayList<ProducedProcedure>();
         
           PreparedStatement statement = null;
@@ -43,9 +43,12 @@ public class ComponentDao {
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
-            //String sql = " select A.batch_id,D.name,D.factor,B.name,A.passed_num,A.failed_num,A.time from (SELECT worker_id,component_id,batch_id,procedure_id,failed_num,passed_num,time FROM produce_work WHERE component_id='" + componentId + "') as A join worker B on A.worker_id = B.worker_id join component C on A.component_id = C.component_id join procedure D on A.procedure_id = D.procedure_id ";
-            //String sql = "select A.batch_id,D.name,D.factor,B.name,A.passed_num,A.failed_num,A.time from (SELECT worker_id,component_id,batch_id,procedure_id,failed_num,passed_num,time FROM produce_work WHERE component_id='"+componentId+ "') as A join worker B on A.worker_id = B.worker_id join component C on A.component_id = C.component_id join `procedure` D on A.procedure_id = D.procedure_id";
-            String sql = "select E.batch_name,D.name,D.factor,B.name,A.passed_num,A.failed_num,A.time from (SELECT worker_id,component_id,batch_id,procedure_id,failed_num,passed_num,time FROM produce_work WHERE component_id='"+ componentId + "') As A join worker B on A.worker_id = B.worker_id join component C on A.component_id = C.component_id join `procedure` D on A.procedure_id = D.procedure_id join `batch` E on A.batch_id = E.batch_id";
+            String sql = "";
+            if(batchName.equals("")){    //不设定batchName的条件，列出所有批次号
+                sql = "select E.batch_name,D.name,D.factor,B.name,A.passed_num,A.failed_num,A.time from (SELECT worker_id,component_id,batch_id,procedure_id,failed_num,passed_num,time FROM produce_work WHERE component_id='"+ componentId + "') As A join worker B on A.worker_id = B.worker_id join component C on A.component_id = C.component_id join `procedure` D on A.procedure_id = D.procedure_id join `batch` E on A.batch_id = E.batch_id";
+            } else {              //加上batchName的筛选条件
+                sql = "select E.batch_name,D.name,D.factor,B.name,A.passed_num,A.failed_num,A.time from (SELECT worker_id,component_id,batch_id,procedure_id,failed_num,passed_num,time FROM produce_work WHERE component_id='"+ componentId + "'and batch_id in (select batch_id from batch where batch_name='"+batchName+"')) As A join worker B on A.worker_id = B.worker_id join component C on A.component_id = C.component_id join `procedure` D on A.procedure_id = D.procedure_id join `batch` E on A.batch_id = E.batch_id";
+            }
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();
           
@@ -515,6 +518,28 @@ public class ComponentDao {
         return workerWorkLoads;
     }
     
+    public List<String> getCompoentBatchIds(String componentName) {
+        List<String> batchIdList = new ArrayList<String>();
+        PreparedStatement statement = null;
+        Connection connection = null;
+        ResultSet rs = null;
+        try {
+            connection = DBManager.getDBManager().getConnection();
+            String sql = "select batch_name from batch where batch_id in (select batch_id from batch_component where component_id = '"+componentName+"')";
+            System.out.println(sql);
+            statement = connection.prepareStatement(sql);
+           rs = statement.executeQuery();
+            while (rs.next()) {
+               batchIdList.add(rs.getString("batch_name"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBManager.getDBManager().close(rs, statement);
+        }
+        return batchIdList;
+    }
+    
     public boolean executeUpdate(String sql) {
          boolean success = false;
          PreparedStatement statement = null;
@@ -547,6 +572,8 @@ public class ComponentDao {
         ComponentDao componentDao = ComponentDao.getInstance();
         componentDao.getWorkerWorkLoad(2012,10);
     }
+
+   
 
    
 
