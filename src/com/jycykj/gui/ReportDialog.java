@@ -16,8 +16,12 @@ public class ReportDialog extends javax.swing.JDialog {
     /**
      * Creates new form WorkerLoadReportDialog
      */
+    
+    public ReportType reportType = null;
+            
     public ReportDialog(ReportType reportType,java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.reportType = reportType;
         initComponents();
         if(reportType==ReportType.WorkerWorkLoad) {
             setTitle("员工冲次统计表");
