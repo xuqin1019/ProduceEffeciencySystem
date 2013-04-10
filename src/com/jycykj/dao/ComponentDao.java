@@ -390,8 +390,6 @@ public class ComponentDao {
     
     public List<WorkLoad> getWorkLoad() {
         List<WorkLoad> workerWorkLoads = new ArrayList<WorkLoad>();
-        
-        
         PreparedStatement statement = null;
         Connection connection = null;
         ResultSet rs = null;
@@ -400,10 +398,9 @@ public class ComponentDao {
          //   String sql = "select W.name , P.name,A.sumup from (SELECT worker_id,procedure_id,sum(passed_num) sumup FROM `produce_work` where time >= '" + minTime + "' and time < '"+ maxTime + "' GROUP BY worker_id , procedure_id) as A join worker W on A.worker_id = W.worker_id join `procedure` P on A.procedure_id = P.procedure_id";
           //  String sql = "select B.name , sum(B.work_load) from (select W.name , P.factor*A.sumup work_load from (SELECT worker_id,procedure_id,sum(passed_num) sumup FROM `produce_work`   where time >= '" + minTime + "' and time < '"+ maxTime + "' GROUP BY worker_id , procedure_id) as A join worker W on A.worker_id = W.worker_id join `procedure` P on A.procedure_id = P.procedure_id) As B group by name";
           //  String sql = "select B.name worker_name , sum(B.work_load) valid_work, sum(B.all_sum) work_amount from (select W.name , P.factor*A.pass_num work_load , (A.fail_sum+A.pass_num) all_sum from (SELECT worker_id,procedure_id,sum(passed_num) pass_num,sum(failed_num) fail_sum FROM `produce_work` where time >= '" + minTime + "' and time < '"+ maxTime + "'  GROUP BY worker_id , procedure_id) as A join worker W on A.worker_id = W.worker_id join `procedure` P on A.procedure_id = P.procedure_id) As B group by name";
-              String sql = "select B.name worker_name , sum(B.work_load) valid_work, sum(B.all_sum) work_amount from (select W.name , P.factor*A.pass_num work_load , (A.fail_sum+A.pass_num) all_sum from (SELECT worker_id,procedure_id,sum(passed_num) pass_num,sum(failed_num) fail_sum FROM `produce_work` GROUP BY worker_id , procedure_id) as A join worker W on A.worker_id = W.worker_id join `procedure` P on A.procedure_id = P.procedure_id) As B group by name";
-
+            String sql = "select B.name worker_name , sum(B.work_load) valid_work, sum(B.all_sum) work_amount from (select W.name , P.factor*A.pass_num work_load , (A.fail_sum+A.pass_num) all_sum from (SELECT worker_id,procedure_id,sum(passed_num) pass_num,sum(failed_num) fail_sum FROM `produce_work` GROUP BY worker_id , procedure_id) as A join worker W on A.worker_id = W.worker_id join `procedure` P on A.procedure_id = P.procedure_id) As B group by name";
+            
             statement = connection.prepareStatement(sql);
-           
             rs = statement.executeQuery();
            
             while (rs.next()) {
@@ -455,6 +452,69 @@ public class ComponentDao {
         return workerWorkLoads;
     }
     
+    public List<WorkLoad> getWorkerWorkLoad(String startTimeString, String endTimeString) {
+         List<WorkLoad> workerWorkLoads = new ArrayList<WorkLoad>();
+        PreparedStatement statement = null;
+        Connection connection = null;
+        ResultSet rs = null;
+        try {
+            connection = DBManager.getDBManager().getConnection();
+            //   String sql = "select W.name , P.name,A.sumup from (SELECT worker_id,procedure_id,sum(passed_num) sumup FROM `produce_work` where time >= '" + minTime + "' and time < '"+ maxTime + "' GROUP BY worker_id , procedure_id) as A join worker W on A.worker_id = W.worker_id join `procedure` P on A.procedure_id = P.procedure_id";
+            //  String sql = "select B.name , sum(B.work_load) from (select W.name , P.factor*A.sumup work_load from (SELECT worker_id,procedure_id,sum(passed_num) sumup FROM `produce_work`   where time >= '" + minTime + "' and time < '"+ maxTime + "' GROUP BY worker_id , procedure_id) as A join worker W on A.worker_id = W.worker_id join `procedure` P on A.procedure_id = P.procedure_id) As B group by name";
+            String sql = "select B.name worker_name , sum(B.work_load) valid_work, sum(B.all_sum) work_amount from (select W.name , P.factor*A.pass_num work_load , (A.fail_sum+A.pass_num) all_sum from (SELECT worker_id,procedure_id,sum(passed_num) pass_num,sum(failed_num) fail_sum FROM `produce_work` where time >= '" + startTimeString + "' and time <= '"+ endTimeString + "'  GROUP BY worker_id , procedure_id) as A join worker W on A.worker_id = W.worker_id join `procedure` P on A.procedure_id = P.procedure_id) As B group by name";
+            System.out.println(sql);
+            statement = connection.prepareStatement(sql);
+           
+            rs = statement.executeQuery();
+           
+            while (rs.next()) {
+               WorkLoad workLoad = new WorkLoad();
+               workLoad.setName(rs.getString("worker_name"));
+               workLoad.setWorkLoad(rs.getFloat("valid_work"));
+               workLoad.setAvgWorkLoad(workLoad.getWorkLoad()/rs.getInt("work_amount"));
+               workerWorkLoads.add(workLoad);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBManager.getDBManager().close(rs, statement);
+        }
+        return workerWorkLoads;
+    }
+    
+    public List<WorkLoad> getGroupWorkLoad(String startDateString, String endDateString) {
+         List<WorkLoad> workerWorkLoads = new ArrayList<WorkLoad>();
+        PreparedStatement statement = null;
+        Connection connection = null;
+        ResultSet rs = null;
+        try {
+            connection = DBManager.getDBManager().getConnection();
+            //   String sql = "select W.name , P.name,A.sumup from (SELECT worker_id,procedure_id,sum(passed_num) sumup FROM `produce_work` where time >= '" + minTime + "' and time < '"+ maxTime + "' GROUP BY worker_id , procedure_id) as A join worker W on A.worker_id = W.worker_id join `procedure` P on A.procedure_id = P.procedure_id";
+            //  String sql = "select B.name , sum(B.work_load) from (select W.name , P.factor*A.sumup work_load from (SELECT worker_id,procedure_id,sum(passed_num) sumup FROM `produce_work`   where time >= '" + minTime + "' and time < '"+ maxTime + "' GROUP BY worker_id , procedure_id) as A join worker W on A.worker_id = W.worker_id join `procedure` P on A.procedure_id = P.procedure_id) As B group by name";
+           // String sql = "select B.name worker_name , sum(B.work_load) valid_work, sum(B.all_sum) work_amount from (select W.name , P.factor*A.pass_num work_load , (A.fail_sum+A.pass_num) all_sum from (SELECT worker_id,procedure_id,sum(passed_num) pass_num,sum(failed_num) fail_sum FROM `produce_work` where time >= '" + startDateString + "' and time <= '"+ endDateString + "'  GROUP BY worker_id , procedure_id) as A join worker W on A.worker_id = W.worker_id join `procedure` P on A.procedure_id = P.procedure_id) As B group by name";
+            
+            String sql = "select name , sum(valid_work) valid_work, sum(work_amount) work_amount from (select B.worker_id worker_id , sum(B.work_load) valid_work, sum(B.all_sum)  work_amount, B.group_id group_id  from (select W.worker_id , P.factor*A.pass_num work_load , (A.fail_sum+A.pass_num) all_sum , W.group_id ,W.name from (SELECT worker_id,procedure_id,sum(passed_num) pass_num,sum(failed_num) fail_sum FROM `produce_work` where time>'"+startDateString+"' and time<'"+endDateString+"' GROUP BY worker_id , procedure_id) as A join worker W on A.worker_id = W.worker_id join `procedure` P on A.procedure_id = P.procedure_id) As B group by worker_id) as T join `group` as G on T.group_id=G.group_id group by name";
+            
+            System.out.println(sql);
+            statement = connection.prepareStatement(sql);
+           
+            rs = statement.executeQuery();
+           
+            while (rs.next()) {
+               WorkLoad workLoad = new WorkLoad();
+               workLoad.setName(rs.getString("name"));
+               workLoad.setWorkLoad(rs.getFloat("valid_work"));
+               workLoad.setAvgWorkLoad(workLoad.getWorkLoad()/rs.getInt("work_amount"));
+               workerWorkLoads.add(workLoad);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBManager.getDBManager().close(rs, statement);
+        }
+        return workerWorkLoads;
+    }
+    
     public boolean executeUpdate(String sql) {
          boolean success = false;
          PreparedStatement statement = null;
@@ -487,8 +547,6 @@ public class ComponentDao {
         ComponentDao componentDao = ComponentDao.getInstance();
         componentDao.getWorkerWorkLoad(2012,10);
     }
-
-    
 
    
 
