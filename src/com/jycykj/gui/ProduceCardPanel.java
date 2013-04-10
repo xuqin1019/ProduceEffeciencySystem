@@ -192,7 +192,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         jTabbedPane1.addTab("零件原材料", jScrollPane1);
 
         componentProcedureTable.setRowHeight(20);
-        componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim());
+        componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),"");
         componentProcedureTable.setModel(componentProcedureTableModel);
         componentProcedureTable.addMouseListener(new MyMouseAdapter());
         jScrollPane2.setViewportView(componentProcedureTable);
@@ -233,7 +233,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 .addComponent(saveButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(193, 193, 193))
+                .addGap(184, 184, 184))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -476,12 +476,12 @@ public class ProduceCardPanel extends javax.swing.JPanel {
 
     private void componentIdTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentIdTextFieldFocusLost
         // TODO add your handling code here:
-        System.out.println("lose focus");
+        System.out.println("Component Text Field lose focus");
         componentInfoTableModel = new ComponentInfoTableModel(componentIdTextField.getText().trim());
         componentInfoTable.setModel(componentInfoTableModel);
         componentNameLabel.setText(componentInfoTableModel.getComponent().getName());
         
-        componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim());
+        componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),"");
         componentProcedureTable.setModel(componentProcedureTableModel);
        
         //component的TextField的lostFocus时间触发BatchId TextField的内容填充
@@ -491,6 +491,9 @@ public class ProduceCardPanel extends javax.swing.JPanel {
 
     private void batchIdTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_batchIdTextFieldFocusLost
         // TODO add your handling code here:
+        System.out.println("BatchId Text Field lose focus");
+        componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),batchIdTextField.getText().trim());
+        componentProcedureTable.setModel(componentProcedureTableModel);
     }//GEN-LAST:event_batchIdTextFieldFocusLost
     
     
