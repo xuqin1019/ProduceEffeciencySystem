@@ -6,9 +6,8 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 
-
+//test
 public class Test {
-
 	public static void main(String[] args) throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		JFrame frame = new JFrame();
