@@ -52,6 +52,10 @@ public class ProduceCardManager {
     public List<String> getProcedureNames(String componentId) {
        return componetDao.getProcedureNames(componentId);
     }
+    
+    public List<String> getComponentBatchIds(String componentName) {   //获得component对应的批次号
+        return componetDao.getCompoentBatchIds(componentName);
+    }
 
     public List<String> getWorkerNames() {
         return componetDao.getWorkerNames();
@@ -68,4 +72,6 @@ public class ProduceCardManager {
     public boolean deleteProduceWork(ProducedProcedure producedProcedure) {
         return componetDao.deleteProduceWork(producedProcedure);
     }
+
+    
 }
