@@ -36,11 +36,11 @@ public class ComponentProcedureTableModel extends AbstractTableModel {
   
      private ProduceCardManager produceCardManager = null;
     
-     public ComponentProcedureTableModel(String componentId) {
+     public ComponentProcedureTableModel(String componentId,String batchName) {
         produceCardManager = ProduceCardManager.newInstance();                //single pattern
         fColumnMapping = Arrays.asList(new ComponentProcedureField [] {ComponentProcedureField.BatchId,ComponentProcedureField.Procedure,ComponentProcedureField.Factor,ComponentProcedureField.Operator,ComponentProcedureField.PassedNum,ComponentProcedureField.FailedNum,ComponentProcedureField.Date});   //
         
-        works = produceCardManager.getWorks(componentId);
+        works = produceCardManager.getWorks(componentId,batchName);
         Collections.sort(works);
         previousLines = works.size();
         
