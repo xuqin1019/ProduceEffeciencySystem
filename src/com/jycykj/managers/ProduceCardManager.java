@@ -45,8 +45,8 @@ public class ProduceCardManager {
        return componetDao.getComponent(componentId);
     }
 
-    public List<ProducedProcedure> getWorks(String componentId) {
-        return componetDao.getWorks(componentId);
+    public List<ProducedProcedure> getWorks(String componentId,String batchName) {
+        return componetDao.getWorks(componentId,batchName);
     }
 
     public List<String> getProcedureNames(String componentId) {
