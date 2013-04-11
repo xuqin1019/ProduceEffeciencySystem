@@ -333,7 +333,15 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     
     private void addRowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRowButtonActionPerformed
         // TODO add your handling code here:
-        addedProducedProcedure = new ProducedProcedure(new Component(), new Procedure(),new Worker());    // the new line added
+        if(batchIdTextField.getText().trim().length()==0) {
+            Util.showMessageDialog(this,"请先在表格上面的文本框中输入批次号！");
+            return;
+        }
+        
+        Component component = new Component();
+        component.setBatchName(batchIdTextField.getText().trim());
+      
+        addedProducedProcedure = new ProducedProcedure(component,new Procedure() ,new Worker());    // the new line added
        
         componentProcedureTableModel.getWorks().add(addedProducedProcedure);    //add one line to the table
         
