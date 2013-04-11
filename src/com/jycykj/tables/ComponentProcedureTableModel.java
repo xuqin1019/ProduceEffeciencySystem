@@ -27,7 +27,7 @@ public class ComponentProcedureTableModel extends AbstractTableModel {
     private Class [] types = {String.class , String.class, String.class, String.class,Integer.class,Integer.class , String.class};
    // private Class [] types = {String.class , String.class, String.class, String.class,Integer.class,Integer.class , JComponent.class};
   //  private boolean [] newLineCanEdit = {false,true,false,true,true,true,true,true}; 
-    private boolean [] canEdit = {true,true,false,true,true,true,true,true};
+    private boolean [] canEdit = {false,true,false,true,true,true,true,true};
     
     private List<ProducedProcedure> works = null;
     
