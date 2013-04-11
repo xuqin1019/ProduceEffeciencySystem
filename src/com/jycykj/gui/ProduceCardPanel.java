@@ -308,10 +308,12 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 addRowButton.setEnabled(true);
             }
             if(notSaved()) {
+                System.out.println("notSaved()");
                 addRowButton.setEnabled(false);
                 saveButton.setEnabled(true);
             }
             if(deleteRowButtonLastStatus) {
+                System.out.println("deleteRowButtonLastStatus==true");
                 deleteRowButton.setEnabled(true);
             }
          
@@ -324,6 +326,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private boolean notSaved() {
+        System.out.println("nothingAdded : " + nothingAdded + "    " + addedProducedProcedure!=null ? "not null" : "null");
         return nothingAdded==false && addedProducedProcedure!=null;
     }
     
@@ -438,7 +441,9 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             addRowButton.setEnabled(true);
             deleteRowButton.setEnabled(false);
             
+            nothingAdded = true;
             deleteRowButtonLastStatus = false;
+            saveButton.setEnabled(false);
         }
     }//GEN-LAST:event_deleteRowButtonActionPerformed
 
@@ -489,7 +494,10 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         componentInfoTable.setModel(componentInfoTableModel);
         componentNameLabel.setText(componentInfoTableModel.getComponent().getName());
         
-        componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),"");
+        
+        //根据component和batch填充componentProcedure表格
+        String batchName = batchIdTextField.getText().trim().length()==0 ? "" : batchIdTextField.getText().trim(); 
+        componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),batchName);
         componentProcedureTable.setModel(componentProcedureTableModel);
        
         //component的TextField的lostFocus时间触发BatchId TextField的内容填充
@@ -502,6 +510,10 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         System.out.println("BatchId Text Field lose focus");
         componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),batchIdTextField.getText().trim());
         componentProcedureTable.setModel(componentProcedureTableModel);
+        
+        if(jTabbedPane1.getSelectedIndex()==1) {
+            addRowButton.setEnabled(true);
+        }
     }//GEN-LAST:event_batchIdTextFieldFocusLost
     
     
