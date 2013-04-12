@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -9,30 +10,34 @@ import javax.swing.event.*;
 //test
 public class Test {
 	public static void main(String[] args) throws Exception {
-		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		JFrame frame = new JFrame();
-		frame.setTitle("Auto Completion Test");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBounds(200, 200, 500, 400);
-
-		ArrayList<String>items = new ArrayList<String>();
-//		Locale[] locales = Locale.getAvailableLocales();
-//		for (int i = 0; i < locales.length; i++) {
-//			String item = locales[i].getDisplayName();
-//                        System.out.append(item);
-//			items.add(item);
-//		}
-                items.add("许钦");
-                items.add("张三");
-                items.add("许三多");
-                items.add("王五");
-                
-                JTextField txtInput = new JTextField();
-		setupAutoComplete(txtInput, items);
-		txtInput.setColumns(30);
-		frame.getContentPane().setLayout(new FlowLayout());
-		frame.getContentPane().add(txtInput, BorderLayout.NORTH);
-		frame.setVisible(true);
+            
+                System.out.println((Pattern.matches("\\d{4}-\\d{2}-\\d{2}", "3434-44-12")));
+                    
+               
+//		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//		JFrame frame = new JFrame();
+//		frame.setTitle("Auto Completion Test");
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		frame.setBounds(200, 200, 500, 400);
+//
+//		ArrayList<String>items = new ArrayList<String>();
+////		Locale[] locales = Locale.getAvailableLocales();
+////		for (int i = 0; i < locales.length; i++) {
+////			String item = locales[i].getDisplayName();
+////                        System.out.append(item);
+////			items.add(item);
+////		}
+//                items.add("许钦");
+//                items.add("张三");
+//                items.add("许三多");
+//                items.add("王五");
+//                
+//                JTextField txtInput = new JTextField();
+//		setupAutoComplete(txtInput, items);
+//		txtInput.setColumns(30);
+//		frame.getContentPane().setLayout(new FlowLayout());
+//		frame.getContentPane().add(txtInput, BorderLayout.NORTH);
+//		frame.setVisible(true);
 	}
 
 	private static boolean isAdjusting(JComboBox cbInput) {
