@@ -369,6 +369,8 @@ public class ProduceCardPanel extends javax.swing.JPanel {
          JTextField textField = new JTextField();
          Util.setupAutoComplete(textField, items);
          col.setCellEditor(new DefaultCellEditor(textField));
+         
+       //  col.setCellEditor();
     }
     
     
