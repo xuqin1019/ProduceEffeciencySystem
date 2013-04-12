@@ -474,8 +474,12 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             return;
         } else {
             addedProducedProcedure.getComponent().setComponentId(componentIdTextField.getText().trim());
-            produceCardManager.putProducedProcedure(addedProducedProcedure);
-            Util.showMessageDialog(this, "录入数据成功!!");
+            if(produceCardManager.putProducedProcedure(addedProducedProcedure)) {
+                Util.showMessageDialog(this, "录入数据成功!!");
+            } else {
+                Util.showMessageDialog(this, "录入数据失败，请联系开发人员！！");
+                return;
+            }
             addedProducedProcedure=null;
             addRowButton.setEnabled(true);
             saveButton.setEnabled(false);
@@ -508,6 +512,13 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     private void batchIdTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_batchIdTextFieldFocusLost
         // TODO add your handling code here:
         System.out.println("BatchId Text Field lose focus");
+        
+        if(componentIdTextField.getText().trim().length()==0) {  //componentIdTextField为空
+            Util.showMessageDialog(this, "请先输入图号");
+           // Util.showConfirmDialog(this, "请先输入图号");
+            return;
+        }
+        
         componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),batchIdTextField.getText().trim());
         componentProcedureTable.setModel(componentProcedureTableModel);
         
