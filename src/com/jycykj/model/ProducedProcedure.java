@@ -27,9 +27,6 @@ public class ProducedProcedure implements Comparable<ProducedProcedure> {      /
     public ProducedProcedure() {
        
     }
-    
-    
-    
     public Component getComponent() {
         return component;
     }
