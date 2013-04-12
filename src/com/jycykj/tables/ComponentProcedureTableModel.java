@@ -3,6 +3,8 @@
  * and open the template in the editor.
  */
 package com.jycykj.tables;
+import com.jycykj.gui.DatePickerPanel;
+import com.jycykj.gui.DateTextField;
 import com.jycykj.helper.Util;
 import com.jycykj.managers.ProduceCardManager;
 import com.jycykj.model.Component;
@@ -12,6 +14,8 @@ import com.jycykj.model.Worker;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
+import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -119,6 +123,11 @@ public class ComponentProcedureTableModel extends AbstractTableModel {
             result = (producedProcedure.getFailedNum()==0 ? "" : producedProcedure.getFailedNum());
         } else {
            result = (producedProcedure.getDate()==null ?  null : Util.date2Str(producedProcedure.getDate()));
+           // String dateString = producedProcedure.getDate()==null ?  null : Util.date2Str(producedProcedure.getDate());
+           // DateTextField dateTextField = new DateTextField();
+           // dateTextField.setText(dateString==null? "":dateString);
+           // result = new DatePickerPanel(dateTextField,new JButton());
+            
           // result = new JDateChooser();
         }
         return result;
@@ -161,7 +170,10 @@ public class ComponentProcedureTableModel extends AbstractTableModel {
             } else if(field ==ComponentProcedureField.FailedNum) {
                 producedProcedure.setFailedNum((Integer)value);
             } else {
-                producedProcedure.setDate(Util.parseDateString((String)value));
+                if((Pattern.matches("\\d{4}-\\d{2}-\\d{2}", (String)value))) {
+                     producedProcedure.setDate(Util.parseDateString((String)value));
+                }
+              //  producedProcedure.setDate(Util.parseDateString(((DatePickerPanel)value).getDateTextField().getText().trim()));
             }
                fireTableCellUpdated(row, col); 
         }
