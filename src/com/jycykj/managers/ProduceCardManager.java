@@ -65,8 +65,8 @@ public class ProduceCardManager {
         return componetDao.getProcedureFactor(procedureName);
     }
 
-    public void putProducedProcedure(ProducedProcedure producedProcedure) {
-        componetDao.putProducedProcedure(producedProcedure);
+    public boolean putProducedProcedure(ProducedProcedure producedProcedure) {
+        return componetDao.putProducedProcedure(producedProcedure);
     }
 
     public boolean deleteProduceWork(ProducedProcedure producedProcedure) {
