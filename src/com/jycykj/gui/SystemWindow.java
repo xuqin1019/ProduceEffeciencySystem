@@ -39,10 +39,12 @@ public class SystemWindow extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         menuBar = new javax.swing.JMenuBar();
         operateMenu = new javax.swing.JMenu();
         dataRecordMenu = new javax.swing.JMenu();
-        produceCardMenu = new javax.swing.JMenuItem();
+        makeProduceCardMenu = new javax.swing.JMenuItem();
+        fillProduceCardMenu = new javax.swing.JMenuItem();
         washMenu = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         ImExportMenu = new javax.swing.JMenu();
@@ -71,6 +73,8 @@ public class SystemWindow extends javax.swing.JFrame {
 
         jMenuItem1.setText("jMenuItem1");
 
+        jMenuItem2.setText("jMenuItem2");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("生产效率管理系统");
 
@@ -79,13 +83,21 @@ public class SystemWindow extends javax.swing.JFrame {
 
         dataRecordMenu.setText("数据录入");
 
-        produceCardMenu.setText("生产工艺流程卡");
-        produceCardMenu.addActionListener(new java.awt.event.ActionListener() {
+        makeProduceCardMenu.setText("制作生产工艺流程卡");
+        makeProduceCardMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                produceCardMenuActionPerformed(evt);
+                makeProduceCardMenuActionPerformed(evt);
             }
         });
-        dataRecordMenu.add(produceCardMenu);
+        dataRecordMenu.add(makeProduceCardMenu);
+
+        fillProduceCardMenu.setText("填写生产工艺流程卡");
+        fillProduceCardMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fillProduceCardMenuActionPerformed(evt);
+            }
+        });
+        dataRecordMenu.add(fillProduceCardMenu);
 
         washMenu.setText("清洗情况统计");
         dataRecordMenu.add(washMenu);
@@ -159,6 +171,11 @@ public class SystemWindow extends javax.swing.JFrame {
         systemMaintainMenu.setText("系统维护(管理员权限)");
 
         workerProfileMenu.setText("员工花名册");
+        workerProfileMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                workerProfileMenuActionPerformed(evt);
+            }
+        });
         systemMaintainMenu.add(workerProfileMenu);
 
         procedureMenu.setText("生产工艺流程情况");
@@ -220,7 +237,7 @@ public class SystemWindow extends javax.swing.JFrame {
                 
     }//GEN-LAST:event_registerNewUserMenuActionPerformed
 
-    private void produceCardMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produceCardMenuActionPerformed
+    private void fillProduceCardMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillProduceCardMenuActionPerformed
         // TODO add your handling code here:
          java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -228,7 +245,7 @@ public class SystemWindow extends javax.swing.JFrame {
                 dialog.setVisible(true);
             }
         });
-    }//GEN-LAST:event_produceCardMenuActionPerformed
+    }//GEN-LAST:event_fillProduceCardMenuActionPerformed
 
     private void exitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuActionPerformed
         // TODO add your handling code here:
@@ -258,6 +275,23 @@ public class SystemWindow extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_gWLRMenuActionPerformed
+
+    private void workerProfileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workerProfileMenuActionPerformed
+        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                WorkerManagerDialog dialog = new WorkerManagerDialog(SystemWindow.this, true);
+               // dialog.setBounds(new Rectangle(50, 5, 800, 780));
+                dialog.setResizable(false);
+                dialog.setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_workerProfileMenuActionPerformed
+
+    private void makeProduceCardMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeProduceCardMenuActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_makeProduceCardMenuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -301,6 +335,7 @@ public class SystemWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenu dataRecordMenu;
     private javax.swing.JMenuItem exitMenu;
+    private javax.swing.JMenuItem fillProduceCardMenu;
     private javax.swing.JMenuItem gAvgWLRMenu;
     private javax.swing.JMenuItem gWLRMenu;
     private javax.swing.JMenu helpMenu;
@@ -308,11 +343,12 @@ public class SystemWindow extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenuItem makeProduceCardMenu;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu operateMenu;
     private javax.swing.JMenuItem procedureMenu;
-    private javax.swing.JMenuItem produceCardMenu;
     private javax.swing.JMenuItem registerNewUserMenu;
     private javax.swing.JMenu systemMaintainMenu;
     private javax.swing.JMenuItem wAvgWLRMenu;

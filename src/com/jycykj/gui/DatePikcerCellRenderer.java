@@ -18,7 +18,7 @@ import javax.swing.table.TableCellRenderer;
  *
  * @author xuqin
  */
-public class DatePikcerCellRenderer extends DatePickerPanel implements  TableCellRenderer {
+public class DatePikcerCellRenderer extends DatePickerPanel implements TableCellRenderer {
 
     public DatePikcerCellRenderer(DateTextField dateTextField, JButton jButton) {
         super(dateTextField, jButton);

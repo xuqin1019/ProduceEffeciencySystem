@@ -11,6 +11,8 @@ import com.jycykj.model.Worker;
 import com.jycykj.tables.WorkerManagerTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JButton;
@@ -128,20 +130,20 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
             if(sb.length()!=0) {
                 sb.append(";");
             }
-            int worker_id = Integer.parseInt(workerId);
+          //  int worker_id = Integer.parseInt(workerId);
             worker = workers.get(workerId);
-            if(!isAdd) {
+            if(!workerId.equals("")) {
                 if(worker==null || !worker.valid()) {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
                 }
-                sb.append("update worker set name = '" +worker.getWorkerName()+ "',info='"+worker.getInfo()+"',group_id="+worker.getGroup().getGroupId()+ " where worker_id="+ worker_id);
+                sb.append("update worker set name = '" +worker.getWorkerName()+ "',info='"+worker.getInfo()+"',group_id="+worker.getGroup().getGroupId()+ " where worker_id="+ Integer.parseInt(workerId));
             } else {
                 if(newWorker==null || !newWorker.valid()) {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
                 }
-                sb.append("insert into worker(worker_id,name,info,group_id) values(" + newWorker.getWorkerId()+ ",'" + newWorker.getWorkerName() +"','"+(worker.getInfo()==null ? "" : worker.getInfo())+ "'," + newWorker.getGroup().getGroupId() + ")");
+                sb.append("insert into worker(name,info,group_id) values('" +  newWorker.getWorkerName() +"','"+(worker.getInfo()==null ? "" : worker.getInfo())+ "'," + newWorker.getGroup().getGroupId() + ")");
             }
         }
         
@@ -190,21 +192,29 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        WorkerManagerTableModel workerManagerTableModel = (WorkerManagerTableModel)(workerManagerTable.getModel());
+        String worker_id = workerManagerTableModel.getWorkerList().get(deleteRowIndex).getWorkerId();
+        
+        if(worker_id.equals("")) {
+            workerManagerTableModel.getWorkerList().remove(deleteRowIndex);
+            workerManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
+            addButton.setEnabled(true);
+            deleteButton.setEnabled(false);
+            return;
+        }
+        
         int choice = JOptionPane.showConfirmDialog(this,"你确定要删除此条记录吗","警告",JOptionPane.WARNING_MESSAGE);
-         WorkerManagerTableModel workerManagerTableModel = (WorkerManagerTableModel)(workerManagerTable.getModel());
-         String worker_id = workerManagerTableModel.getWorkerList().get(deleteRowIndex).getWorkerId();
+        System.out.println("worker_id : " + worker_id);
         if(choice==JOptionPane.YES_OPTION) {
             System.out.println(deleteRowIndex);
             
-            String [] cleanTables = new String [] {"produce_work","wash_work","worker"};
-            StringBuffer sql = new StringBuffer();
+            String [] cleanTables = new String [] {"produce_work","worker"};
+            List<String> sqls = new ArrayList<String>(); 
             for(String table : cleanTables) {
-                if(sql.toString().length()!=0) {
-                    sql.append(";");
-                }
-                sql.append("delete from " + table + " where worker_id = " + Integer.valueOf(worker_id));
+                sqls.add("delete from " + table + " where worker_id = " + Integer.valueOf(worker_id));
             }
-            boolean success =  ComponentDao.getInstance().executeUpdate(sql.toString());
+            
+            boolean success =  ComponentDao.getInstance().executeTransaction(sqls);   //执行事务
             
             if(success) {
                 workerManagerTableModel.getWorkerList().remove(deleteRowIndex);
