@@ -5,6 +5,7 @@
 package com.jycykj.dao;
 
 import com.jycykj.model.Component;
+import com.jycykj.model.Group;
 import com.jycykj.model.Procedure;
 import com.jycykj.model.ProducedProcedure;
 import com.jycykj.model.WorkLoad;
@@ -17,8 +18,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -535,20 +539,51 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
         return batchIdList;
     }
     
+    public boolean executeTransaction(List<String> sqls) {
+        boolean success = false;
+        PreparedStatement statement = null;
+        Connection connection = null;
+        try {
+            connection = DBManager.getDBManager().getConnection();
+            connection.setAutoCommit(false);
+            for(String sql : sqls) {
+                statement = connection.prepareStatement(sql);
+                statement.execute();
+            }
+            connection.commit();
+            success = true;
+        } catch (SQLException ex) {
+            try {
+                connection.rollback();
+                connection.commit();
+                success = false;
+            } catch (SQLException ex1) {
+                ex1.printStackTrace();
+            }
+        } finally {
+            DBManager.close(null, statement);
+        }
+        return success;
+    }
+    
+    
     public boolean executeUpdate(String sql) {
+         System.out.println(sql);
          boolean success = false;
          PreparedStatement statement = null;
          Connection connection = null;
           try {
             connection = DBManager.getDBManager().getConnection();
             statement=connection.prepareStatement(sql);
-            success = statement.execute();
+            statement.execute();
+            success = true;
         } catch (SQLException e) {
+            //success = false;
             throw new RuntimeException(e);
         } finally {
             DBManager.getDBManager().close(statement);
@@ -561,17 +596,61 @@ public class ComponentDao {
     }
      
      public List<Worker> getWorkers() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        List<Worker> workers = new ArrayList<Worker>();
+        PreparedStatement statement = null;
+        Connection connection = null;
+        ResultSet rs = null;
+        try {
+            connection = DBManager.getDBManager().getConnection();
+            String sql = "select W.worker_id as worker_id ,W.name as worker_name,W.group_id as group_id,G.name as group_name, W.info from worker W , `group` G where W.group_id=G.group_id";
+            System.out.println(sql);
+            statement = connection.prepareStatement(sql);
+           rs = statement.executeQuery();
+            while (rs.next()) {
+               Worker worker = new Worker();
+               worker.setWorkerId(String.valueOf(rs.getInt("worker_id")));
+               worker.setWorkerName(rs.getString("worker_name"));
+               worker.setInfo(rs.getString("info"));
+               worker.setGroup(new Group(rs.getInt("group_id"),rs.getString("group_name")));
+               workers.add(worker);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBManager.close(rs, statement);
+        }
+        return workers;
     }
 
     public Map<String, Integer> getGroups() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        Map<String,Integer> groups = new HashMap<String, Integer>();
+        PreparedStatement statement = null;
+        Connection connection = null;
+        ResultSet rs = null;
+        try {
+            connection = DBManager.getDBManager().getConnection();
+            String sql = "select group_id,name from `group`";
+            System.out.println(sql);
+            statement = connection.prepareStatement(sql);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+               groups.put(rs.getString("name"),rs.getInt("group_id"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBManager.close(rs, statement);
+        }
+        return groups;
     }
     
+   
     public static void main(String [] args) {
         ComponentDao componentDao = ComponentDao.getInstance();
         componentDao.getWorkerWorkLoad(2012,10);
     }
+
+    
 
    
 
