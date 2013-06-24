@@ -51,6 +51,11 @@ public class Worker {
      //  return workerId!=null && workerName!=null && group!=null &&
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Worker{" + "workerId=" + workerId + ", workerName=" + workerName + ", group=" + group + ", info=" + info + ", workLoad=" + workLoad + '}';
+    }
     
     
     
