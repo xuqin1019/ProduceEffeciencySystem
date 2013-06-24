@@ -27,12 +27,12 @@ public class WorkerManagerTableModel extends AbstractTableModel {
     
     private Map<String,Worker> modifiedWorkers = new HashMap<String,Worker>();
     
-    private String [] headers = new String [] {"员工编号","姓名","班组归属","备注"};
+    private String [] headers = new String [] {"姓名","班组归属","备注"};
     
-    private boolean [] canEdit = {false,true,true,true};
+    private boolean [] canEdit = {true,true,true};
     private boolean isAdd = false;      //如果正在添加，则禁止其他数据同时修改
     
-    private Class [] types = {String.class,String.class,String.class,String.class};
+    private Class [] types = {String.class,String.class,String.class};
     
     private WorkerManager workerManager = null;
     
@@ -80,10 +80,8 @@ public class WorkerManagerTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Worker worker = workerList.get(rowIndex);
         if(columnIndex==0) {
-            return worker.getWorkerId()==null ? "" : worker.getWorkerId();
-        } else if(columnIndex==1) {
             return worker.getWorkerName()==null ? "" : worker.getWorkerName();
-        } else if(columnIndex==2) {
+        } else if(columnIndex==1) {
             table.getColumnModel().getColumn(columnIndex).setCellEditor(new DefaultCellEditor(jComboBox));
             return worker.getGroup()==null ? "" : worker.getGroup().getGroupName();
         } else {
@@ -105,14 +103,14 @@ public class WorkerManagerTableModel extends AbstractTableModel {
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         if(value!=null) {
             Worker worker = workerList.get(rowIndex);
-            if(columnIndex==1) {
+            if(columnIndex==0) {
                 worker.setWorkerName((String)value);
-            } else if(columnIndex==2) {
+            } else if(columnIndex==1) {
                 Group g = worker.getGroup();
                 g.setGroupName((String)value);
                 g.setGroupId(groups.get(g.getGroupName()));
                 worker.setGroup(g);
-            } else if(columnIndex==3) {
+            } else if(columnIndex==2) {
                 if(value==null || ((String)value).trim().length()==0) {
                     worker.setInfo("");
                 } else {
