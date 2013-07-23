@@ -5,16 +5,17 @@
 package com.jycykj.export;
 
 import java.io.File;
+import javax.swing.JTable;
 /**
  *
  * @author lenovo
  */
 public class ExportManagerFactory {
-    public static ExportManager getManager(File f) {
+    public static ExportManager getManager(File f , JTable table) {
         if(f.getName().endsWith(".xls")){
-            return new ExcelExportManager(f);
+            return new ExcelExportManager(f,table);
         } else {
-            return new PdfExportManager(f);
+            return new PdfExportManager(f,table);
         }
     }
 }

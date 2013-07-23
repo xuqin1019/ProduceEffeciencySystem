@@ -124,7 +124,7 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         Map<String,Worker> workers = ((WorkerManagerTableModel)workerManagerTable.getModel()).getModifiedWorkers();
         Set<String> workerIds = workers.keySet();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
          Worker worker = null;
         for(String workerId : workerIds) {
             if(sb.length()!=0) {
@@ -137,7 +137,7 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
                 }
-                sb.append("update worker set name = '" +worker.getWorkerName()+ "',info='"+worker.getInfo()+"',group_id="+worker.getGroup().getGroupId()+ " where worker_id="+ Integer.parseInt(workerId));
+                sb.append("update worker set name = '" +worker.getWorkerName()+ "',info='"+(worker.getInfo()==null ? "" : worker.getInfo())+"',group_id="+worker.getGroup().getGroupId()+ " where worker_id="+ Integer.parseInt(workerId));
             } else {
                 if(newWorker==null || !newWorker.valid()) {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
@@ -147,7 +147,7 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
             }
         }
         
-        boolean success =  ComponentDao.getInstance().executeUpdate(sb.toString());
+        boolean success =  ComponentDao.getInstance().executeUpdate(sb.toString().split(";"));
         if(success) {           //保存成功
             Util.showMessageDialog(this,"保存成功！！！");
             ((WorkerManagerTableModel)workerManagerTable.getModel()).getModifiedWorkers().clear();

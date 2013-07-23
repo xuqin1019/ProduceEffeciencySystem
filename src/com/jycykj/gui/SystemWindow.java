@@ -4,7 +4,6 @@
  */
 package com.jycykj.gui;
 import java.awt.Rectangle;
-import javax.swing.JOptionPane;
 
 /**
  *

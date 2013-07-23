@@ -552,12 +552,14 @@ public class ComponentDao {
             connection = DBManager.getDBManager().getConnection();
             connection.setAutoCommit(false);
             for(String sql : sqls) {
+                System.out.println(sql);
                 statement = connection.prepareStatement(sql);
                 statement.execute();
+                connection.commit();
             }
-            connection.commit();
             success = true;
         } catch (SQLException ex) {
+            ex.printStackTrace();
             try {
                 connection.rollback();
                 connection.commit();
@@ -585,6 +587,37 @@ public class ComponentDao {
         } catch (SQLException e) {
             //success = false;
             throw new RuntimeException(e);
+        } finally {
+            DBManager.getDBManager().close(statement);
+        }
+        return success;
+    }
+    
+    public boolean executeUpdate(String[] sqls) {
+        // System.out.println(sql);
+         boolean success = false;
+         PreparedStatement statement = null;
+         Connection connection = null;
+         
+         try {
+            connection = DBManager.getDBManager().getConnection();
+            connection.setAutoCommit(false);
+            
+            for(String sql : sqls) {
+                statement=connection.prepareStatement(sql);
+                statement.execute();
+            }
+            connection.commit();
+            success = true; 
+        } catch (SQLException e) {
+           if (connection != null) {
+            try {
+                System.err.print("Transaction is being rolled back");
+                connection.rollback();
+            } catch(SQLException excep) {
+                excep.printStackTrace();;
+            }
+        }
         } finally {
             DBManager.getDBManager().close(statement);
         }
@@ -649,6 +682,8 @@ public class ComponentDao {
         ComponentDao componentDao = ComponentDao.getInstance();
         componentDao.getWorkerWorkLoad(2012,10);
     }
+
+   
 
     
 

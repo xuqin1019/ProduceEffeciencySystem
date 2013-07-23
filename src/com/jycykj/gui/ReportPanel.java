@@ -4,6 +4,10 @@
  */
 package com.jycykj.gui;
 
+import com.jycykj.export.ExcelExportManager;
+import com.jycykj.export.ExportManager;
+import com.jycykj.export.ExportManagerFactory;
+import com.jycykj.export.PdfExportManager;
 import com.jycykj.helper.Util;
 import com.jycykj.tables.GroupWorkLoadTableModel;
 import com.jycykj.tables.WorkLoadTableModel;
@@ -15,7 +19,6 @@ import java.io.File;
 import java.util.Date;
 import java.util.Locale;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 
 /**
@@ -268,8 +271,9 @@ public class ReportPanel extends javax.swing.JPanel {
             } else {
                 newFile = new File(file.getAbsolutePath()+ends);
             }
-        //   System.out.println(newFile.getName());
-            
+            System.out.println(newFile.getName());
+            ExportManager exportManager = ExportManagerFactory.getManager(newFile,reportTable);
+            exportManager.writeTableModel();
             
         }
         if(rVal == JFileChooser.CANCEL_OPTION) {
