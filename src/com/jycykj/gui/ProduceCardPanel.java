@@ -23,9 +23,6 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 /**
@@ -193,6 +190,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
 
         componentProcedureTable.setRowHeight(20);
         componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),"");
+        componentProcedureTable.setDefaultRenderer(Integer.class,new LeftAlignRenderer());
         componentProcedureTable.setModel(componentProcedureTableModel);
         componentProcedureTable.addMouseListener(new MyMouseAdapter());
         jScrollPane2.setViewportView(componentProcedureTable);
@@ -479,7 +477,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             if(produceCardManager.putProducedProcedure(addedProducedProcedure)) {
                 Util.showMessageDialog(this, "录入数据成功!!");
             } else {
-                Util.showMessageDialog(this, "录入数据失败，请联系开发人员！！");
+                Util.showMessageDialog(this,produceCardManager.getErrorMessage());
                 return;
             }
             addedProducedProcedure=null;

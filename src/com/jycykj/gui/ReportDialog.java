@@ -4,7 +4,7 @@
  */
 package com.jycykj.gui;
 
-import java.awt.Dimension;
+
 import java.awt.Rectangle;
 
 /**

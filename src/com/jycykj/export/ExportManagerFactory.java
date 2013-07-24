@@ -11,11 +11,11 @@ import javax.swing.JTable;
  * @author lenovo
  */
 public class ExportManagerFactory {
-    public static ExportManager getManager(File f , JTable table) {
+    public static ExportManagerSupport getManager(File f , JTable table,String title) {
         if(f.getName().endsWith(".xls")){
-            return new ExcelExportManager(f,table);
+            return new ExcelExportManager(f,table,title);
         } else {
-            return new PdfExportManager(f,table);
+            return new PdfExportManager(f,table,title);
         }
     }
 }

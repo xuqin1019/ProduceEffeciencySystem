@@ -10,8 +10,6 @@ import com.jycykj.model.Procedure;
 import com.jycykj.model.ProducedProcedure;
 import com.jycykj.model.WorkLoad;
 import com.jycykj.model.Worker;
-import com.jycykj.model.WorkLoad;
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -23,13 +21,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 /**
  *
  * @author lenovo
  */
 public class ComponentDao {
-
+    private String errorMessage;
+    
     private static ComponentDao instance = null;
 
     public static ComponentDao getInstance() {
@@ -42,12 +40,12 @@ public class ComponentDao {
     public List<ProducedProcedure> getWorks(String componentId,String batchName) {
         List<ProducedProcedure> works = new ArrayList<ProducedProcedure>();
         
-          PreparedStatement statement = null;
-        Connection connection = null;
+        PreparedStatement statement = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
-            String sql = "";
+            String sql;
             if(batchName.equals("")){    //不设定batchName的条件，列出所有批次号
                 sql = "select E.batch_name,D.name,D.factor,B.name,A.passed_num,A.failed_num,A.time from (SELECT worker_id,component_id,batch_id,procedure_id,failed_num,passed_num,time FROM produce_work WHERE component_id='"+ componentId + "') As A join worker B on A.worker_id = B.worker_id join component C on A.component_id = C.component_id join `procedure` D on A.procedure_id = D.procedure_id join `batch` E on A.batch_id = E.batch_id";
             } else {              //加上batchName的筛选条件
@@ -89,7 +87,7 @@ public class ComponentDao {
     public List<String> getComponentIds() {
         List<String> ids = new ArrayList<String>();
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -110,7 +108,7 @@ public class ComponentDao {
     public Component getComponent(String componentId) {
         Component component = new Component();
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -137,7 +135,7 @@ public class ComponentDao {
     public List<String> getProcedureNames(String componentId) {
         List<String> procedureNames = new ArrayList<String>();
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -160,8 +158,8 @@ public class ComponentDao {
     public List<String> getWorkerNames() {
         List<String> names = new ArrayList<String>();
         
-           PreparedStatement statement = null;
-        Connection connection = null;
+        PreparedStatement statement = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -184,7 +182,7 @@ public class ComponentDao {
 
     public float getProcedureFactor(String procedureName) {
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -206,7 +204,7 @@ public class ComponentDao {
     
     public int getWorkerId(String name) {
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -221,14 +219,14 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
         return -1;
     }
     
      private String getProcedureId(String procedureName) {
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -252,31 +250,41 @@ public class ComponentDao {
         Connection connection = null;
         ResultSet rs = null;
         int workerId = getWorkerId(producedProcedure.getOperator().getWorkerName());
-        if(workerId==-1) {
+        if(workerId==-1) {     //职工不存在
+            errorMessage = "数据库中不存在该职工，请先添加";
             return false;
         }
         String procedureId = getProcedureId(producedProcedure.getProcedure().getProcedureName());
         if(procedureId.equals("-1")) {
+             errorMessage = "数据库中不存在该工序，请先添加";
             return false;
         }
-        
         Component component = producedProcedure.getComponent();
-        int batchId = this.getBatchId(component.getBatchName());     
-        if(batchId==-1) {            //if not exists this batch
-            batchId=this.putBatch(component.getBatchName());               //store this batch
-            if(batchId==-1) {
-                return false;
-            }
-        }
-        
-        this.putBatchComponent(batchId ,component.getComponentId());    //store the batch_component
-        
         try {
             connection = DBManager.getDBManager().getConnection();
+            connection.setAutoCommit(false);               //使用java事务
+            
+            //插入batchID
+            int batchId = this.getBatchId(component.getBatchName());   
+            if(batchId==-1) {            //if not exists this batch
+                batchId=this.putBatch(component.getBatchName());               
+                if(batchId==-1) {
+                    errorMessage = "写入数据库失败，请联系开发人员";
+                    return false;
+                }
+          //      this.putBatchComponent(batchId, component.getComponentId());
+            }
+            
+            //插入batchId和componentId
+            boolean exists = this.getCompoentIdBatchIds(batchId,component.getComponentId());
+            if(!exists) {
+                if(!this.putBatchComponent(batchId ,component.getComponentId())) {
+                    errorMessage = "写入数据库失败，请联系开发人员";
+                    return false;
+                }
+            }
             String sql = "insert into produce_work (worker_id,component_id,batch_id,procedure_id,passed_num,failed_num,time) values (?,?,?,?,?,?,?)";
-            
             statement = connection.prepareStatement(sql);
-            
             statement.setInt(1, workerId);
             statement.setString(2, component.getComponentId());
             statement.setInt(3, batchId);
@@ -284,20 +292,32 @@ public class ComponentDao {
             statement.setInt(5, producedProcedure.getPassedNum());
             statement.setInt(6, producedProcedure.getFailedNum());
             statement.setDate(7,new Date(producedProcedure.getDate().getTime()));
+            System.out.println(sql);
             statement.executeUpdate();
+            connection.commit();
             System.out.println("insert produce_work success");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.print("Transaction is being rolled back");
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                Logger.getLogger(ComponentDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
             return false;
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(ComponentDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return true;
     }
 
     private int getBatchId(String batchName) {
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -313,53 +333,42 @@ public class ComponentDao {
         } catch (SQLException e) {
             return -1;
         } finally {
-            DBManager.getDBManager().close(rs, statement);
-        }
-        return -1;
-    }
-
-    private int putBatch(String batchName) {
-        PreparedStatement statement = null;
-        Connection connection = null;
-        ResultSet rs = null;
-        try {
-            connection = DBManager.getDBManager().getConnection();
-            String sql = "insert into batch(batch_name) values (?)";
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, batchName);
-            statement.executeUpdate();
-            
-            sql="select batch_id from batch ORDER BY batch_id DESC LIMIT 1";
-            statement = connection.prepareStatement(sql);
-            rs = statement.executeQuery();
-            if(rs.next()) {
-                return rs.getInt("batch_id");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
             DBManager.close(rs, statement);
         }
         return -1;
     }
 
-    private void putBatchComponent(int batchId, String componentId) {
-        PreparedStatement statement = null;
-        Connection connection = null;
-        ResultSet rs = null;
-        try {
-            connection = DBManager.getDBManager().getConnection();
-            String sql = "insert into batch_component(batch_id,component_id) values (?,?)";
-            statement = connection.prepareStatement(sql);
-            statement.setInt(1, batchId);
-            statement.setString(2, componentId);
-            statement.executeUpdate();
-            System.out.println("insert batch_component success");
-        } catch (SQLException e) {
-           // throw new RuntimeException(e);
-        } finally {
-            DBManager.getDBManager().close(rs, statement);
+    private int putBatch(String batchName) throws SQLException {
+        PreparedStatement statement;
+        Connection connection;
+        ResultSet rs ;
+        connection = DBManager.getDBManager().getConnection();
+        String sql = "insert into batch(batch_name) values (?)";
+        statement = connection.prepareStatement(sql);
+        statement.setString(1, batchName);
+        statement.executeUpdate();
+            
+        sql="select batch_id from batch ORDER BY batch_id DESC LIMIT 1";
+        statement = connection.prepareStatement(sql);
+        rs = statement.executeQuery();
+        if(rs.next()) {
+            return rs.getInt("batch_id");
         }
+        return -1;
+    }
+
+    private boolean putBatchComponent(int batchId, String componentId) throws SQLException {
+        PreparedStatement statement;
+        Connection connection;
+        ResultSet rs = null;
+        connection = DBManager.getDBManager().getConnection();
+        String sql = "insert into batch_component(batch_id,component_id) values (?,?)";
+        statement = connection.prepareStatement(sql);
+        statement.setInt(1, batchId);
+        statement.setString(2, componentId);
+        statement.executeUpdate();
+        System.out.println("insert batch_component success");
+        return true;
     }
 
     public boolean deleteProduceWork(ProducedProcedure producedProcedure) {
@@ -377,7 +386,7 @@ public class ComponentDao {
    //    System.out.println(batchName + " " + procedureName + " " + workerName + " " + date);
        
        PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -390,7 +399,7 @@ public class ComponentDao {
             //throw new RuntimeException(e);
             return false;
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
        return true;
     }
@@ -398,7 +407,7 @@ public class ComponentDao {
     public List<WorkLoad> getWorkLoad() {
         List<WorkLoad> workerWorkLoads = new ArrayList<WorkLoad>();
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -420,7 +429,7 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
         return workerWorkLoads; 
 }
@@ -428,7 +437,7 @@ public class ComponentDao {
     public List<WorkLoad> getWorkerWorkLoad(int year, int month) {
         List<WorkLoad> workerWorkLoads = new ArrayList<WorkLoad>();
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -454,7 +463,7 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
         return workerWorkLoads;
     }
@@ -462,7 +471,7 @@ public class ComponentDao {
     public List<WorkLoad> getWorkerWorkLoad(String startTimeString, String endTimeString) {
          List<WorkLoad> workerWorkLoads = new ArrayList<WorkLoad>();
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -484,7 +493,7 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
         return workerWorkLoads;
     }
@@ -492,7 +501,7 @@ public class ComponentDao {
     public List<WorkLoad> getGroupWorkLoad(String startDateString, String endDateString) {
          List<WorkLoad> workerWorkLoads = new ArrayList<WorkLoad>();
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -517,7 +526,7 @@ public class ComponentDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBManager.getDBManager().close(rs, statement);
+            DBManager.close(rs, statement);
         }
         return workerWorkLoads;
     }
@@ -525,7 +534,7 @@ public class ComponentDao {
     public List<String> getCompoentBatchIds(String componentName) {
         List<String> batchIdList = new ArrayList<String>();
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -542,6 +551,20 @@ public class ComponentDao {
             DBManager.close(rs, statement);
         }
         return batchIdList;
+    }
+    
+    private boolean getCompoentIdBatchIds(int batchId, String componentId) throws SQLException {
+        PreparedStatement statement;
+        Connection connection;
+        ResultSet rs = null;
+        connection = DBManager.getDBManager().getConnection();
+        String sql = "select * from batch_component where batch_id=" + batchId + " and component_id='" + componentId+"'";
+        statement = connection.prepareStatement(sql);
+        rs = statement.executeQuery();
+        while(rs.next()) {
+            return true;
+        }
+        return false;
     }
     
     public boolean executeTransaction(List<String> sqls) {
@@ -578,7 +601,7 @@ public class ComponentDao {
          System.out.println(sql);
          boolean success = false;
          PreparedStatement statement = null;
-         Connection connection = null;
+         Connection connection;
           try {
             connection = DBManager.getDBManager().getConnection();
             statement=connection.prepareStatement(sql);
@@ -631,7 +654,7 @@ public class ComponentDao {
      public List<Worker> getWorkers() {
         List<Worker> workers = new ArrayList<Worker>();
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -658,7 +681,7 @@ public class ComponentDao {
     public Map<String, Integer> getGroups() {
         Map<String,Integer> groups = new HashMap<String, Integer>();
         PreparedStatement statement = null;
-        Connection connection = null;
+        Connection connection;
         ResultSet rs = null;
         try {
             connection = DBManager.getDBManager().getConnection();
@@ -676,20 +699,19 @@ public class ComponentDao {
         }
         return groups;
     }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
     
-   
     public static void main(String [] args) {
         ComponentDao componentDao = ComponentDao.getInstance();
         componentDao.getWorkerWorkLoad(2012,10);
     }
 
    
-
-    
-
-   
-
-   
-
-    
 }

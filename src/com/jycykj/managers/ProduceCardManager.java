@@ -19,6 +19,8 @@ import java.util.List;
 public class ProduceCardManager {
     private ComponentDao componetDao = null;
     
+    private String errorMessage;      //errorMessage
+    
     private static ProduceCardManager produceCardManager = null;
     
     private ProduceCardManager() {
@@ -66,12 +68,20 @@ public class ProduceCardManager {
     }
 
     public boolean putProducedProcedure(ProducedProcedure producedProcedure) {
-        return componetDao.putProducedProcedure(producedProcedure);
+        boolean success = componetDao.putProducedProcedure(producedProcedure);
+        errorMessage = componetDao.getErrorMessage();
+        return success;
     }
 
     public boolean deleteProduceWork(ProducedProcedure producedProcedure) {
         return componetDao.deleteProduceWork(producedProcedure);
     }
 
-    
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 }

@@ -23,36 +23,31 @@ import jxl.write.WritableWorkbook;
  *
  * @author lenovo
  */
-public class ExcelExportManager implements ExportManager {
+public class ExcelExportManager extends ExportManagerSupport {
    // private ExcelFileWriter excelFileWriter;
-    
-    private File f;
-    private JTable table;
-    
-    public ExcelExportManager(File f,JTable table) {
-        this.f=f;
-        this.table = table;
+    public ExcelExportManager(File f,JTable table,String title) {
+       super(f, table, title);
     }
 
     @Override
     public boolean writeTableModel() {
-        if(table==null) {
+        if(super.getTable()==null) {
             return false;
         }
         WritableWorkbook wbook = null;
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(f);
+            FileOutputStream fileOutputStream = new FileOutputStream(super.getF());
            wbook = Workbook.createWorkbook(fileOutputStream); // 建立excel文件
            WritableSheet wsheet = wbook.createSheet("第一页", 0); // sheet名称
            WritableFont wfont = new WritableFont(WritableFont.ARIAL,16,WritableFont.BOLD, false, UnderlineStyle.NO_UNDERLINE,Colour.BLACK);
            WritableCellFormat wcfFC = new WritableCellFormat(wfont);
-           wsheet.addCell(new Label(1, 0, "报表", wcfFC));
+           wsheet.addCell(new Label(0, 0, super.getTitle(), wcfFC));
            
            
            wfont = new jxl.write.WritableFont(WritableFont.ARIAL, 14,WritableFont.BOLD, false, UnderlineStyle.NO_UNDERLINE,Colour.BLACK);
            wcfFC = new WritableCellFormat(wfont);
            
-           TableModel tableModel = table.getModel();
+           TableModel tableModel = super.getTable().getModel();
            int rowCount = tableModel.getRowCount();
            int columnCount = tableModel.getColumnCount();
            for( int col = 0; col < columnCount; col++ ){
@@ -68,13 +63,13 @@ public class ExcelExportManager implements ExportManager {
             // 主体内容生成结束        
         wbook.write(); // 写入文件
         wbook.close();
-         fileOutputStream.close();
+        fileOutputStream.close();
         System.out.println("closed");
         } catch (Exception ex) {
             Logger.getLogger(ExcelExportManager.class.getName()).log(Level.SEVERE, null, ex);
+            super.setErrorMessage(ex.getMessage());
             return false;
         } 
         return true;
-        
     }
 }

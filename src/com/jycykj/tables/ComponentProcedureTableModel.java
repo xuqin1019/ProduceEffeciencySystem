@@ -7,7 +7,6 @@ import com.jycykj.gui.DatePickerPanel;
 import com.jycykj.gui.DateTextField;
 import com.jycykj.helper.Util;
 import com.jycykj.managers.ProduceCardManager;
-import com.jycykj.model.Component;
 import com.jycykj.model.Procedure;
 import com.jycykj.model.ProducedProcedure;
 import com.jycykj.model.Worker;
@@ -16,7 +15,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -105,7 +107,7 @@ public class ComponentProcedureTableModel extends AbstractTableModel {
    
     private Object getFieldValue(ProducedProcedure producedProcedure , ComponentProcedureField componentField) {
         Object result = null;
-        Component component = producedProcedure.getComponent();
+        com.jycykj.model.Component component = producedProcedure.getComponent();
         Procedure procedure = producedProcedure.getProcedure();
         Worker operator = producedProcedure.getOperator();
         

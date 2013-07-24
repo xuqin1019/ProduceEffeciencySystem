@@ -7,6 +7,7 @@ package com.jycykj.gui;
 import com.jycykj.export.ExcelExportManager;
 import com.jycykj.export.ExportManager;
 import com.jycykj.export.ExportManagerFactory;
+import com.jycykj.export.ExportManagerSupport;
 import com.jycykj.export.PdfExportManager;
 import com.jycykj.helper.Util;
 import com.jycykj.tables.GroupWorkLoadTableModel;
@@ -239,6 +240,8 @@ public class ReportPanel extends javax.swing.JPanel {
         } else {
             exportButton.setEnabled(true);
         }
+        reportTable.setDefaultRenderer(Integer.class, new LeftAlignRenderer());
+      //  reportTable.setDefaultRenderer(, new LeftAlignRenderer());
         reportTable.setModel(workLoadTableModel);
         
     }//GEN-LAST:event_searchButtonActionPerformed
@@ -272,9 +275,12 @@ public class ReportPanel extends javax.swing.JPanel {
                 newFile = new File(file.getAbsolutePath()+ends);
             }
             System.out.println(newFile.getName());
-            ExportManager exportManager = ExportManagerFactory.getManager(newFile,reportTable);
-            exportManager.writeTableModel();
-            
+            ExportManagerSupport exportManager = ExportManagerFactory.getManager(newFile,reportTable,titleLabel.getText());
+            if(exportManager.writeTableModel()) {
+                Util.showMessageDialog(this, "导出成功！");
+            } else {
+                Util.showMessageDialogWithTitle(this,"警告", "导出失败:"+exportManager.getErrorMessage());
+            }
         }
         if(rVal == JFileChooser.CANCEL_OPTION) {
             System.out.println("cancel");
