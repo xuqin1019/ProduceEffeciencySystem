@@ -219,6 +219,14 @@ public class SystemWindow extends javax.swing.JFrame {
 
     private void importMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importMenuActionPerformed
         // TODO add your handling code here:
+          java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                ImportDataDialog importDataDialog = new ImportDataDialog(SystemWindow.this, true);
+                importDataDialog.setLocationRelativeTo(SystemWindow.this);
+                importDataDialog.setVisible(true);
+                
+            }
+        });
     }//GEN-LAST:event_importMenuActionPerformed
 
     private void workerEvaluationMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workerEvaluationMenuActionPerformed

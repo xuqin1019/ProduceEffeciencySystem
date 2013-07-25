@@ -173,11 +173,10 @@
         </Component>
         <Component class="javax.swing.JTextField" name="componentIdTextField">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="componentIdTextFieldActionPerformed"/>
             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="componentIdTextFieldFocusLost"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="List&lt;String&gt; componentIdsString = produceCardManager.getComponentIds();&#xa;Util.setupAutoComplete(componentIdTextField, componentIdsString);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="//&#x8bbe;&#x7f6e;componentIdTextField&#x7684;&#x4e0b;&#x62c9;&#x63d0;&#x9192;&#xa;List&lt;String&gt; componentIdsString = produceCardManager.getComponentIds();&#xa;Util.setupAutoComplete(componentIdTextField, componentIdsString);"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
@@ -381,7 +380,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="cancelButton">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x53d6;&#x6d88;"/>
+            <Property name="text" type="java.lang.String" value="&#x5173;&#x95ed;"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelButtonActionPerformed"/>

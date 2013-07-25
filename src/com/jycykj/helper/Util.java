@@ -15,7 +15,6 @@ import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -89,8 +88,12 @@ public class Util {
         return Error.Success;
     }
     
-    
-    public static void setupAutoComplete(final JTextField txtInput, final List<String> items) {
+    public static void setupAutoComplete(final JTextField txtInput, final List<String> popitems) {
+                                System.out.print("reset : ");
+                                for(String str : popitems) {
+                                    System.out.print(str + " and ");
+                                }
+                                System.out.println();
                 final DefaultComboBoxModel model = new DefaultComboBoxModel();
 		final JComboBox cbInput = new JComboBox(model) {
 			public Dimension getPreferredSize() {
@@ -98,8 +101,8 @@ public class Util {
 			}
 		};
 		setAdjusting(cbInput, false);
-		for (String item : items) {
-			model.addElement(item);
+		for (String item : popitems) {
+                    model.addElement(item);
 		}
 		cbInput.setSelectedItem(null);
 		cbInput.addActionListener(new ActionListener() {
@@ -109,9 +112,7 @@ public class Util {
 					if (cbInput.getSelectedItem() != null) {
                                             txtInput.setText(cbInput.getSelectedItem().toString());
                                         }
-                                    //     txtInput.setFocusable(false);
-                                     //    txtInput.setFocusable(true);
-				}
+                                }
 			}
 		});
 
@@ -137,7 +138,7 @@ public class Util {
                                                 //按下回车时触发loseFocuse事件来更新table model
                                                 txtInput.setFocusable(false);   
                                                 txtInput.setFocusable(true);
-						cbInput.setPopupVisible(false);
+                                                cbInput.setPopupVisible(false);
 					}
 				}
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -148,19 +149,18 @@ public class Util {
 		});
 		txtInput.getDocument().addDocumentListener(new DocumentListener() {
 			public void insertUpdate(DocumentEvent e) {
-				updateList();
-                                
-                                System.out.println("insertUpdate");
+                                updateList();
+                              //  System.out.println("insertUpdate");
 			}
 
 			public void removeUpdate(DocumentEvent e) {
-				updateList();
-                                 System.out.println("removeUpdate");
+                                updateList();
+                             //   System.out.println("removeUpdate");
 			}
 
 			public void changedUpdate(DocumentEvent e) {
-				updateList();
-                                 System.out.println("changedUpdate");
+                                updateList();
+                             //   System.out.println("changedUpdate");
 			}
 
 			private void updateList() {
@@ -168,14 +168,17 @@ public class Util {
 				model.removeAllElements();
 				String input = txtInput.getText();
 				if (!input.isEmpty()) {
-					for (String item : items) {
-						if (item.toLowerCase().startsWith(input.toLowerCase()) && !item.toLowerCase().equals(input.toLowerCase())) {
+                                        for (String item : popitems) {
+                                                System.out.print(item + " updateList ");
+					//	if (item.toLowerCase().startsWith(input.toLowerCase()) && !item.toLowerCase().equals(input.toLowerCase())) {
+                                                if (item.toLowerCase().startsWith(input.toLowerCase())) {    
 							model.addElement(item);
 						}
                                         }
+                                        System.out.println();
 				}
                                 
-                                cbInput.setPopupVisible(model.getSize() > 0);
+                               cbInput.setPopupVisible(model.getSize() > 0);
                                setAdjusting(cbInput, false);
                                
 			}

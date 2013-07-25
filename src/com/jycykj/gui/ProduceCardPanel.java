@@ -47,7 +47,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     
     //String [] componentIds = null;     //used to show in the list
     
-    boolean deleteRowButtonLastStatus = false;
+    boolean deleteRowButtonLastStatus = false;      //用来保存tab切换的时候deleteRowButton的状态
     int deleteRowIndex = -1;
     
     private ProducedProcedure addedProducedProcedure = null;
@@ -114,13 +114,9 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         jLabel4.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         jLabel4.setText("图号：");
 
+        //设置componentIdTextField的下拉提醒
         List<String> componentIdsString = produceCardManager.getComponentIds();
         Util.setupAutoComplete(componentIdTextField, componentIdsString);
-        componentIdTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                componentIdTextFieldActionPerformed(evt);
-            }
-        });
         componentIdTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 componentIdTextFieldFocusLost(evt);
@@ -238,7 +234,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             .addGap(0, 23, Short.MAX_VALUE)
         );
 
-        cancelButton.setText("取消");
+        cancelButton.setText("关闭");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -331,7 +327,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         // TODO add your handling code here:
-        if(jTabbedPane1.getSelectedIndex()==1) {
+        if(jTabbedPane1.getSelectedIndex()==1) {    //在第二个table tab中
             if(nothingAdded) {
                 addRowButton.setEnabled(true);
             }
@@ -340,12 +336,12 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 addRowButton.setEnabled(false);
                 saveButton.setEnabled(true);
             }
-            if(deleteRowButtonLastStatus) {
+            if(deleteRowButtonLastStatus) {      
                 System.out.println("deleteRowButtonLastStatus==true");
-                deleteRowButton.setEnabled(true);
+                deleteRowButton.setEnabled(true);  //切换成true的状态
             }
          
-        } else {
+        } else {                       //在第一个table tab中，所有按钮设置为false
             addRowButton.setEnabled(false);
             deleteRowButton.setEnabled(false);
             saveButton.setEnabled(false);
@@ -434,7 +430,6 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                //   procedure.setProcedureName(selectedItem);
                 //  procedure.setFactor(produceCardManager.getProcedureFactor(selectedItem));
                 //  producedProcedure.setProcedure(procedure);
-                  
                   componentProcedureTableModel.fireTableDataChanged();
               } else if(columnIndex == 3) {    //set the operator
                  // Worker worker = new Worker();
@@ -449,7 +444,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     
     private void deleteRowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteRowButtonActionPerformed
         // TODO add your handling code here:
-        
+        //删除某条记录
         int choice = JOptionPane.showConfirmDialog(this,"你确定要删除此条记录吗","警告",JOptionPane.WARNING_MESSAGE);
         
         if(choice==JOptionPane.YES_OPTION) {
@@ -468,7 +463,9 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             }
             componentProcedureTableModel.getWorks().remove(deleteRowIndex);
             componentProcedureTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
-            addRowButton.setEnabled(true);
+           
+            //删除成功后，addRowButton设置为true ， deleteRowButton设置为false
+            addRowButton.setEnabled(true);       
             deleteRowButton.setEnabled(false);
             
             nothingAdded = true;
@@ -510,16 +507,14 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 Util.showMessageDialog(this,produceCardManager.getErrorMessage());
                 return;
             }
+            
+            //数据录入成功后，addRowButton设置为true,saveButton设置为false
             addedProducedProcedure=null;
             addRowButton.setEnabled(true);
             saveButton.setEnabled(false);
         }
         save();
     }//GEN-LAST:event_saveButtonActionPerformed
-
-    private void componentIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_componentIdTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_componentIdTextFieldActionPerformed
 
     private void componentIdTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentIdTextFieldFocusLost
         // TODO add your handling code here:
@@ -537,6 +532,10 @@ public class ProduceCardPanel extends javax.swing.JPanel {
 
         //component的TextField的lostFocus时间触发BatchId TextField的内容填充
         List<String> batchIdsString = produceCardManager.getComponentBatchIds(componentIdTextField.getText().trim());
+        for(String str : batchIdsString) {
+            System.out.print(str + " ");
+        }
+        System.out.println();
         Util.setupAutoComplete(batchIdTextField, batchIdsString);
     }//GEN-LAST:event_componentIdTextFieldFocusLost
 
@@ -555,8 +554,9 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         
         setSorter(componentProcedureTableModel, componentProcedureTable);     //使得表格可以排序
 
-        if(jTabbedPane1.getSelectedIndex()==1) {
+        if(jTabbedPane1.getSelectedIndex()==1) {     //如果是在第二个table tab中
             addRowButton.setEnabled(true);
+            deleteRowButton.setEnabled(false);
         }
     }//GEN-LAST:event_batchIdTextFieldFocusLost
 
@@ -590,9 +590,15 @@ public class ProduceCardPanel extends javax.swing.JPanel {
      private class MyMouseAdapter extends MouseAdapter {      //listen for the componentProcedureTable click event 
         public void mousePressed(MouseEvent e) {  
             if (componentProcedureTable.equals(e.getSource())) {  
-                deleteRowIndex = componentProcedureTable.rowAtPoint(e.getPoint());  
-                deleteRowButton.setEnabled(true);
-                deleteRowButtonLastStatus = true;
+                deleteRowIndex = componentProcedureTable.rowAtPoint(e.getPoint());    //选择某行后
+                
+                if(componentProcedureTable.columnAtPoint(e.getPoint())!=1) {       //如果不是工序的那一列被选中（因为选择工序后会自动取消选中的行）
+                    deleteRowButton.setEnabled(true);     //选择某行后,deleteRowButton设置为true             
+                    deleteRowButtonLastStatus = true;
+                }  else {
+                     deleteRowButton.setEnabled(false);
+                     deleteRowButtonLastStatus = false;
+                }   
             }  
         }  
     } 
