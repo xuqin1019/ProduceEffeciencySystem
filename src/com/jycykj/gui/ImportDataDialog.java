@@ -8,6 +8,7 @@ import com.jycykj.export.ExportManagerFactory;
 import com.jycykj.export.ExportManagerSupport;
 import com.jycykj.helper.Util;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.util.BEncoderStream;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -92,6 +93,8 @@ public class ImportDataDialog extends javax.swing.JDialog {
         );
 
         progressBar.setStringPainted(true);
+        progressBar.setBackground(Color.BLUE);
+        progressBar.setForeground(new java.awt.Color(255, 51, 102));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -125,11 +128,7 @@ public class ImportDataDialog extends javax.swing.JDialog {
         jFileChooser.addChoosableFileFilter(excelFilter);
         jFileChooser.addChoosableFileFilter(excelFilter1);
    
-        
-       // System.out.println("hello");
-        
         int rVal = jFileChooser.showSaveDialog(this);
-     
         if(rVal == JFileChooser.APPROVE_OPTION) {
             importFile = jFileChooser.getSelectedFile();
             fileNameTextField.setText(importFile.getAbsolutePath());
@@ -148,7 +147,6 @@ public class ImportDataDialog extends javax.swing.JDialog {
         try {
             BufferedReader br = new BufferedReader(new FileReader(importFile));
             int lineNum=0;
-            
             while(br.readLine()!=null) {
                 ++lineNum;
             }
@@ -156,11 +154,7 @@ public class ImportDataDialog extends javax.swing.JDialog {
             
             progressBar.setMinimum(0);
             progressBar.setMaximum(lineNum);
-            System.out.println(lineNum);
-            
             br = new BufferedReader(new FileReader(importFile));
-           
-            
             currentLine=0;
             Timer timer = new Timer(30 , new ActionListener() { 
                 public void actionPerformed(ActionEvent e) {  
