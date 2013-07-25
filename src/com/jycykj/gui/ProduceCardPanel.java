@@ -16,14 +16,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.CollationKey;
+import java.text.Collator;
+import java.util.Comparator;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
-
 import javax.swing.JComboBox;
+
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -37,6 +43,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     private ProduceCardManager produceCardManager = null;
     private ComponentInfoTableModel componentInfoTableModel = null;
     private ComponentProcedureTableModel componentProcedureTableModel = null;
+    private TableRowSorter<TableModel> sorter = null;     //sorter，用于排序
     
     //String [] componentIds = null;     //used to show in the list
     
@@ -79,6 +86,8 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         componentIdTextField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         batchIdTextField = new javax.swing.JTextField();
+        filterTextField = new javax.swing.JTextField();
+        filterButton = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         componentInfoTable = new javax.swing.JTable();
@@ -126,14 +135,17 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             }
         });
 
+        filterButton.setText("筛选");
+        filterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filterButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
         headerPanelLayout.setHorizontalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(95, 95, 95))
             .addGroup(headerPanelLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(timeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -156,6 +168,17 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(batchIdTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
+                        .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(95, 95, 95))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
+                        .addComponent(filterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(filterButton)
+                        .addContainerGap())))
         );
         headerPanelLayout.setVerticalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -171,7 +194,11 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                         .addComponent(componentIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2)
                         .addComponent(batchIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(385, 385, 385)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(filterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(filterButton))
+                .addGap(354, 354, 354)
                 .addComponent(componentLabel))
         );
 
@@ -192,6 +219,9 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),"");
         componentProcedureTable.setDefaultRenderer(Integer.class,new LeftAlignRenderer());
         componentProcedureTable.setModel(componentProcedureTableModel);
+        //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(componentProcedureTableModel);
+        //componentProcedureTable.setRowSorter(sorter);
+
         componentProcedureTable.addMouseListener(new MyMouseAdapter());
         jScrollPane2.setViewportView(componentProcedureTable);
 
@@ -277,10 +307,10 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -498,12 +528,13 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         componentInfoTable.setModel(componentInfoTableModel);
         componentNameLabel.setText(componentInfoTableModel.getComponent().getName());
         
-        
         //根据component和batch填充componentProcedure表格
         String batchName = batchIdTextField.getText().trim().length()==0 ? "" : batchIdTextField.getText().trim(); 
         componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),batchName);
         componentProcedureTable.setModel(componentProcedureTableModel);
-       
+        
+        setSorter(componentProcedureTableModel, componentProcedureTable);   //使得表格可以排序
+
         //component的TextField的lostFocus时间触发BatchId TextField的内容填充
         List<String> batchIdsString = produceCardManager.getComponentBatchIds(componentIdTextField.getText().trim());
         Util.setupAutoComplete(batchIdTextField, batchIdsString);
@@ -522,11 +553,39 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),batchIdTextField.getText().trim());
         componentProcedureTable.setModel(componentProcedureTableModel);
         
+        setSorter(componentProcedureTableModel, componentProcedureTable);     //使得表格可以排序
+
         if(jTabbedPane1.getSelectedIndex()==1) {
             addRowButton.setEnabled(true);
         }
     }//GEN-LAST:event_batchIdTextFieldFocusLost
+
+    private void filterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterButtonActionPerformed
+        // TODO add your handling code here:
+        
+        setSorter(componentProcedureTableModel, componentProcedureTable);
+        String text = filterTextField.getText();
+        if (text.length() == 0) {
+          //sorter.setRowFilter(null);
+            Util.showMessageDialog(this, "请输入筛选条件");
+        } else {
+            //调用方法实现过滤内容
+          sorter.setRowFilter(RowFilter.regexFilter(text));
+        }
+      
+    }//GEN-LAST:event_filterButtonActionPerformed
     
+    private void setSorter(ComponentProcedureTableModel model,JTable table) {
+          //对表格进行排序
+        sorter = new TableRowSorter<TableModel>(componentProcedureTableModel);
+        sorter.setComparator(2,new Comparator<Float>() {      //第二列是数据类型是Float,但表格单元的属性是String,不一致，所以得自定义一个比较函数
+            @Override
+            public int compare(Float o1, Float o2) {
+                return o1.compareTo(o2);
+            }
+        });
+        table.setRowSorter(sorter);
+    }
     
      private class MyMouseAdapter extends MouseAdapter {      //listen for the componentProcedureTable click event 
         public void mousePressed(MouseEvent e) {  
@@ -565,6 +624,8 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     private javax.swing.JLabel componentNameLabel;
     private javax.swing.JTable componentProcedureTable;
     private javax.swing.JButton deleteRowButton;
+    private javax.swing.JButton filterButton;
+    private javax.swing.JTextField filterTextField;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JLabel jLabel2;

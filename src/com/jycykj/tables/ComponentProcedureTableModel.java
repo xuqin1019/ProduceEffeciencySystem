@@ -31,8 +31,7 @@ public class ComponentProcedureTableModel extends AbstractTableModel {
     private String [] headers = {"批次号","工序","系数","操作工","合格数","报废数","日期"};
     
     private Class [] types = {String.class , String.class, String.class, String.class,Integer.class,Integer.class , String.class};
-  //  private Class [] types = {String.class , String.class, String.class, String.class,Integer.class,Integer.class , DatePickerPanel.class};
-  //  private boolean [] newLineCanEdit = {false,true,false,true,true,true,true,true}; 
+ 
     private boolean [] canEdit = {false,true,false,true,true,true,true,true};
     
     private List<ProducedProcedure> works = null;

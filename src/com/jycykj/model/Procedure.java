@@ -11,7 +11,7 @@ package com.jycykj.model;
 public class Procedure {
     private String procedureId;
     private String procedureName;
-    private float  factor;
+    private float factor;
 
     public String getProcedureId() {
         return procedureId;
@@ -36,6 +36,4 @@ public class Procedure {
     public void setFactor(float factor) {
         this.factor = factor;
     }
-    
-    
 }

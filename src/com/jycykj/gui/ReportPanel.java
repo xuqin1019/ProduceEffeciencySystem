@@ -244,6 +244,8 @@ public class ReportPanel extends javax.swing.JPanel {
       //  reportTable.setDefaultRenderer(, new LeftAlignRenderer());
         reportTable.setModel(workLoadTableModel);
         
+        reportTable.setAutoCreateRowSorter(true);     //设置表格的排序
+        
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
