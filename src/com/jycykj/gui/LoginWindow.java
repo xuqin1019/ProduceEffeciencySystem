@@ -9,17 +9,18 @@ import com.jycykj.model.User;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author lenovo
  */
 public class LoginWindow extends javax.swing.JFrame {
+   
+    public static Logger logger = Logger.getLogger (LoginWindow.class.getName()); ;    //log4j日志
     
     private LoginManager loginManager = LoginManager.newInstance(this);
-    /**
-     * Creates new form LoginWindow
-     */
+   
     public LoginWindow() {
         initComponents();
     }
@@ -174,7 +175,16 @@ public class LoginWindow extends javax.swing.JFrame {
             }
             if(loginManager.varify(user)) {
                 this.dispose();
-                new SystemWindow(isAdmin).setVisible(true); 
+                new SystemWindow(isAdmin).setVisible(true);
+                
+                //----------------------------登录日志---------------------------
+                logger.info("-----------本次登录开始--------------");
+                if(user.getRole()==1) {
+                    logger.info("管理员 " + user.getName() + " 登录成功");
+                } else {
+                    logger.info("操作员 " + user.getName() + " 登录成功");
+                }
+                //------------------------------登录日志--------------------------
             } else {
                 JOptionPane.showConfirmDialog(loginPanel,"用户名或密码错误","警告", JOptionPane.OK_CANCEL_OPTION);
             } 

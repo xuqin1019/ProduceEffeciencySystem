@@ -125,12 +125,11 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
         Map<String,Worker> workers = ((WorkerManagerTableModel)workerManagerTable.getModel()).getModifiedWorkers();
         Set<String> workerIds = workers.keySet();
         StringBuilder sb = new StringBuilder();
-         Worker worker = null;
+        Worker worker = null;
         for(String workerId : workerIds) {
             if(sb.length()!=0) {
                 sb.append(";");
             }
-          //  int worker_id = Integer.parseInt(workerId);
             worker = workers.get(workerId);
             if(!workerId.equals("")) {
                 if(worker==null || !worker.valid()) {
@@ -149,12 +148,22 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
         
         boolean success =  ComponentDao.getInstance().executeUpdate(sb.toString().split(";"));
         if(success) {           //保存成功
+            
+            //-------------------------------------修改员工信息日志----------------------------
+            LoginWindow.logger.info("修改员工信息成功！ : ");
+            //-------------------------------------修改员工信息日志----------------------------
+            
             Util.showMessageDialog(this,"保存成功！！！");
             ((WorkerManagerTableModel)workerManagerTable.getModel()).getModifiedWorkers().clear();
              saveButton.setEnabled(false);
              addButton.setEnabled(true);
              isAdd=false;
         } else {               //保存失败
+            
+            //-------------------------------------修改员工信息日志----------------------------
+            LoginWindow.logger.error("修改员工信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
+            //-------------------------------------修改员工信息日志----------------------------
+            
            Util.showMessageDialogWithTitle(this,"警告", "发生未知错误，无法保存！！请联系系统管理员");
         }
     }
@@ -221,8 +230,18 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
                 workerManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
                 addButton.setEnabled(true);
                 deleteButton.setEnabled(false);
+                
+                //-------------------------------------删除员工信息日志----------------------------
+                LoginWindow.logger.info("删除员工信息成功！ : ");
+                //-------------------------------------删除员工信息日志----------------------------
+                
                 Util.showMessageDialog(this,"删除成功！！！");
             } else {
+                
+                //-------------------------------------删除员工信息日志----------------------------
+                LoginWindow.logger.error("删除员工信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
+                //-------------------------------------删除员工信息日志----------------------------
+               
                 Util.showMessageDialog(this,"发生未知错误，无法删除！！请联系系统管理员");
             }
         }

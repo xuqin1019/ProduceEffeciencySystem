@@ -4,6 +4,7 @@
  */
 package com.jycykj.model;
 
+import com.jycykj.helper.Util;
 import java.util.Date;
 
 /**
@@ -82,5 +83,8 @@ public class ProducedProcedure implements Comparable<ProducedProcedure> {      /
         return this.getComponent().getBatchName().compareTo(producedProcedure.getComponent().getBatchName());
     }
 
-   
+    @Override
+    public String toString() {
+        return "记录{" + "零件=" + component.getComponentId() + ", 批次=" + component.getBatchName()+ ", 工序=" + procedure.getProcedureName() + ", 操作工=" + operator.getWorkerName() + ", 合格数=" + passedNum + ", 失败数=" + failedNum + ", 日期=" + Util.date2Str(date) + "}";
+    }
 }

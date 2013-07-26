@@ -13,6 +13,9 @@ import com.jycykj.model.User;
  * @author lenovo
  */
 public class RegisterManager {
+    
+    private String errorMessage;
+    
     private UserDao userDao;
     
     private static RegisterManager registerManager;
@@ -46,7 +49,7 @@ public class RegisterManager {
         return true;
     }
     
-    public void createUser() {
+    public boolean createUser() {
         User user = new User();
         user.setName(registerUserPanel.getUserTextField().getText().trim());
         user.setPassword(registerUserPanel.getPasswordField().getText());
@@ -55,10 +58,22 @@ public class RegisterManager {
         } else {
             user.setRole(1);
         }
-        userDao.create(user);
+        boolean success = userDao.create(user);
+        errorMessage = userDao.getErrorMessage();
+        return success;
     } 
     
     private boolean isEmpty(String str) {
         return str.trim().equals("");
     }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+    
+    
 }

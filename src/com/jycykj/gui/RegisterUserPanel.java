@@ -200,9 +200,19 @@ public class RegisterUserPanel extends javax.swing.JPanel {
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
         // TODO add your handling code here:
         if(registerManager.varify()) {
-            registerManager.createUser();
-            jDialog.setVisible(false);
-            Util.showMessageDialog(null,"注册用户成功！");
+            if(registerManager.createUser()) {
+                jDialog.setVisible(false);
+                
+                //---------------------------------注册日志-----------------------------------
+                LoginWindow.logger.info("注册新用户成功 : " + getUserTextField().getText().trim());
+                //---------------------------------注册日志-----------------------------------
+                Util.showMessageDialog(null,"注册用户成功！");
+            } else {
+                //---------------------------------注册日志-----------------------------------
+                LoginWindow.logger.warn("注册新用户失败 : " + registerManager.getErrorMessage());
+                //---------------------------------注册日志-----------------------------------
+                Util.showMessageDialog(jDialog,"该用户已经存在！");
+            }
         }
     }
 

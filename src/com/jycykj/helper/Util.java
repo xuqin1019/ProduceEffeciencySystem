@@ -33,8 +33,6 @@ import javax.swing.event.DocumentListener;
  * @author lenovo
  */
 public class Util {
-
-   
     
     public static enum Error{
         BatchNameError,ProcedureNameError,FactorError,WorkerNameError,PassedNumError,FailedNumError,DateError, Success

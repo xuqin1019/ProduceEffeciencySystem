@@ -10,7 +10,7 @@ bugs
 删除produceWork表中的一条记录后可能得删除batch_component中的记录
 
 
-导入功能，从excel中导入数据
+导入功能，从excel中导入数据                          finished
 
 日志管理
 在管理员的菜单下面添加“查看日志”记录

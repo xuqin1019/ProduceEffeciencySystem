@@ -3,8 +3,6 @@
  * and open the template in the editor.
  */
 package com.jycykj.tables;
-import com.jycykj.gui.DatePickerPanel;
-import com.jycykj.gui.DateTextField;
 import com.jycykj.helper.Util;
 import com.jycykj.managers.ProduceCardManager;
 import com.jycykj.model.Procedure;
@@ -14,12 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.swing.JButton;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
-
 /**
  *
  * @author lenovo

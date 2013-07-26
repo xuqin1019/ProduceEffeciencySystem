@@ -4,11 +4,8 @@
  */
 package com.jycykj.gui;
 
-import com.jycykj.export.ExcelExportManager;
-import com.jycykj.export.ExportManager;
 import com.jycykj.export.ExportManagerFactory;
 import com.jycykj.export.ExportManagerSupport;
-import com.jycykj.export.PdfExportManager;
 import com.jycykj.helper.Util;
 import com.jycykj.tables.GroupWorkLoadTableModel;
 import com.jycykj.tables.WorkLoadTableModel;
@@ -261,8 +258,8 @@ public class ReportPanel extends javax.swing.JPanel {
         ExportFileFilter excelFilter = new ExportFileFilter(".xls", "excel 文件 (*.xls)");
         ExportFileFilter pdfFilter = new ExportFileFilter(".pdf", "pdf 文件 (*.pdf)");
         
-        jFileChooser.addChoosableFileFilter(excelFilter);
         jFileChooser.addChoosableFileFilter(pdfFilter);
+        jFileChooser.addChoosableFileFilter(excelFilter);
         
         int rVal = jFileChooser.showSaveDialog(jDialog);
      
@@ -279,8 +276,18 @@ public class ReportPanel extends javax.swing.JPanel {
             System.out.println(newFile.getName());
             ExportManagerSupport exportManager = ExportManagerFactory.getManager(newFile,reportTable,titleLabel.getText());
             if(exportManager.writeTableModel()) {
+                
+                //----------------------------------导出报表日志------------------------------------
+                LoginWindow.logger.info("导出报表成功！ : " + titleLabel.getText() + "--->" + newFile.getAbsolutePath());
+                //----------------------------------导出报表日志------------------------------------
+               
                 Util.showMessageDialog(this, "导出成功！");
             } else {
+                
+                //----------------------------------导出报表日志------------------------------------
+                LoginWindow.logger.error("导出报表失败！ : " + titleLabel.getText() + "--->" + newFile.getAbsolutePath() + "  " + exportManager.getErrorMessage());
+                //----------------------------------导出报表日志------------------------------------
+                
                 Util.showMessageDialogWithTitle(this,"警告", "导出失败:"+exportManager.getErrorMessage());
             }
         }

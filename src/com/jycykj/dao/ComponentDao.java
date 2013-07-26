@@ -583,6 +583,7 @@ public class ComponentDao {
             }
             success = true;
         } catch (SQLException ex) {
+            errorMessage = ex.getMessage();
             ex.printStackTrace();
             try {
                 connection.rollback();
@@ -610,7 +611,8 @@ public class ComponentDao {
             success = true;
         } catch (SQLException e) {
             //success = false;
-            throw new RuntimeException(e);
+            errorMessage = e.getMessage();
+            e.printStackTrace();
         } finally {
             DBManager.getDBManager().close(statement);
         }
@@ -622,7 +624,6 @@ public class ComponentDao {
          boolean success = false;
          PreparedStatement statement = null;
          Connection connection = null;
-         
          try {
             connection = DBManager.getDBManager().getConnection();
             connection.setAutoCommit(false);
@@ -635,13 +636,14 @@ public class ComponentDao {
             success = true; 
         } catch (SQLException e) {
            if (connection != null) {
-            try {
-                System.err.print("Transaction is being rolled back");
-                connection.rollback();
-            } catch(SQLException excep) {
-                excep.printStackTrace();;
+                try {
+                    System.err.print("Transaction is being rolled back");
+                    connection.rollback();
+                } catch(SQLException excep) {
+                    excep.printStackTrace();;
+                }
             }
-        }
+           errorMessage = e.getMessage();
         } finally {
             DBManager.getDBManager().close(statement);
         }
@@ -662,7 +664,7 @@ public class ComponentDao {
             String sql = "select W.worker_id as worker_id ,W.name as worker_name,W.group_id as group_id,G.name as group_name, W.info from worker W , `group` G where W.group_id=G.group_id";
             System.out.println(sql);
             statement = connection.prepareStatement(sql);
-           rs = statement.executeQuery();
+            rs = statement.executeQuery();
             while (rs.next()) {
                Worker worker = new Worker();
                worker.setWorkerId(String.valueOf(rs.getInt("worker_id")));

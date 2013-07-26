@@ -17,59 +17,56 @@ import java.sql.SQLException;
 
 public class UserDao {
    private static UserDao instance = new UserDao();
+   private String errorMessage;
 
    public static UserDao getInstance() {
       return instance;
    }
    
-   public void create(User user)         //used when registed
-   {
+   public boolean create(User user) {        //used when registed
       PreparedStatement statement = null;
       Connection connection = null;
-      try
-      {
+      try {
          connection = DBManager.getDBManager().getConnection();
-         String sql = "insert into system_user " + "(name,password,role) "
-
-               + "values (?, ?, ?)";
+         String sql = "insert into system_user " + "(name,password,role) " + "values (?, ?, ?)";
          statement = connection.prepareStatement(sql);
          statement.setString(1, user.getName());
          statement.setString(2, user.getPassword());
          statement.setInt(3, user.getRole());
          statement.executeUpdate();
-      } catch (SQLException e)
-      {
-         throw new RuntimeException(e);
-      } finally
-      {
+         return true;
+      } catch (SQLException e) {
+        errorMessage = e.getMessage();  
+        return false;
+      } finally {
          DBManager.getDBManager().close(statement);
       }
    }
    
    public boolean find(User user) {
-		PreparedStatement statement = null;
-		Connection connection = null;
-		ResultSet rs = null;
-		try {
-			connection = DBManager.getDBManager().getConnection();
-			String sql = "select * from system_user where name=?";
-			statement = connection.prepareStatement(sql);
-			statement.setString(1, user.getName());
-			rs=statement.executeQuery();
-			User user_from_db = null;
-			while(rs.next()) {
-				user_from_db = read(rs);
-			}
-			return (user_from_db!=null && user_from_db.getPassword().equals(user.getPassword()) && user_from_db.getRole()==user.getRole()); 
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
-                     DBManager.getDBManager().close(rs, statement);
-		}	
-	}
+        PreparedStatement statement = null;
+        Connection connection = null;
+	ResultSet rs = null;
+	try {
+            connection = DBManager.getDBManager().getConnection();
+            String sql = "select * from system_user where name=?";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, user.getName());
+            rs=statement.executeQuery();
+            User user_from_db = null;
+            while(rs.next()) {
+                user_from_db = read(rs);
+            }
+            return (user_from_db!=null && user_from_db.getPassword().equals(user.getPassword()) && user_from_db.getRole()==user.getRole()); 
+        } catch (SQLException e) {
+            errorMessage = e.getMessage();
+            return false;
+	} finally {
+            DBManager.close(rs, statement);
+	}	
+    }
    
-   private User read(ResultSet rs) throws SQLException
-   {
+   private User read(ResultSet rs) throws SQLException {
       int id = rs.getInt("id");
       String username = rs.getString("name");
       String password = rs.getString("password");
@@ -81,4 +78,12 @@ public class UserDao {
       user.setRole(role);
       return user;
    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 }

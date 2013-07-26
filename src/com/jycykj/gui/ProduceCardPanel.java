@@ -16,8 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.CollationKey;
-import java.text.Collator;
 import java.util.Comparator;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
@@ -451,13 +449,17 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             System.out.println(deleteRowIndex);
             
             if(!notSaved()) { 
-                //produceCardManager.deleteProduceWork()
-                //System.out.println("delete one row from db");
                 componentProcedureTableModel.getWorks().get(deleteRowIndex).getComponent().setComponentId(componentIdTextField.getText().trim());
                 if(!produceCardManager.deleteProduceWork(componentProcedureTableModel.getWorks().get(deleteRowIndex))) {
+                    //------------------------------删除记录日志------------------------------
+                    LoginWindow.logger.error("删除记录出错 : " + componentProcedureTableModel.getWorks().get(deleteRowIndex).toString());
+                    //------------------------------删除记录日志------------------------------
                     Util.showMessageDialog(this, "删除记录出错，请联系开发人员！！");
                     return;
                 } else {
+                    //------------------------------删除记录日志------------------------------
+                    LoginWindow.logger.info("删除记录成功 : " + componentProcedureTableModel.getWorks().get(deleteRowIndex).toString());
+                    //------------------------------删除记录日志------------------------------
                     Util.showMessageDialog(this, "删除记录成功！！");
                 }
             }
@@ -502,8 +504,18 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         } else {
             addedProducedProcedure.getComponent().setComponentId(componentIdTextField.getText().trim());
             if(produceCardManager.putProducedProcedure(addedProducedProcedure)) {
+                
+                //------------------------------录入记录日志------------------------------
+                LoginWindow.logger.info("录入记录成功 : " + componentProcedureTableModel.getWorks().get(deleteRowIndex).toString());
+                //------------------------------录入记录日志------------------------------
+                
                 Util.showMessageDialog(this, "录入数据成功!!");
             } else {
+                
+                //------------------------------录入记录日志------------------------------
+                LoginWindow.logger.error("录入记录失败 : " + componentProcedureTableModel.getWorks().get(deleteRowIndex).toString());
+                //------------------------------录入记录日志------------------------------
+                
                 Util.showMessageDialog(this,produceCardManager.getErrorMessage());
                 return;
             }
@@ -602,24 +614,6 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             }  
         }  
     } 
-     
-     
-    /*
-     class MyTable extends JTable implements TableCellRenderer {
-		// this method tell the JTable drawer that it has to call me back to provide
-		// the JComponent that will be used to draw the cell
-		public TableCellRenderer getCellRenderer(int row, int col) {
-			// Call me back for all rows/columns
-			return this;
-		}
-
-        @Override
-        public java.awt.Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            return (java.awt.Component)value;
-        }
-     }
-    */
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addRowButton;
     private javax.swing.JTextField batchIdTextField;

@@ -4,8 +4,6 @@
  */
 package com.jycykj.gui;
 
-import com.jycykj.export.ExportManagerFactory;
-import com.jycykj.export.ExportManagerSupport;
 import com.jycykj.helper.Util;
 import com.jycykj.managers.ProduceCardManager;
 import com.jycykj.model.Component;
@@ -130,8 +128,6 @@ public class ImportDataDialog extends javax.swing.JDialog {
         JFileChooser jFileChooser = new JFileChooser("c://");
         jFileChooser.setAcceptAllFileFilterUsed(false);
         ExportFileFilter excelFilter = new ExportFileFilter(".xls", "excel 文件 (*.xls)");
-     //    ExportFileFilter excelFilter1 = new ExportFileFilter(".xlsx", "excel 文件 (*.xlsx)");
-     //   jFileChooser.addChoosableFileFilter(excelFilter1);
         jFileChooser.addChoosableFileFilter(excelFilter);
    
         int rVal = jFileChooser.showSaveDialog(this);
@@ -146,7 +142,7 @@ public class ImportDataDialog extends javax.swing.JDialog {
 
     private void importButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importButtonActionPerformed
         // TODO add your handling code here:
-         if(importFile==null) {
+        if(importFile==null) {
              Util.showMessageDialog(this, "请先选择文件");
              return;
          }
@@ -194,6 +190,10 @@ public class ImportDataDialog extends javax.swing.JDialog {
         
         @Override
         public void run() {
+             //-----------------------------导入文件日志-------------------------------
+            LoginWindow.logger.info("开始导入文件 : " + importFile.getAbsolutePath());
+            //-----------------------------导入文件日志-------------------------------
+            
             currentLine=0;
             int successNum=0;    //导入成功条数
             Workbook rwb = null;
@@ -213,11 +213,9 @@ public class ImportDataDialog extends javax.swing.JDialog {
                         Procedure procedure = new Procedure();
                         Worker worker = new Worker();
                         Cell [] columns = rSheet.getRow(i);
-                        
                         for(int j=0;j<columns.length;++j) {
                             String title = rSheet.getCell(j,0).getContents();
                             String content = columns[j].getContents().trim();
-                      //      System.out.print(content + "\t");
                             if(title.equals("图号")) {
                                 component.setComponentId(content);      //设置零件的图号
                             } else if(title.equals("批次号")) {      //批次号
@@ -238,19 +236,34 @@ public class ImportDataDialog extends javax.swing.JDialog {
                             producedProcedure.setOperator(worker);
                         }
                         
-                        
                         if(produceCardManager.putProducedProcedure(producedProcedure)) {   //成功写入数据库
+                            
+                            //-----------------------------导入记录日志-------------------------------
+                            LoginWindow.logger.info("导入记录成功 : " + producedProcedure.toString());
+                            //-----------------------------导入记录日志-------------------------------
                             successNum++;
+                            
                         } else {
                             errorLog.put(currentLine+2,produceCardManager.getErrorMessage());   //存放错误信息
+                            
+                            //-----------------------------导入记录日志-------------------------------
+                            LoginWindow.logger.warn("导入记录失败 : " + producedProcedure.toString() + " " + produceCardManager.getErrorMessage());
+                            //-----------------------------导入记录日志-------------------------------
                         }
-                //        System.out.println();
                         currentLine++;
                     }
                     
-                    Thread.sleep(100);
+                    //-----------------------------------完成条数统计日志---------------------------------------------
+                    LoginWindow.logger.info("本次导入文件任务 : " + "完成条数(" + successNum+"/" + currentLine + ")\n\n");
+                    //-----------------------------------完成条数统计日志---------------------------------------------
                     
+                    Thread.sleep(100);
                     if(errorLog.isEmpty() && currentLine==successNum) {    //导入成功
+                        
+                         //-----------------------------导入文件日志-------------------------------
+                        LoginWindow.logger.info("导入文件成功");
+                        //-----------------------------导入文件日志-------------------------------
+                        
                         Util.showMessageDialog(ImportDataDialog.this,"导入成功！"); 
                     } else {
                         StringBuffer sb = new StringBuffer();
@@ -261,6 +274,9 @@ public class ImportDataDialog extends javax.swing.JDialog {
                         Util.showScrollMessageDialogWithTitle(ImportDataDialog.this, "警告",sb.toString());
                     }
                 } catch(Exception e) {
+                    //-----------------------------导入文件日志-------------------------------
+                    LoginWindow.logger.info("导入文件失败 ,发生未知错误！" );
+                    //-----------------------------导入文件日志-------------------------------
                     Util.showMessageDialog(ImportDataDialog.this, "导入失败，发生未知错误！");
                 } finally {
                     if(rwb!=null) {
@@ -268,6 +284,7 @@ public class ImportDataDialog extends javax.swing.JDialog {
                     }
                 }
             }
+          
         }
        
     }

@@ -11,7 +11,7 @@ import java.awt.Rectangle;
  */
 public class SystemWindow extends javax.swing.JFrame {
     private boolean adminLogin;         //if login as admin
-    /**
+   /**
      * Creates new form NewApplication
      */
     public SystemWindow(boolean adminLogin) {
@@ -83,11 +83,6 @@ public class SystemWindow extends javax.swing.JFrame {
         dataRecordMenu.setText("数据录入");
 
         makeProduceCardMenu.setText("制作生产工艺流程卡");
-        makeProduceCardMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                makeProduceCardMenuActionPerformed(evt);
-            }
-        });
         dataRecordMenu.add(makeProduceCardMenu);
 
         fillProduceCardMenu.setText("填写生产工艺流程卡");
@@ -150,11 +145,6 @@ public class SystemWindow extends javax.swing.JFrame {
         ReportMenu.add(FinishComponentMenu);
 
         workerEvaluationMenu.setText("当月员工考核表");
-        workerEvaluationMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                workerEvaluationMenuActionPerformed(evt);
-            }
-        });
         ReportMenu.add(workerEvaluationMenu);
 
         operateMenu.add(ReportMenu);
@@ -216,7 +206,8 @@ public class SystemWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    //导入信息菜单(已经完成日志记录)
     private void importMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importMenuActionPerformed
         // TODO add your handling code here:
           java.awt.EventQueue.invokeLater(new Runnable() {
@@ -224,15 +215,12 @@ public class SystemWindow extends javax.swing.JFrame {
                 ImportDataDialog importDataDialog = new ImportDataDialog(SystemWindow.this, true);
                 importDataDialog.setLocationRelativeTo(SystemWindow.this);
                 importDataDialog.setVisible(true);
-                
             }
         });
     }//GEN-LAST:event_importMenuActionPerformed
-
-    private void workerEvaluationMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workerEvaluationMenuActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_workerEvaluationMenuActionPerformed
-
+    
+    
+    //注册用户菜单(已经完成日志记录)
     private void registerNewUserMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerNewUserMenuActionPerformed
          java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -243,7 +231,8 @@ public class SystemWindow extends javax.swing.JFrame {
               
                 
     }//GEN-LAST:event_registerNewUserMenuActionPerformed
-
+    
+    //生产工艺流程卡菜单(已经完成日志记录)
     private void fillProduceCardMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillProduceCardMenuActionPerformed
         // TODO add your handling code here:
          java.awt.EventQueue.invokeLater(new Runnable() {
@@ -254,11 +243,15 @@ public class SystemWindow extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_fillProduceCardMenuActionPerformed
 
+    //退出菜单(已经完成日志记录)
     private void exitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuActionPerformed
         // TODO add your handling code here:
+        LoginWindow.logger.info("-----------本次登录结束--------------\n\n\n\n");
         this.dispose();
+        System.exit(0);
     }//GEN-LAST:event_exitMenuActionPerformed
-
+    
+    //员工报表菜单(已经完成日志记录)
     private void wWLRMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wWLRMenuActionPerformed
         // TODO add your handling code here:
          java.awt.EventQueue.invokeLater(new Runnable() {
@@ -270,7 +263,9 @@ public class SystemWindow extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_wWLRMenuActionPerformed
-
+    
+    
+    //班组报表菜单(已经完成日志记录)
     private void gWLRMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gWLRMenuActionPerformed
         // TODO add your handling code here:
          java.awt.EventQueue.invokeLater(new Runnable() {
@@ -283,6 +278,8 @@ public class SystemWindow extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_gWLRMenuActionPerformed
 
+    
+    //修改员工信息菜单(已经完成日志记录)
     private void workerProfileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workerProfileMenuActionPerformed
         // TODO add your handling code here:
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -294,11 +291,6 @@ public class SystemWindow extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_workerProfileMenuActionPerformed
-
-    private void makeProduceCardMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeProduceCardMenuActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_makeProduceCardMenuActionPerformed
 
     /**
      * @param args the command line arguments
