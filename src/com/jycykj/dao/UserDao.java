@@ -67,12 +67,12 @@ public class UserDao {
     }
    
    private User read(ResultSet rs) throws SQLException {
-      int id = rs.getInt("id");
+      //int id = rs.getInt("id");
       String username = rs.getString("name");
       String password = rs.getString("password");
       int role = rs.getInt("role");
       User user = new User();
-      user.setId(id);
+      //user.setId(id);
       user.setName(username);
       user.setPassword(password);
       user.setRole(role);

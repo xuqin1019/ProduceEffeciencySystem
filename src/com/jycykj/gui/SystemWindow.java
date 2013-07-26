@@ -4,6 +4,9 @@
  */
 package com.jycykj.gui;
 import java.awt.Rectangle;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
  
 /**
  *
@@ -24,7 +27,18 @@ public class SystemWindow extends javax.swing.JFrame {
         } else {
             this.setTitle("生产效率管理系统(管理员登录)");
         }
-    }
+        
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                int a = JOptionPane.showConfirmDialog(null, "确定关闭吗？", "温馨提示", JOptionPane.YES_NO_OPTION);
+                    if (a == 0) {  
+                        System.exit(0);  //关闭
+                    } else {
+                        return;
+                    }
+                }    
+            });
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.

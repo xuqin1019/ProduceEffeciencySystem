@@ -13,7 +13,7 @@ public class User {
     private static final int Operator=0;
     private static final int Admin=1;
     
-    private int id;
+ //   private int id;
     private String name;
     private String password;
     private int role=Operator;
@@ -34,13 +34,13 @@ public class User {
         this.password = password;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
     public int getRole() {
         return role;
