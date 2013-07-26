@@ -297,6 +297,7 @@ public class ComponentDao {
             connection.commit();
             System.out.println("insert produce_work success");
         } catch (SQLException e) {
+            errorMessage="发生未知错误,数据可能已经存在或者数据库不可用";
             System.err.print("Transaction is being rolled back");
             try {
                 connection.rollback();

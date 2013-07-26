@@ -7,19 +7,25 @@ package com.jycykj.gui;
 import com.jycykj.export.ExportManagerFactory;
 import com.jycykj.export.ExportManagerSupport;
 import com.jycykj.helper.Util;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.util.BEncoderStream;
+import com.jycykj.managers.ProduceCardManager;
+import com.jycykj.model.Component;
+import com.jycykj.model.Procedure;
+import com.jycykj.model.ProducedProcedure;
+import com.jycykj.model.Worker;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.Timer;
-
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
 /**
  *
  * @author xuqin
@@ -124,9 +130,9 @@ public class ImportDataDialog extends javax.swing.JDialog {
         JFileChooser jFileChooser = new JFileChooser("c://");
         jFileChooser.setAcceptAllFileFilterUsed(false);
         ExportFileFilter excelFilter = new ExportFileFilter(".xls", "excel 文件 (*.xls)");
-         ExportFileFilter excelFilter1 = new ExportFileFilter(".xlsx", "excel 文件 (*.xlsx)");
+     //    ExportFileFilter excelFilter1 = new ExportFileFilter(".xlsx", "excel 文件 (*.xlsx)");
+     //   jFileChooser.addChoosableFileFilter(excelFilter1);
         jFileChooser.addChoosableFileFilter(excelFilter);
-        jFileChooser.addChoosableFileFilter(excelFilter1);
    
         int rVal = jFileChooser.showSaveDialog(this);
         if(rVal == JFileChooser.APPROVE_OPTION) {
@@ -144,53 +150,126 @@ public class ImportDataDialog extends javax.swing.JDialog {
              Util.showMessageDialog(this, "请先选择文件");
              return;
          }
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(importFile));
-            int lineNum=0;
-            while(br.readLine()!=null) {
-                ++lineNum;
-            }
-            br.close();
+         Workbook rwb = null;
+         try {
+             
+            //计算出需要处理的文件行数
+            rwb = Workbook.getWorkbook(new FileInputStream(importFile));
+            Sheet rSheet = rwb.getSheet(0);
+            int lineNum = rSheet.getRows()-1;
+            rwb.close();
             
+            //设置进度条的参数
             progressBar.setMinimum(0);
             progressBar.setMaximum(lineNum);
-            br = new BufferedReader(new FileReader(importFile));
-            currentLine=0;
+            
+            //开启进度条线程
             Timer timer = new Timer(30 , new ActionListener() { 
                 public void actionPerformed(ActionEvent e) {  
-                    //以任务的当前完成量设置进度条的value  
-                   // System.out.println("LLLLLLLLLLLLLLLLLL : " + currentLine);
                     progressBar.setValue(currentLine);  
                 }  
             });  
             timer.start();  
             
-            new Thread(new Task()).start();
+            //开启任务线程
+            new Thread(new ExcelFileHander()).start();
            
         } catch (Exception ex) {
             Logger.getLogger(ImportDataDialog.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(rwb!=null) {
+                rwb.close();
+            }
         }
     }//GEN-LAST:event_importButtonActionPerformed
     
-    class Task implements  Runnable {
-        @Override
-        public void run() {
-           String line=null;
-           BufferedReader br;
-            try {
-                br = new BufferedReader(new FileReader(importFile));
-                while((line=br.readLine())!=null) {
-                    ++currentLine;
-                    Thread.sleep(100);
-           
-                }
-                br.close();
-            } catch (Exception ex) {
-                Logger.getLogger(ImportDataDialog.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
+    class ExcelFileHander implements  Runnable {
+        private ProduceCardManager produceCardManager;
+        private Map<Integer,String> errorLog=null;    //记录错误的日志(行号---->具体错误信息)
+        
+        public ExcelFileHander() {
+            produceCardManager = ProduceCardManager.newInstance();
+            errorLog = new HashMap<Integer,String>();
         }
         
+        @Override
+        public void run() {
+            currentLine=0;
+            int successNum=0;    //导入成功条数
+            Workbook rwb = null;
+            if(importFile.exists()) {
+                try {
+                    rwb = Workbook.getWorkbook(new FileInputStream(importFile));
+                    Sheet rSheet = rwb.getSheet(0);
+                    int rowNum = rSheet.getRows();
+                    if(rowNum<=1) {   //只有标题行
+                        return;
+                    }
+                    
+                    //处理每一行
+                    for(int i=1;i<rowNum;++i) {
+                        ProducedProcedure producedProcedure = new ProducedProcedure();
+                        Component component = new Component();
+                        Procedure procedure = new Procedure();
+                        Worker worker = new Worker();
+                        Cell [] columns = rSheet.getRow(i);
+                        
+                        for(int j=0;j<columns.length;++j) {
+                            String title = rSheet.getCell(j,0).getContents();
+                            String content = columns[j].getContents().trim();
+                      //      System.out.print(content + "\t");
+                            if(title.equals("图号")) {
+                                component.setComponentId(content);      //设置零件的图号
+                            } else if(title.equals("批次号")) {      //批次号
+                                component.setBatchName(content);
+                            } else if(title.equals("工序")) {
+                                procedure.setProcedureName(content);
+                            } else if(title.equals("操作工")) {
+                                worker.setWorkerName(content);
+                            } else if(title.equals("合格数")) {
+                                producedProcedure.setPassedNum(Integer.parseInt(content));
+                            } else if(title.equals("报废数")) {
+                                producedProcedure.setFailedNum(Integer.parseInt(content));
+                            } else if(title.equals("日期")) {
+                                producedProcedure.setDate(Util.parseDateString(content));
+                            }
+                            producedProcedure.setComponent(component);
+                            producedProcedure.setProcedure(procedure);
+                            producedProcedure.setOperator(worker);
+                        }
+                        
+                        
+                        if(produceCardManager.putProducedProcedure(producedProcedure)) {   //成功写入数据库
+                            successNum++;
+                        } else {
+                            errorLog.put(currentLine+2,produceCardManager.getErrorMessage());   //存放错误信息
+                        }
+                //        System.out.println();
+                        currentLine++;
+                    }
+                    
+                    Thread.sleep(100);
+                    
+                    if(errorLog.isEmpty() && currentLine==successNum) {    //导入成功
+                        Util.showMessageDialog(ImportDataDialog.this,"导入成功！"); 
+                    } else {
+                        StringBuffer sb = new StringBuffer();
+                        sb.append("完成条数(" + successNum+"/" + currentLine + ")\n\n");
+                        for(int line : errorLog.keySet()) {
+                            sb.append("错误 : (行数:" + line + ",信息:" + errorLog.get(line)+")\n");
+                        }
+                        Util.showScrollMessageDialogWithTitle(ImportDataDialog.this, "警告",sb.toString());
+                    }
+                } catch(Exception e) {
+                    Util.showMessageDialog(ImportDataDialog.this, "导入失败，发生未知错误！");
+                } finally {
+                    if(rwb!=null) {
+                        rwb.close();
+                    }
+                }
+            }
+        }
+       
     }
     
     /**

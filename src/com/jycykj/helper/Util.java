@@ -22,6 +22,8 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -31,6 +33,8 @@ import javax.swing.event.DocumentListener;
  * @author lenovo
  */
 public class Util {
+
+   
     
     public static enum Error{
         BatchNameError,ProcedureNameError,FactorError,WorkerNameError,PassedNumError,FailedNumError,DateError, Success
@@ -50,6 +54,16 @@ public class Util {
     
     public static void showConfirmDialog(Component component,String message) {
         JOptionPane.showConfirmDialog(component,message);
+    }
+    
+    public static void showScrollMessageDialogWithTitle(Component component , String title, String message) {
+        JTextArea textArea = new JTextArea(10,35);
+        textArea.setText(message);
+        textArea.setEditable(false);
+        // wrap a scrollpane around it
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        // display them in a message dialog
+        JOptionPane.showMessageDialog(component, scrollPane, "警告", JOptionPane.WARNING_MESSAGE);
     }
     
     public static Date parseDateString(String date) {
