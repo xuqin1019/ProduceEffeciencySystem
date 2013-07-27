@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 /**
@@ -125,8 +124,9 @@ public class CheckLogImportProgressDialog extends javax.swing.JDialog implements
     public void update(Observable o, Object arg) {    //在导入成功时调用 success
         CheckLogImportModel checkLogImportModel = (CheckLogImportModel)o; 
         this.checkLogPanel.getLogTextArea().setText(checkLogImportModel.getLogText().toString());
+        this.checkLogPanel.setLogText(checkLogImportModel.getLogText().toString());      //保存最初的log
         Util.showMessageDialog(this, "导入日志成功！");
-        this.dispose();
+        this.dispose();             //销毁导入窗口
     }
     
     /**
@@ -155,7 +155,6 @@ public class CheckLogImportProgressDialog extends javax.swing.JDialog implements
             java.util.logging.Logger.getLogger(CheckLogImportProgressDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -176,6 +175,4 @@ public class CheckLogImportProgressDialog extends javax.swing.JDialog implements
     private javax.swing.JLabel logFileTextField;
     private javax.swing.JProgressBar progressBar;
     // End of variables declaration//GEN-END:variables
-
-  
 }
