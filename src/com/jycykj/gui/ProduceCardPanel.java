@@ -20,8 +20,8 @@ import java.util.Comparator;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
-
 import javax.swing.JOptionPane;
+
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
@@ -461,6 +461,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                     LoginWindow.logger.info("删除记录成功 : " + componentProcedureTableModel.getWorks().get(deleteRowIndex).toString());
                     //------------------------------删除记录日志------------------------------
                     Util.showMessageDialog(this, "删除记录成功！！");
+                    
                 }
             }
             componentProcedureTableModel.getWorks().remove(deleteRowIndex);
@@ -473,6 +474,8 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             nothingAdded = true;
             deleteRowButtonLastStatus = false;
             saveButton.setEnabled(false);
+            
+            filterTextField.requestFocus();       //使得filterTextField获得焦点
         }
     }//GEN-LAST:event_deleteRowButtonActionPerformed
 
@@ -603,7 +606,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         public void mousePressed(MouseEvent e) {  
             if (componentProcedureTable.equals(e.getSource())) {  
                 deleteRowIndex = componentProcedureTable.rowAtPoint(e.getPoint());    //选择某行后
-                
+                System.out.println("Mouse pressed : " + deleteRowIndex);
                 if(componentProcedureTable.columnAtPoint(e.getPoint())!=1) {       //如果不是工序的那一列被选中（因为选择工序后会自动取消选中的行）
                     deleteRowButton.setEnabled(true);     //选择某行后,deleteRowButton设置为true             
                     deleteRowButtonLastStatus = true;

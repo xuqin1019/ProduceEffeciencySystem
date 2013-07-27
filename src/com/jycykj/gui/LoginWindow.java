@@ -23,6 +23,7 @@ public class LoginWindow extends javax.swing.JFrame {
    
     public LoginWindow() {
         initComponents();
+        this.setLocationRelativeTo(null);    //屏幕居中显示
     }
 
     /**

@@ -20,6 +20,7 @@ public class SystemWindow extends javax.swing.JFrame {
     public SystemWindow(boolean adminLogin) {
         this.adminLogin=adminLogin;
         initComponents();
+        this.setLocationRelativeTo(null);      //居中显示
         if(!adminLogin) {
             systemMaintainMenu.disable();
             registerNewUserMenu.setEnabled(false);
@@ -31,14 +32,16 @@ public class SystemWindow extends javax.swing.JFrame {
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 int a = JOptionPane.showConfirmDialog(null, "确定关闭吗？", "温馨提示", JOptionPane.YES_NO_OPTION);
-                    if (a == 0) {  
-                        System.exit(0);  //关闭
-                    } else {
-                        return;
-                    }
-                }    
-            });
-        }
+                if (a == 0) {  
+                    //----------------------------------系统登陆日志---------------------------
+                    LoginWindow.logger.info("-----------本次登录结束--------------\n\n\n\n");
+                    System.exit(0);  //关闭
+                } else {
+                    return;
+                }
+           }    
+        });
+   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -75,6 +78,7 @@ public class SystemWindow extends javax.swing.JFrame {
         systemMaintainMenu = new javax.swing.JMenu();
         workerProfileMenu = new javax.swing.JMenuItem();
         procedureMenu = new javax.swing.JMenuItem();
+        checklogMenu = new javax.swing.JMenuItem();
         exitMenu = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -88,7 +92,7 @@ public class SystemWindow extends javax.swing.JFrame {
 
         jMenuItem2.setText("jMenuItem2");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("生产效率管理系统");
 
         operateMenu.setMnemonic('f');
@@ -186,6 +190,14 @@ public class SystemWindow extends javax.swing.JFrame {
 
         operateMenu.add(systemMaintainMenu);
 
+        checklogMenu.setText("查看日志(管理员权限)");
+        checklogMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checklogMenuActionPerformed(evt);
+            }
+        });
+        operateMenu.add(checklogMenu);
+
         exitMenu.setText("退出 ");
         exitMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -260,9 +272,17 @@ public class SystemWindow extends javax.swing.JFrame {
     //退出菜单(已经完成日志记录)
     private void exitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuActionPerformed
         // TODO add your handling code here:
-        LoginWindow.logger.info("-----------本次登录结束--------------\n\n\n\n");
-        this.dispose();
-        System.exit(0);
+        
+        int a = JOptionPane.showConfirmDialog(null, "确定关闭吗？", "温馨提示", JOptionPane.YES_NO_OPTION);
+        if(a==0) {
+        
+            //----------------------------------系统登陆日志---------------------------
+            LoginWindow.logger.info("-----------本次登录结束--------------\n\n\n\n");
+            this.dispose();
+            System.exit(0);
+        } else {
+            return;
+        }
     }//GEN-LAST:event_exitMenuActionPerformed
     
     //员工报表菜单(已经完成日志记录)
@@ -305,6 +325,19 @@ public class SystemWindow extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_workerProfileMenuActionPerformed
+    
+    //查看日志菜单
+    private void checklogMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checklogMenuActionPerformed
+        // TODO add your handling code here:
+         java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                CheckLogDialog dialog = new CheckLogDialog(SystemWindow.this, true);
+               // dialog.setBounds(new Rectangle(50, 5, 800, 780));
+                dialog.setResizable(false);
+                dialog.setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_checklogMenuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -346,6 +379,7 @@ public class SystemWindow extends javax.swing.JFrame {
     private javax.swing.JMenu ImExportMenu;
     private javax.swing.JMenu ReportMenu;
     private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JMenuItem checklogMenu;
     private javax.swing.JMenu dataRecordMenu;
     private javax.swing.JMenuItem exitMenu;
     private javax.swing.JMenuItem fillProduceCardMenu;

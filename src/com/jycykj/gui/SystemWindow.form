@@ -158,6 +158,14 @@
                 </MenuItem>
               </SubComponents>
             </Menu>
+            <MenuItem class="javax.swing.JMenuItem" name="checklogMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x67e5;&#x770b;&#x65e5;&#x5fd7;(&#x7ba1;&#x7406;&#x5458;&#x6743;&#x9650;)"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checklogMenuActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exitMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x9000;&#x51fa; "/>
@@ -186,7 +194,7 @@
     </Menu>
   </NonVisualComponents>
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="defaultCloseOperation" type="int" value="0"/>
     <Property name="title" type="java.lang.String" value="&#x751f;&#x4ea7;&#x6548;&#x7387;&#x7ba1;&#x7406;&#x7cfb;&#x7edf;"/>
   </Properties>
   <SyntheticProperties>
