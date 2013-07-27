@@ -6,6 +6,7 @@ package com.jycykj.gui;
 
 import com.jycykj.export.ExportManagerFactory;
 import com.jycykj.export.ExportManagerSupport;
+import com.jycykj.helper.ConfigurePropertyEditor;
 import com.jycykj.helper.Util;
 import com.jycykj.tables.GroupWorkLoadTableModel;
 import com.jycykj.tables.WorkLoadTableModel;
@@ -28,7 +29,7 @@ public class ReportPanel extends javax.swing.JPanel {
     /**
      * Creates new form WorkerLoadReportPanel
      */
-   
+    private static final String exportRootPath = "reportExportPath";       //文件选择器的根目录
     private ReportDialog jDialog = null;
     private String[] years = new String[]{"2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020"};
     private String[] months = new String[] {"1","2","3","4","5","6","7","8","9","10","11","12"};
@@ -253,7 +254,7 @@ public class ReportPanel extends javax.swing.JPanel {
     private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
         // TODO add your handling code here:
       //  new FileDialog(this,"选择导出表格的位置",FileDialog.SAVE);
-        JFileChooser jFileChooser = new JFileChooser("c://");
+        JFileChooser jFileChooser = new JFileChooser(ConfigurePropertyEditor.get(exportRootPath));  //读取配置文件
         jFileChooser.setAcceptAllFileFilterUsed(false);
         ExportFileFilter excelFilter = new ExportFileFilter(".xls", "excel 文件 (*.xls)");
         ExportFileFilter pdfFilter = new ExportFileFilter(".pdf", "pdf 文件 (*.pdf)");
@@ -290,6 +291,8 @@ public class ReportPanel extends javax.swing.JPanel {
                 
                 Util.showMessageDialogWithTitle(this,"警告", "导出失败:"+exportManager.getErrorMessage());
             }
+            
+            ConfigurePropertyEditor.set(exportRootPath,file.getParent());     //写回配置文件
         }
         if(rVal == JFileChooser.CANCEL_OPTION) {
             System.out.println("cancel");

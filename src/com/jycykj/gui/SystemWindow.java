@@ -62,7 +62,7 @@ public class SystemWindow extends javax.swing.JFrame {
         makeProduceCardMenu = new javax.swing.JMenuItem();
         fillProduceCardMenu = new javax.swing.JMenuItem();
         washMenu = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         ImExportMenu = new javax.swing.JMenu();
         importMenu = new javax.swing.JMenuItem();
         ExportMenu = new javax.swing.JMenuItem();
@@ -77,8 +77,11 @@ public class SystemWindow extends javax.swing.JFrame {
         registerNewUserMenu = new javax.swing.JMenuItem();
         systemMaintainMenu = new javax.swing.JMenu();
         workerProfileMenu = new javax.swing.JMenuItem();
-        procedureMenu = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        procedureManageMenu = new javax.swing.JMenuItem();
+        componentManageMenu = new javax.swing.JMenuItem();
         checklogMenu = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
         exitMenu = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
@@ -115,7 +118,7 @@ public class SystemWindow extends javax.swing.JFrame {
         dataRecordMenu.add(washMenu);
 
         operateMenu.add(dataRecordMenu);
-        operateMenu.add(jSeparator1);
+        operateMenu.add(jSeparator3);
 
         ImExportMenu.setText("导入导出");
 
@@ -184,9 +187,13 @@ public class SystemWindow extends javax.swing.JFrame {
             }
         });
         systemMaintainMenu.add(workerProfileMenu);
+        systemMaintainMenu.add(jSeparator1);
 
-        procedureMenu.setText("生产工艺流程情况");
-        systemMaintainMenu.add(procedureMenu);
+        procedureManageMenu.setText("工序管理");
+        systemMaintainMenu.add(procedureManageMenu);
+
+        componentManageMenu.setText("零件管理");
+        systemMaintainMenu.add(componentManageMenu);
 
         operateMenu.add(systemMaintainMenu);
 
@@ -197,6 +204,7 @@ public class SystemWindow extends javax.swing.JFrame {
             }
         });
         operateMenu.add(checklogMenu);
+        operateMenu.add(jSeparator4);
 
         exitMenu.setText("退出 ");
         exitMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -380,6 +388,7 @@ public class SystemWindow extends javax.swing.JFrame {
     private javax.swing.JMenu ReportMenu;
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem checklogMenu;
+    private javax.swing.JMenuItem componentManageMenu;
     private javax.swing.JMenu dataRecordMenu;
     private javax.swing.JMenuItem exitMenu;
     private javax.swing.JMenuItem fillProduceCardMenu;
@@ -392,10 +401,12 @@ public class SystemWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JMenuItem makeProduceCardMenu;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu operateMenu;
-    private javax.swing.JMenuItem procedureMenu;
+    private javax.swing.JMenuItem procedureManageMenu;
     private javax.swing.JMenuItem registerNewUserMenu;
     private javax.swing.JMenu systemMaintainMenu;
     private javax.swing.JMenuItem wAvgWLRMenu;

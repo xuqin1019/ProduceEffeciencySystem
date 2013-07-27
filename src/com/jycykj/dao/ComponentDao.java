@@ -256,26 +256,26 @@ public class ComponentDao {
         }
         String procedureId = getProcedureId(producedProcedure.getProcedure().getProcedureName());
         if(procedureId.equals("-1")) {
-             errorMessage = "数据库中不存在该工序，请先添加";
+            errorMessage = "数据库中不存在该工序，请先添加";
             return false;
         }
-        Component component = producedProcedure.getComponent();
+        
+        Component component = producedProcedure.getComponent();     
         try {
             connection = DBManager.getDBManager().getConnection();
             connection.setAutoCommit(false);               //使用java事务
             
             //插入batchID
-            int batchId = this.getBatchId(component.getBatchName());   
+            int batchId = this.getBatchId(component.getBatchName());  //数据库中的编号
             if(batchId==-1) {            //if not exists this batch
                 batchId=this.putBatch(component.getBatchName());               
                 if(batchId==-1) {
                     errorMessage = "写入数据库失败，请联系开发人员";
                     return false;
                 }
-          //      this.putBatchComponent(batchId, component.getComponentId());
             }
             
-            //插入batchId和componentId
+            //插入batchId(批次号)和componentId(图号)
             boolean exists = this.getCompoentIdBatchIds(batchId,component.getComponentId());
             if(!exists) {
                 if(!this.putBatchComponent(batchId ,component.getComponentId())) {

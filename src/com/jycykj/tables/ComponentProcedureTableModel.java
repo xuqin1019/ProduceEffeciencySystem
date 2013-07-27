@@ -126,7 +126,9 @@ public class ComponentProcedureTableModel extends AbstractTableModel {
         }
         return result;
     }
-
+    
+    
+    
     public void setWorks(List<ProducedProcedure> works) {
         this.works = works;
     }
@@ -172,4 +174,6 @@ public class ComponentProcedureTableModel extends AbstractTableModel {
                fireTableCellUpdated(row, col); 
         }
     }
+    
+    
 }

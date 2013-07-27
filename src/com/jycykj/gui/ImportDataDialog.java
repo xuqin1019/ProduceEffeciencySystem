@@ -4,6 +4,7 @@
  */
 package com.jycykj.gui;
 
+import com.jycykj.helper.ConfigurePropertyEditor;
 import com.jycykj.helper.Util;
 import com.jycykj.managers.ProduceCardManager;
 import com.jycykj.model.Component;
@@ -29,6 +30,7 @@ import jxl.Workbook;
  * @author xuqin
  */
 public class ImportDataDialog extends javax.swing.JDialog {
+    private static final String importRootPath = "produceCardImportPath";       //文件选择器的根目录
     private File importFile=null;
     private volatile int currentLine=0;
     /**
@@ -125,15 +127,16 @@ public class ImportDataDialog extends javax.swing.JDialog {
 
     private void selectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtonActionPerformed
         // TODO add your handling code here:
-        JFileChooser jFileChooser = new JFileChooser("c://");
+        JFileChooser jFileChooser = new JFileChooser(ConfigurePropertyEditor.get(importRootPath));
         jFileChooser.setAcceptAllFileFilterUsed(false);
-        ExportFileFilter excelFilter = new ExportFileFilter(".xls", "excel 文件 (*.xls)");
+        ExportFileFilter excelFilter = new ExportFileFilter(".xls", "excel 文件 (*.xls)");  //读取配置文件
         jFileChooser.addChoosableFileFilter(excelFilter);
    
         int rVal = jFileChooser.showSaveDialog(this);
         if(rVal == JFileChooser.APPROVE_OPTION) {
             importFile = jFileChooser.getSelectedFile();
             fileNameTextField.setText(importFile.getAbsolutePath());
+            ConfigurePropertyEditor.set(importRootPath,importFile.getParent());     //写回配置文件
         }
         if(rVal == JFileChooser.CANCEL_OPTION) {
             System.out.println("cancel");
