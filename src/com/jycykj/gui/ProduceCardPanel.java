@@ -7,6 +7,7 @@ package com.jycykj.gui;
 import com.jycykj.export.ExportManagerFactory;
 import com.jycykj.export.ExportManagerSupport;
 import com.jycykj.helper.ConfigurePropertyEditor;
+import com.jycykj.helper.ImageIconUtil;
 import com.jycykj.helper.Util;
 import com.jycykj.managers.ProduceCardManager;
 import com.jycykj.model.Component;
@@ -137,6 +138,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         });
 
         filterButton.setText("筛选");
+        filterButton.setIcon(ImageIconUtil.getIcon("pics/filter.png"));
         filterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 filterButtonActionPerformed(evt);
@@ -144,6 +146,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         });
 
         exportButton.setText("导出");
+        exportButton.setIcon(ImageIconUtil.getIcon("pics/export.png"));
         exportButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exportButtonActionPerformed(evt);
@@ -249,6 +252,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         );
 
         cancelButton.setText("关闭");
+        cancelButton.setIcon(ImageIconUtil.getIcon("pics/close.png"));
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -256,6 +260,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         });
 
         saveButton.setText("保存");
+        saveButton.setIcon(ImageIconUtil.getIcon("pics/save.png"));
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
@@ -268,10 +273,10 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(163, 163, 163)
-                .addComponent(saveButton)
+                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(184, 184, 184))
+                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(154, 154, 154))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,7 +322,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

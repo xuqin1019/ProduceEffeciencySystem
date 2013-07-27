@@ -25,10 +25,7 @@ public class SystemWindow extends javax.swing.JFrame {
         this.adminLogin=adminLogin;
         initComponents();
         
-        ImageIcon imageIconSource = new ImageIcon("pics/system.png");
-        Image image = imageIconSource.getImage();
-      //  Image systemImage = image.getScaledInstance(50,50,Image.SCALE_DEFAULT);
-        this.setIconImage(image);
+        this.setIconImage(ImageIconUtil.getFrameIcon("pics/system.png"));
         
         this.setLocationRelativeTo(null);      //居中显示
         if(!adminLogin) {
@@ -38,6 +35,7 @@ public class SystemWindow extends javax.swing.JFrame {
         } else {
             this.setTitle("生产效率管理系统(管理员登录)");
         }
+        this.setFont(new java.awt.Font("宋体", 0, 14));
         
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {

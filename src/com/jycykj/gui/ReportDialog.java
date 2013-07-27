@@ -5,6 +5,7 @@
 package com.jycykj.gui;
 
 
+import com.jycykj.helper.ImageIconUtil;
 import java.awt.Rectangle;
 
 /**
@@ -23,6 +24,8 @@ public class ReportDialog extends javax.swing.JDialog {
         super(parent, modal);
         this.reportType = reportType;
         initComponents();
+        this.setIconImage(ImageIconUtil.getFrameIcon("pics/report.png"));
+         this.setFont(new java.awt.Font("宋体", 0, 14));
         if(reportType==ReportType.WorkerWorkLoad) {
             setTitle("员工冲次统计表");
         } else if(reportType==ReportType.GroupWorkLoad)  {

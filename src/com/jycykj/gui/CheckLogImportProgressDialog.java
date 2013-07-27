@@ -4,6 +4,7 @@
  */
 package com.jycykj.gui;
 
+import com.jycykj.helper.ImageIconUtil;
 import com.jycykj.helper.Util;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +35,8 @@ public class CheckLogImportProgressDialog extends javax.swing.JDialog implements
     public CheckLogImportProgressDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setIconImage(ImageIconUtil.getFrameIcon("pics/import_log.png"));
+        this.setFont(new java.awt.Font("宋体", 0, 14));
     }
 
     /**
@@ -59,6 +62,7 @@ public class CheckLogImportProgressDialog extends javax.swing.JDialog implements
         progressBar.setStringPainted(true);
 
         importButton.setText("开始导入");
+        importButton.setIcon(ImageIconUtil.getIcon("pics/import_file.png"));
         importButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 importButtonActionPerformed(evt);
@@ -88,14 +92,16 @@ public class CheckLogImportProgressDialog extends javax.swing.JDialog implements
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(logFileTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(logFileTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
-                .addComponent(importButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(importButton)
+                .addContainerGap())
         );
 
         pack();

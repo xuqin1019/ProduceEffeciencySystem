@@ -18,4 +18,11 @@ public class ImageIconUtil {
         Image tempImage = image.getScaledInstance(25,25,Image.SCALE_DEFAULT);
         return  new ImageIcon(tempImage);
     }
+    
+    public static Image getFrameIcon(String path) {
+        ImageIcon imageIconSource = new ImageIcon(path);
+        return imageIconSource.getImage();
+    }
+    
+    
 }

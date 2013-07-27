@@ -4,8 +4,11 @@
  */
 package com.jycykj.gui;
 
+import com.jycykj.helper.ImageIconUtil;
 import com.jycykj.managers.LoginManager;
 import com.jycykj.model.User;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -23,7 +26,9 @@ public class LoginWindow extends javax.swing.JFrame {
    
     public LoginWindow() {
         initComponents();
+        this.setIconImage(ImageIconUtil.getFrameIcon("pics/login.png"));
         this.setLocationRelativeTo(null);    //屏幕居中显示
+        this.setFont(new java.awt.Font("宋体", 0, 14));
     }
 
     /**
@@ -38,6 +43,7 @@ public class LoginWindow extends javax.swing.JFrame {
         buttonGroup = new javax.swing.ButtonGroup();
         jpanel = new javax.swing.JPanel();
         titlePanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         loginPanel = new javax.swing.JPanel();
         typeLabel = new javax.swing.JLabel();
         operatorRadioButton = new javax.swing.JRadioButton();
@@ -48,25 +54,36 @@ public class LoginWindow extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
         nameTextField = new javax.swing.JTextField();
         passwordTextField = new javax.swing.JPasswordField();
-        jLabel1 = new javax.swing.JLabel();
+        ImageIcon image=new ImageIcon("pics/login_image.png");
+        imageLabel = new javax.swing.JLabel(image);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("系统登录");
 
+        jLabel1.setFont(new java.awt.Font("楷体", 3, 24)); // NOI18N
+        jLabel1.setText("生产效率管理系统");
+        titlePanel.add(jLabel1);
+
+        typeLabel.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         typeLabel.setText("用户类型：");
         typeLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         buttonGroup.add(operatorRadioButton);
+        operatorRadioButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         operatorRadioButton.setSelected(true);
         operatorRadioButton.setText("操作员");
 
         buttonGroup.add(adminRadioButton);
+        adminRadioButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         adminRadioButton.setText("管理员");
 
+        nameLabel.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         nameLabel.setText("用户名：");
 
+        passwordLabel.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         passwordLabel.setText("密码：");
 
+        loginButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         loginButton.setText("登录");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -74,14 +91,21 @@ public class LoginWindow extends javax.swing.JFrame {
             }
         });
 
+        cancelButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         cancelButton.setText("取消");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout loginPanelLayout = new javax.swing.GroupLayout(loginPanel);
         loginPanel.setLayout(loginPanelLayout);
         loginPanelLayout.setHorizontalGroup(
             loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(loginPanelLayout.createSequentialGroup()
-                .addGap(155, 155, 155)
+                .addComponent(imageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(typeLabel)
                     .addComponent(nameLabel)
@@ -95,54 +119,55 @@ public class LoginWindow extends javax.swing.JFrame {
                         .addComponent(adminRadioButton))
                     .addComponent(passwordTextField)
                     .addComponent(nameTextField)
-                    .addComponent(cancelButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(131, Short.MAX_VALUE))
+                    .addComponent(cancelButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         loginPanelLayout.setVerticalGroup(
             loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(loginPanelLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
+                .addContainerGap()
+                .addComponent(imageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(loginPanelLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
                 .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(operatorRadioButton)
                     .addComponent(typeLabel)
+                    .addComponent(operatorRadioButton)
                     .addComponent(adminRadioButton))
                 .addGap(18, 18, 18)
                 .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameLabel)
                     .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
+                .addGap(18, 18, 18)
                 .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(passwordLabel)
                     .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
+                .addGap(18, 18, 18)
                 .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loginButton)
                     .addComponent(cancelButton))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
-
-        jLabel1.setFont(new java.awt.Font("宋体", 0, 24)); // NOI18N
-        jLabel1.setText("生产效率管理系统");
 
         javax.swing.GroupLayout jpanelLayout = new javax.swing.GroupLayout(jpanel);
         jpanel.setLayout(jpanelLayout);
         jpanelLayout.setHorizontalGroup(
             jpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(titlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(loginPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(137, 137, 137))
+            .addGroup(jpanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(loginPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jpanelLayout.createSequentialGroup()
+                        .addComponent(titlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 13, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jpanelLayout.setVerticalGroup(
             jpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanelLayout.createSequentialGroup()
-                .addComponent(titlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
-                .addGap(26, 26, 26)
-                .addComponent(loginPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addComponent(titlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(loginPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -191,6 +216,12 @@ public class LoginWindow extends javax.swing.JFrame {
             } 
         }
     }//GEN-LAST:event_loginButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+         this.dispose();
+         System.exit(0);
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -241,6 +272,7 @@ public class LoginWindow extends javax.swing.JFrame {
     private javax.swing.JRadioButton adminRadioButton;
     private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JLabel imageLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jpanel;
     private javax.swing.JButton loginButton;

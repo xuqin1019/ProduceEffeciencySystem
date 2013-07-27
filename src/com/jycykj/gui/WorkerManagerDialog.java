@@ -4,6 +4,8 @@
  */
 package com.jycykj.gui;
 
+import com.jycykj.helper.ImageIconUtil;
+
 /**
  *
  * @author lenovo
@@ -16,8 +18,10 @@ public class WorkerManagerDialog extends javax.swing.JDialog {
     public WorkerManagerDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setIconImage(ImageIconUtil.getFrameIcon("pics/worker_list.png"));
         this.setResizable(false);
         setTitle("员工花名册");
+        this.setFont(new java.awt.Font("宋体", 0, 14));
     }
 
     /**
@@ -33,11 +37,13 @@ public class WorkerManagerDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        workerManagerPanel1.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 452, Short.MAX_VALUE)
+            .addGap(0, 507, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -46,7 +52,7 @@ public class WorkerManagerDialog extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 451, Short.MAX_VALUE)
+            .addGap(0, 503, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)

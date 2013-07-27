@@ -5,6 +5,7 @@
 package com.jycykj.gui;
 
 import com.jycykj.dao.ComponentDao;
+import com.jycykj.helper.ImageIconUtil;
 import com.jycykj.helper.Util;
 import com.jycykj.model.Group;
 import com.jycykj.model.Worker;
@@ -54,21 +55,27 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
         jScrollPane3 = new javax.swing.JScrollPane();
         workerManagerTable = new javax.swing.JTable();
 
+        addButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         addButton.setText("添加");
+        addButton.setIcon(ImageIconUtil.getIcon("pics/add.png"));
         addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addButtonActionPerformed(evt);
             }
         });
 
+        deleteButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         deleteButton.setText("删除");
+        deleteButton.setIcon(ImageIconUtil.getIcon("pics/delete.png"));
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);
             }
         });
 
+        saveButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         saveButton.setText("保存");
+        saveButton.setIcon(ImageIconUtil.getIcon("pics/save.png"));
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
@@ -81,12 +88,12 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
-                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addButton)
+                .addGap(50, 50, 50)
+                .addComponent(deleteButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48))
+                .addComponent(saveButton)
+                .addGap(43, 43, 43))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

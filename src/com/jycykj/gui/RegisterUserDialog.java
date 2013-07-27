@@ -4,6 +4,8 @@
  */
 package com.jycykj.gui;
 
+import com.jycykj.helper.ImageIconUtil;
+
 /**
  *
  * @author lenovo
@@ -16,6 +18,8 @@ public class RegisterUserDialog extends javax.swing.JDialog {
     public RegisterUserDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setIconImage(ImageIconUtil.getFrameIcon("pics/register.png"));
+         this.setFont(new java.awt.Font("宋体", 0, 14));
     }
 
     /**
