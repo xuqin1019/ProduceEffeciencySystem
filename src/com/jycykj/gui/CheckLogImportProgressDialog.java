@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 /**
@@ -125,6 +126,7 @@ public class CheckLogImportProgressDialog extends javax.swing.JDialog implements
         CheckLogImportModel checkLogImportModel = (CheckLogImportModel)o; 
         this.checkLogPanel.getLogTextArea().setText(checkLogImportModel.getLogText().toString());
         Util.showMessageDialog(this, "导入日志成功！");
+        this.dispose();
     }
     
     /**
