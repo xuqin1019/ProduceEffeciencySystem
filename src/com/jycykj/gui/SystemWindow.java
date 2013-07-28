@@ -4,13 +4,10 @@
  */
 package com.jycykj.gui;
 import com.jycykj.helper.ImageIconUtil;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.JSeparator;
  
 /**
  *
@@ -30,7 +27,10 @@ public class SystemWindow extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);      //居中显示
         if(!adminLogin) {
             systemMaintainMenu.disable();
+            //操作员登录时禁用以下菜单
             registerNewUserMenu.setEnabled(false);
+            systemMaintainMenu.setEnabled(false);
+            checklogMenu.setEnabled(false);
             this.setTitle("生产效率管理系统(操作员登录)");
         } else {
             this.setTitle("生产效率管理系统(管理员登录)");
@@ -135,6 +135,8 @@ public class SystemWindow extends javax.swing.JFrame {
         makeProduceCardMenu.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
         makeProduceCardMenu.setText("制作生产工艺流程卡");
         makeProduceCardMenu.setIcon(ImageIconUtil.getIcon("pics/make.png"));
+
+        makeProduceCardMenu.setEnabled(false);
         dataRecordMenu.add(makeProduceCardMenu);
 
         fillProduceCardMenu.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
@@ -150,6 +152,8 @@ public class SystemWindow extends javax.swing.JFrame {
         washMenu.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
         washMenu.setText("清洗情况统计");
         washMenu.setIcon(ImageIconUtil.getIcon("pics/wash.png"));
+
+        washMenu.setEnabled(false);
         dataRecordMenu.add(washMenu);
 
         operateMenu.add(dataRecordMenu);
@@ -197,6 +201,7 @@ public class SystemWindow extends javax.swing.JFrame {
         ReportMenu.add(gWLRMenu);
         ReportMenu.add(jSeparator6);
 
+        workTimeMenu.setEnabled(false);
         workTimeMenu.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
         workTimeMenu.setText("员工工作时间统计表");
         workTimeMenu.setIcon(ImageIconUtil.getIcon("pics/time_report.png"));
@@ -206,9 +211,11 @@ public class SystemWindow extends javax.swing.JFrame {
         FinishComponentMenu.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
         FinishComponentMenu.setText("当月完成零件");
         FinishComponentMenu.setIcon(ImageIconUtil.getIcon("pics/finish_component.png"));
+        FinishComponentMenu.setEnabled(false);
         ReportMenu.add(FinishComponentMenu);
         ReportMenu.add(jSeparator8);
 
+        workerEvaluationMenu.setEnabled(false);
         workerEvaluationMenu.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
         workerEvaluationMenu.setText("当月员工考核表");
         workerEvaluationMenu.setIcon(ImageIconUtil.getIcon("pics/evaluation.png"));
@@ -244,6 +251,11 @@ public class SystemWindow extends javax.swing.JFrame {
         procedureManageMenu.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
         procedureManageMenu.setText("工序管理");
         procedureManageMenu.setIcon(ImageIconUtil.getIcon("pics/procedure_manage.png"));
+        procedureManageMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                procedureManageMenuActionPerformed(evt);
+            }
+        });
         systemMaintainMenu.add(procedureManageMenu);
         systemMaintainMenu.add(jSeparator9);
 
@@ -313,6 +325,7 @@ public class SystemWindow extends javax.swing.JFrame {
             public void run() {
                 ImportDataDialog importDataDialog = new ImportDataDialog(SystemWindow.this, true);
                 importDataDialog.setLocationRelativeTo(SystemWindow.this);
+                importDataDialog.setResizable(false);
                 importDataDialog.setVisible(true);
             }
         });
@@ -324,6 +337,8 @@ public class SystemWindow extends javax.swing.JFrame {
          java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 RegisterUserDialog dialog = new RegisterUserDialog(SystemWindow.this, true);
+                dialog.setLocationRelativeTo(SystemWindow.this);
+                dialog.setResizable(false);
                 dialog.setVisible(true);
             }
         });
@@ -337,6 +352,8 @@ public class SystemWindow extends javax.swing.JFrame {
          java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 ProduceCardDialog dialog = new ProduceCardDialog(SystemWindow.this, true);
+                dialog.setLocationRelativeTo(SystemWindow.this);
+                dialog.setResizable(false);
                 dialog.setVisible(true);
             }
         });
@@ -364,6 +381,7 @@ public class SystemWindow extends javax.swing.JFrame {
          java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 ReportDialog dialog = new ReportDialog(ReportType.WorkerWorkLoad,SystemWindow.this, true);
+                dialog.setLocationRelativeTo(SystemWindow.this);
                 dialog.setBounds(new Rectangle(50, 5, 800, 780));
                 dialog.setResizable(false);
                 dialog.setVisible(true);
@@ -378,6 +396,7 @@ public class SystemWindow extends javax.swing.JFrame {
          java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 ReportDialog dialog = new ReportDialog(ReportType.GroupWorkLoad,SystemWindow.this, true);
+                dialog.setLocationRelativeTo(SystemWindow.this);
                 dialog.setBounds(new Rectangle(50, 5, 800, 780));
                 dialog.setResizable(false);
                 dialog.setVisible(true);
@@ -392,7 +411,7 @@ public class SystemWindow extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 WorkerManagerDialog dialog = new WorkerManagerDialog(SystemWindow.this, true);
-               // dialog.setBounds(new Rectangle(50, 5, 800, 780));
+                dialog.setLocationRelativeTo(SystemWindow.this);
                 dialog.setResizable(false);
                 dialog.setVisible(true);
             }
@@ -405,12 +424,16 @@ public class SystemWindow extends javax.swing.JFrame {
          java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 CheckLogDialog dialog = new CheckLogDialog(SystemWindow.this, true);
-               // dialog.setBounds(new Rectangle(50, 5, 800, 780));
+                dialog.setLocationRelativeTo(SystemWindow.this);
                 dialog.setResizable(false);
                 dialog.setVisible(true);
             }
         });
     }//GEN-LAST:event_checklogMenuActionPerformed
+
+    private void procedureManageMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_procedureManageMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_procedureManageMenuActionPerformed
 
     /**
      * @param args the command line arguments

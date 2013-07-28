@@ -19,7 +19,7 @@ public class RegisterUserDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setIconImage(ImageIconUtil.getFrameIcon("pics/register.png"));
-         this.setFont(new java.awt.Font("宋体", 0, 14));
+        this.setFont(new java.awt.Font("宋体", 0, 14));
     }
 
     /**

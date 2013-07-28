@@ -108,7 +108,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
 
         headerPanel.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
 
-        headerLabel.setFont(new java.awt.Font("宋体", 0, 24)); // NOI18N
+        headerLabel.setFont(new java.awt.Font("宋体", 3, 24)); // NOI18N
         headerLabel.setText("生产工艺流程卡");
 
         timeLabel.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
@@ -129,6 +129,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         jLabel2.setText("批次号：");
 
         batchIdTextField.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -163,34 +164,35 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(componentNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
                 .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(headerPanelLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(componentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(headerPanelLayout.createSequentialGroup()
+                        .addComponent(componentNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
                         .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(headerPanelLayout.createSequentialGroup()
-                                .addComponent(filterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(filterButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(exportButton))
+                                .addGap(30, 30, 30)
+                                .addComponent(componentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(headerPanelLayout.createSequentialGroup()
-                                .addComponent(componentIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(36, 36, 36)
-                                .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(batchIdTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))))
+                                .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(headerPanelLayout.createSequentialGroup()
+                                        .addComponent(filterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(filterButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(exportButton))
+                                    .addGroup(headerPanelLayout.createSequentialGroup()
+                                        .addComponent(componentIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(36, 36, 36)
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(batchIdTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))))))
+                    .addGroup(headerPanelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(95, 95, 95))
         );
         headerPanelLayout.setVerticalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,6 +217,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 .addComponent(componentLabel))
         );
 
+        jTabbedPane1.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jTabbedPane1StateChanged(evt);
@@ -244,13 +247,14 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 475, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 23, Short.MAX_VALUE)
         );
 
+        cancelButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         cancelButton.setText("关闭");
         cancelButton.setIcon(ImageIconUtil.getIcon("pics/close.png"));
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -259,6 +263,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             }
         });
 
+        saveButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         saveButton.setText("保存");
         saveButton.setIcon(ImageIconUtil.getIcon("pics/save.png"));
         saveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -288,14 +293,18 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 .addContainerGap(37, Short.MAX_VALUE))
         );
 
-        addRowButton.setText("+");
+        addRowButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
+        addRowButton.setText("添加");
+        addRowButton.setIcon(ImageIconUtil.getIcon("pics/addrow.png"));
         addRowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addRowButtonActionPerformed(evt);
             }
         });
 
-        deleteRowButton.setText("-");
+        deleteRowButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
+        deleteRowButton.setText("删除");
+        deleteRowButton.setIcon(ImageIconUtil.getIcon("pics/deleterow.png"));
         deleteRowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteRowButtonActionPerformed(evt);
@@ -313,10 +322,10 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                     .addComponent(jTabbedPane1)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(addRowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(addRowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
+                        .addComponent(deleteRowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteRowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -369,7 +378,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private boolean notSaved() {
-        System.out.println("nothingAdded : " + nothingAdded + "    " + addedProducedProcedure!=null ? "not null" : "null");
+      //  System.out.println("nothingAdded : " + nothingAdded + "    " + addedProducedProcedure!=null ? "not null" : "null");
         return nothingAdded==false && addedProducedProcedure!=null;
     }
     

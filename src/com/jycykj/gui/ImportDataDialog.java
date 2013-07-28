@@ -65,6 +65,7 @@ public class ImportDataDialog extends javax.swing.JDialog {
         fileNameTextField.setEditable(false);
         fileNameTextField.setPreferredSize(new java.awt.Dimension(25, 21));
 
+        selectButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         selectButton.setText("选择");
         selectButton.setIcon(ImageIconUtil.getIcon("pics/select.png"));
         selectButton.addActionListener(new java.awt.event.ActionListener() {
@@ -73,6 +74,7 @@ public class ImportDataDialog extends javax.swing.JDialog {
             }
         });
 
+        importButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         importButton.setText("导入");
         importButton.setIcon(ImageIconUtil.getIcon("pics/import_file.png"));
         importButton.addActionListener(new java.awt.event.ActionListener() {
