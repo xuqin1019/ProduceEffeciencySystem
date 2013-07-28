@@ -225,6 +225,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         });
 
         componentInfoTableModel = new ComponentInfoTableModel(componentIdTextField.getText().trim());
+        componentInfoTable.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         componentInfoTable.setModel(componentInfoTableModel);
         componentNameLabel.setText(componentInfoTableModel.getComponent().getName());
         jScrollPane1.setViewportView(componentInfoTable);
@@ -234,6 +235,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         componentProcedureTable.setRowHeight(20);
         componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),"");
         componentProcedureTable.setDefaultRenderer(Integer.class,new LeftAlignRenderer());
+        componentProcedureTable.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         componentProcedureTable.setModel(componentProcedureTableModel);
         //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(componentProcedureTableModel);
         //componentProcedureTable.setRowSorter(sorter);

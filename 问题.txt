@@ -40,7 +40,9 @@ TODO
 
 7.MessageBox的界面优化  
 
-8.用户注册的界面优化 
+8.用户注册的界面优化                                                   finished
   报表的界面优化                                                       finished
+
+9.放大表格的字体
 
   
