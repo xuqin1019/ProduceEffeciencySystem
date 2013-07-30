@@ -5,20 +5,27 @@
 package com.jycykj.gui;
 
 import com.jycykj.dao.ComponentDao;
+import com.jycykj.helper.ImageIconUtil;
 import com.jycykj.helper.Util;
 import com.jycykj.model.Component;
 import com.jycykj.tables.ComponentManagerTableModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 /**
  *
  * @author xuqin
  */
 public class ComponentManagerPanel extends javax.swing.JPanel {
-    private boolean isAdd;
-
+    private boolean isAdd = false;
+    private int deleteRowIndex=-1;
     /**
      * Creates new form ComponentManagerPanel
      */
@@ -38,6 +45,8 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         addButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        componentManagerTable = new javax.swing.JTable();
         saveButton = new javax.swing.JButton();
 
         addButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
@@ -58,15 +67,6 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
             }
         });
 
-        saveButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
-        saveButton.setText("保存");
-        saveButton.setIcon(ImageIconUtil.getIcon("pics/save.png"));
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -76,19 +76,43 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
                 .addComponent(addButton)
                 .addGap(50, 50, 50)
                 .addComponent(deleteButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 350, Short.MAX_VALUE)
-                .addComponent(saveButton)
-                .addGap(43, 43, 43))
+                .addContainerGap(488, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                    .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                    .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
+                    .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        componentManagerTable.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
+        componentManagerTable.addMouseListener(new MyMouseAdapter());
+        /*
+        componentManagerTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        */
+        componentManagerTable.setModel(new ComponentManagerTableModel(this,componentManagerTable));
+        jScrollPane1.setViewportView(componentManagerTable);
+
+        saveButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
+        saveButton.setText("保存");
+        saveButton.setIcon(ImageIconUtil.getIcon("pics/save.png"));
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -96,14 +120,24 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveButton))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 455, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -118,61 +152,58 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         
         ComponentManagerTableModel componentManagerTableModel = (ComponentManagerTableModel)(componentManagerTable.getModel());
 
-        workerManagerTableModel.getModifiedWorkers().put(newWorker.getWorkerId(),newWorker);     //add one line to the table
-        workerManagerTableModel.getWorkerList().add(newWorker);
+        componentManagerTableModel.getModifiedComponents().put(newComponent.getComponentId(),newComponent);     //add one line to the table
+        componentManagerTableModel.getComponentList().add(newComponent);
 
-        workerManagerTableModel.fireTableRowsInserted(workerManagerTableModel.getRowCount()-1, workerManagerTableModel.getRowCount()-1);   //refresh
-        workerManagerTableModel.setIsAdd(isAdd);
+        componentManagerTableModel.fireTableRowsInserted(componentManagerTableModel.getRowCount()-1, componentManagerTableModel.getRowCount()-1);   //refresh
+        componentManagerTableModel.setIsAdd(isAdd);
 
         //跳转到最后一行并且选中
-        workerManagerTable.scrollRectToVisible(workerManagerTable.getCellRect(workerManagerTable.getRowCount()-1, 0, true));
-        int lastRow = workerManagerTable.convertRowIndexToView(workerManagerTable.getRowCount()-1);
-        workerManagerTable.changeSelection(lastRow, 0, false, false);
+        componentManagerTable.scrollRectToVisible(componentManagerTable.getCellRect(componentManagerTable.getRowCount()-1, 0, true));
+        int lastRow = componentManagerTable.convertRowIndexToView(componentManagerTable.getRowCount()-1);
+        componentManagerTable.changeSelection(lastRow, 0, false, false);
 
         addButton.setEnabled(false);
         saveButton.setEnabled(true);
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        WorkerManagerTableModel workerManagerTableModel = (WorkerManagerTableModel)(workerManagerTable.getModel());
-        String worker_id = workerManagerTableModel.getWorkerList().get(deleteRowIndex).getWorkerId();
+        ComponentManagerTableModel componentManagerTableModel = (ComponentManagerTableModel)(componentManagerTable.getModel());
+        String component_id = componentManagerTableModel.getComponentList().get(deleteRowIndex).getComponentId();
 
-        if(worker_id.equals("")) {
-            workerManagerTableModel.getWorkerList().remove(deleteRowIndex);
-            workerManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
+        if(component_id.equals("")) {
+            componentManagerTableModel.getComponentList().remove(deleteRowIndex);
+            componentManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
             addButton.setEnabled(true);
             deleteButton.setEnabled(false);
             return;
         }
 
         int choice = JOptionPane.showConfirmDialog(this,"你确定要删除此条记录吗","警告",JOptionPane.WARNING_MESSAGE);
-        System.out.println("worker_id : " + worker_id);
+        System.out.println("component_id : " + component_id);
+        
         if(choice==JOptionPane.YES_OPTION) {
             System.out.println(deleteRowIndex);
 
-            String [] cleanTables = new String [] {"produce_work","worker"};
-            List<String> sqls = new ArrayList<String>();
-            for(String table : cleanTables) {
-                sqls.add("delete from " + table + " where worker_id = " + Integer.valueOf(worker_id));
-            }
+             String sql = "delete from `component` where component_id = " + Integer.valueOf(component_id);
 
-            boolean success =  ComponentDao.getInstance().executeTransaction(sqls);   //执行事务
+            boolean success =  ComponentDao.getInstance().executeUpdate(sql);   //执行事务
 
             if(success) {
-                workerManagerTableModel.getWorkerList().remove(deleteRowIndex);
-                workerManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
+                componentManagerTableModel.getComponentList().remove(deleteRowIndex);
+                componentManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
                 addButton.setEnabled(true);
                 deleteButton.setEnabled(false);
 
-                //-------------------------------------删除员工信息日志----------------------------
-                LoginWindow.logger.info("删除员工信息成功！ : ");
-                //-------------------------------------删除员工信息日志----------------------------
+                //-------------------------------------删除零件信息日志----------------------------
+                LoginWindow.logger.info("删除零件信息成功！ : ");
+                //-------------------------------------删除零件信息日志----------------------------
 
                 Util.showMessageDialog(this,"删除成功！！！");
             } else {
 
-                //-------------------------------------删除员工信息日志----------------------------
-                LoginWindow.logger.error("删除员工信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
+                //-------------------------------------删除零件信息日志----------------------------
+                LoginWindow.logger.error("删除零件信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
                 //-------------------------------------删除员工信息日志----------------------------
 
                 Util.showMessageDialog(this,"发生未知错误，无法删除！！请联系系统管理员");
@@ -182,27 +213,27 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-        Map<String,Worker> workers = ((WorkerManagerTableModel)workerManagerTable.getModel()).getModifiedWorkers();
-        Set<String> workerIds = workers.keySet();
+        Map<String,Component> components = ((ComponentManagerTableModel)componentManagerTable.getModel()).getModifiedComponents();
+        Set<String> componentIds = components.keySet();
         StringBuilder sb = new StringBuilder();
-        Worker worker = null;
-        for(String workerId : workerIds) {
+        Component component = null;
+        for(String componentId : componentIds) {
             if(sb.length()!=0) {
                 sb.append(";");
             }
-            worker = workers.get(workerId);
-            if(!workerId.equals("")) {
-                if(worker==null || !worker.valid()) {
+            component = components.get(componentId);
+            if(!componentId.equals("")) {
+                if(component==null || !component.valid()) {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
                 }
-                sb.append("update worker set name = '" +worker.getWorkerName()+ "',info='"+(worker.getInfo()==null ? "" : worker.getInfo())+"',group_id="+worker.getGroup().getGroupId()+ " where worker_id="+ Integer.parseInt(workerId));
+     //           sb.append("update worker set name = '" +worker.getWorkerName()+ "',info='"+(worker.getInfo()==null ? "" : worker.getInfo())+"',group_id="+worker.getGroup().getGroupId()+ " where worker_id="+ Integer.parseInt(workerId));
             } else {
-                if(worker==null || !worker.valid()) {
+                if(component==null || !component.valid()) {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
                 }
-                sb.append("insert into worker(name,info,group_id) values('" +  worker.getWorkerName() +"','"+(worker.getInfo()==null ? "" : worker.getInfo())+ "'," + worker.getGroup().getGroupId() + ")");
+      //          sb.append("insert into worker(name,info,group_id) values('" +  worker.getWorkerName() +"','"+(worker.getInfo()==null ? "" : worker.getInfo())+ "'," + worker.getGroup().getGroupId() + ")");
             }
         }
         // System.out.println(sb.toString());
@@ -214,20 +245,21 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
             //-------------------------------------修改员工信息日志----------------------------
 
             Util.showMessageDialog(this,"保存成功！！！");
-            ((WorkerManagerTableModel)workerManagerTable.getModel()).getModifiedWorkers().clear();
+            ((ComponentManagerTableModel)componentManagerTable.getModel()).getModifiedComponents().clear();
             saveButton.setEnabled(false);
             addButton.setEnabled(true);
             isAdd=false;
 
-            List<Worker> work_list = ((WorkerManagerTableModel)workerManagerTable.getModel()).getWorkerList();
-            //assign id to the saved worker
-            work_list.get(work_list.size()-1).setWorkerId(String.valueOf(ComponentDao.getInstance().getWorkerId(work_list.get(work_list.size()-1).getWorkerName())));
+            List<Component> component_list = ((ComponentManagerTableModel)componentManagerTable.getModel()).getComponentList();
+            
+            //assign id to the saved compoenent
+    //        component_list.get(component_list.size()-1).setComponentId(String.valueOf(ComponentDao.getInstance().getComponentId(component_list.get(component_list.size()-1).getName())));
 
         } else {               //保存失败
 
-            //-------------------------------------修改员工信息日志----------------------------
-            LoginWindow.logger.error("修改员工信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
-            //-------------------------------------修改员工信息日志----------------------------
+            //-------------------------------------修改零件信息日志----------------------------
+            LoginWindow.logger.error("修改零件信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
+            //-------------------------------------修改零件信息日志----------------------------
 
             Util.showMessageDialogWithTitle(this,"警告", "发生未知错误，无法保存！！请联系系统管理员");
         }
@@ -240,12 +272,23 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         public void setSaveButton(JButton saveButton) {
             this.saveButton = saveButton;
     }//GEN-LAST:event_saveButtonActionPerformed
+     
+     private class MyMouseAdapter extends MouseAdapter {      //listen for the componentProcedureTable click event 
+        public void mousePressed(MouseEvent e) {  
+            if (componentManagerTable.equals(e.getSource())) {  
+                deleteRowIndex = componentManagerTable.rowAtPoint(e.getPoint());  
+                deleteButton.setEnabled(true);
+            }  
+        }  
+    }     
         
-        
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
+    private javax.swing.JTable componentManagerTable;
     private javax.swing.JButton deleteButton;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables
 }

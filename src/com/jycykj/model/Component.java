@@ -77,4 +77,8 @@ public class Component {
     public void setProcedures(List<String> procedures) {
         this.procedures = procedures;
     }
+
+    public boolean valid() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }

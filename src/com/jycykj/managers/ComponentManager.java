@@ -30,7 +30,7 @@ public class ComponentManager {
     }
     
     public List<Component> getComponents() {
-       return null;
+        return componentDao.getComponents();
     }
     
     public String getProceduresString(String componentId) {

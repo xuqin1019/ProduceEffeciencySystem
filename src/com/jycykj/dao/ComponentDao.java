@@ -717,5 +717,34 @@ public class ComponentDao {
         componentDao.getWorkerWorkLoad(2012,10);
     }
 
+    public List<Component> getComponents() {
+        List<Component> components = new ArrayList<Component>();
+        Component component = new Component();
+        PreparedStatement statement = null;
+        Connection connection;
+        ResultSet rs = null;
+        try {
+            connection = DBManager.getDBManager().getConnection();
+            String sql = "select component_id,name,material,size,manufacturer from component";
+            statement = connection.prepareStatement(sql);
+            rs = statement.executeQuery();
+            while (rs.next()) {
+                String compoenent_id = rs.getString(1);
+                component.setComponentId(compoenent_id);
+                component.setName(rs.getString(2));
+                component.setMaterial(rs.getString(3));
+                component.setSize(rs.getString(4));
+                component.setManufacturer(rs.getString(5));
+                component.setProcedures(this.getProcedureNames(compoenent_id));
+                components.add(component);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBManager.close(rs, statement);
+        }
+        return components;
+    }
+
    
 }

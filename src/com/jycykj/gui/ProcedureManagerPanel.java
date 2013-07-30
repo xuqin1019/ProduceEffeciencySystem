@@ -198,6 +198,7 @@ public class ProcedureManagerPanel extends javax.swing.JPanel {
                 addButton.setEnabled(true);
                 deleteButton.setEnabled(false);
 
+                
                 //-------------------------------------删除工序信息日志----------------------------
                 LoginWindow.logger.info("删除工序成功！ : ");
                 //-------------------------------------删除工序信息日志----------------------------
