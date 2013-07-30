@@ -36,4 +36,8 @@ public class Procedure {
     public void setFactor(float factor) {
         this.factor = factor;
     }
+    
+     public boolean valid() {
+       return procedureId!=null && procedureName!=null && !procedureName.equals("") && factor!=0.0;
+    }
 }

@@ -48,8 +48,7 @@ public class Worker {
     }
 
     public boolean valid() {
-     //  return workerId!=null && workerName!=null && group!=null &&
-        return true;
+        return workerId!=null && workerName!=null && !workerName.equals("") && group!=null && group.getGroupId()!=0;
     }
 
     @Override

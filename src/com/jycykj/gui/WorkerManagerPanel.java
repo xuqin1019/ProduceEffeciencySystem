@@ -29,7 +29,6 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
      * Creates new form UserManagerPanel
      */
     private boolean isAdd = false;
-    private Worker newWorker = null;
     private int deleteRowIndex=-1;
     
     public WorkerManagerPanel() {
@@ -146,14 +145,14 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
                 }
                 sb.append("update worker set name = '" +worker.getWorkerName()+ "',info='"+(worker.getInfo()==null ? "" : worker.getInfo())+"',group_id="+worker.getGroup().getGroupId()+ " where worker_id="+ Integer.parseInt(workerId));
             } else {
-                if(newWorker==null || !newWorker.valid()) {
+                if(worker==null || !worker.valid()) {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
                 }
-                sb.append("insert into worker(name,info,group_id) values('" +  newWorker.getWorkerName() +"','"+(worker.getInfo()==null ? "" : worker.getInfo())+ "'," + newWorker.getGroup().getGroupId() + ")");
+                sb.append("insert into worker(name,info,group_id) values('" +  worker.getWorkerName() +"','"+(worker.getInfo()==null ? "" : worker.getInfo())+ "'," + worker.getGroup().getGroupId() + ")");
             }
         }
-        
+       // System.out.println(sb.toString());
         boolean success =  ComponentDao.getInstance().executeUpdate(sb.toString().split(";"));
         if(success) {           //保存成功
             
@@ -166,6 +165,11 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
              saveButton.setEnabled(false);
              addButton.setEnabled(true);
              isAdd=false;
+             
+            List<Worker> work_list = ((WorkerManagerTableModel)workerManagerTable.getModel()).getWorkerList();
+            //assign id to the saved worker
+            work_list.get(work_list.size()-1).setWorkerId(String.valueOf(ComponentDao.getInstance().getWorkerId(work_list.get(work_list.size()-1).getWorkerName())));
+           
         } else {               //保存失败
             
             //-------------------------------------修改员工信息日志----------------------------
@@ -188,7 +192,7 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
          isAdd = true;
          
-         newWorker = new Worker();  // the new line added
+         Worker newWorker = new Worker();  // the new line added
          newWorker.setWorkerId(ComponentDao.getInstance().getNextWorkerId());
          newWorker.setGroup(new Group());
          WorkerManagerTableModel workerManagerTableModel = (WorkerManagerTableModel)(workerManagerTable.getModel());

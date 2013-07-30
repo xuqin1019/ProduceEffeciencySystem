@@ -433,6 +433,14 @@ public class SystemWindow extends javax.swing.JFrame {
 
     private void procedureManageMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_procedureManageMenuActionPerformed
         // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                ProcedureManagerDialog dialog = new ProcedureManagerDialog();
+                dialog.setLocationRelativeTo(SystemWindow.this);
+                dialog.setResizable(false);
+                dialog.setVisible(true);
+            }
+        });
     }//GEN-LAST:event_procedureManageMenuActionPerformed
 
     /**

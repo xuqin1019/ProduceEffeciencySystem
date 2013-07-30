@@ -5,7 +5,6 @@
 package com.jycykj.gui;
 
 import com.jycykj.helper.ImageIconUtil;
-import java.awt.Font;
 
 /**
  *
@@ -23,7 +22,6 @@ public class WorkerManagerDialog extends javax.swing.JDialog {
         this.setResizable(false);
         setTitle("员工花名册");
         this.setFont(new java.awt.Font("宋体", 0, 14));
-        
     }
 
     /**

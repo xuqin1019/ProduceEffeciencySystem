@@ -581,6 +581,7 @@ public class ComponentDao {
                 statement.execute();
                 connection.commit();
             }
+            connection.setAutoCommit(false);
             success = true;
         } catch (SQLException ex) {
             errorMessage = ex.getMessage();
@@ -650,7 +651,7 @@ public class ComponentDao {
         return success;
     }
     
-     public String getNextWorkerId() {
+    public String getNextWorkerId() {
         return "";
     }
      

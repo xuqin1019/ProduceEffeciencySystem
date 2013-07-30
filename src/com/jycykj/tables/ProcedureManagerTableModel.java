@@ -23,7 +23,7 @@ public class ProcedureManagerTableModel extends AbstractTableModel {
     ProcedureManagerPanel procedureManagerPanel=null;
     private JTable table;
     
-    private Map<String,Procedure> modifiedProcedures = new HashMap<String,Procedure>();
+    private Map<String,Procedure> modifiedProcedures = new HashMap<String,Procedure>();   //修改的procedure
     
     private String [] headers = new String [] {"工序","系数"};
     

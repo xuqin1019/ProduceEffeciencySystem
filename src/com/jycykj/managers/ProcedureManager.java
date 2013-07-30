@@ -4,6 +4,7 @@
  */
 package com.jycykj.managers;
 
+import com.jycykj.dao.ProcedureDao;
 import com.jycykj.model.Procedure;
 import java.util.List;
 
@@ -12,13 +13,22 @@ import java.util.List;
  * @author xuqin
  */
 public class ProcedureManager {
-
+    private ProcedureDao procedureDao = null;
+    private static ProcedureManager procedureManager = null;
+    
     public static ProcedureManager getInstance() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        if(procedureManager==null) {
+            procedureManager = new ProcedureManager();
+        }
+        return procedureManager;
+    }
+    
+    private ProcedureManager() {
+        procedureDao = ProcedureDao.getInstance();
     }
 
     public List<Procedure> getProcedures() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return procedureDao.getProcedures();
     }
     
 }

@@ -5,11 +5,13 @@
 package com.jycykj.gui;
 
 import com.jycykj.dao.ComponentDao;
+import com.jycykj.dao.ProcedureDao;
+import com.jycykj.helper.ImageIconUtil;
 import com.jycykj.helper.Util;
 import com.jycykj.model.Procedure;
-import com.jycykj.model.Worker;
 import com.jycykj.tables.ProcedureManagerTableModel;
-import java.util.ArrayList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +25,6 @@ import javax.swing.JOptionPane;
 public class ProcedureManagerPanel extends javax.swing.JPanel {
     
     private boolean isAdd = false;
-    private Procedure newProcedure = null;
     private int deleteRowIndex=-1;
     /**
      * Creates new form ProcedureManagerPanel
@@ -102,6 +103,8 @@ public class ProcedureManagerPanel extends javax.swing.JPanel {
         );
 
         procedureManagerTable.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
+        procedureManagerTable.addMouseListener(new MyMouseAdapter());
+        /*
         procedureManagerTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -113,6 +116,9 @@ public class ProcedureManagerPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        */
+
+        procedureManagerTable.setModel(new ProcedureManagerTableModel(this,procedureManagerTable));
         jScrollPane1.setViewportView(procedureManagerTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -143,68 +149,65 @@ public class ProcedureManagerPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         isAdd = true;
 
-        newProcedure = new Procedure();  // the new line added
+        Procedure newProcedure = new Procedure();  // the new line added
+       // newProcedure.setProcedureName(TOOL_TIP_TEXT_KEY);
         
-        newWorker.setWorkerId(ComponentDao.getInstance().getNextWorkerId());
-        newWorker.setGroup(new Group());
-        WorkerManagerTableModel workerManagerTableModel = (WorkerManagerTableModel)(workerManagerTable.getModel());
+        newProcedure.setProcedureId(ProcedureDao.getInstance().getNextProcedureId());
+        
+        ProcedureManagerTableModel procedureManagerTableMode = (ProcedureManagerTableModel)(procedureManagerTable.getModel());
 
-        workerManagerTableModel.getModifiedWorkers().put(newWorker.getWorkerId(),newWorker);     //add one line to the table
-        workerManagerTableModel.getWorkerList().add(newWorker);
+        procedureManagerTableMode.getModifiedProcedures().put(newProcedure.getProcedureId(),newProcedure);     //add one line to the table
+        procedureManagerTableMode.getProcedureList().add(newProcedure);                                       //procedureList : 用于显示的list
 
-        workerManagerTableModel.fireTableRowsInserted(workerManagerTableModel.getRowCount()-1, workerManagerTableModel.getRowCount()-1);   //refresh
-        workerManagerTableModel.setIsAdd(isAdd);
+        procedureManagerTableMode.fireTableRowsInserted(procedureManagerTableMode.getRowCount()-1, procedureManagerTableMode.getRowCount()-1);   //refresh
+        procedureManagerTableMode.setIsAdd(isAdd);
 
         //跳转到最后一行并且选中
-        workerManagerTable.scrollRectToVisible(workerManagerTable.getCellRect(workerManagerTable.getRowCount()-1, 0, true));
-        int lastRow = workerManagerTable.convertRowIndexToView(workerManagerTable.getRowCount()-1);
-        workerManagerTable.changeSelection(lastRow, 0, false, false);
+        procedureManagerTable.scrollRectToVisible(procedureManagerTable.getCellRect(procedureManagerTable.getRowCount()-1, 0, true));
+        int lastRow = procedureManagerTable.convertRowIndexToView(procedureManagerTable.getRowCount()-1);
+        procedureManagerTable.changeSelection(lastRow, 0, false, false);
 
         addButton.setEnabled(false);
         saveButton.setEnabled(true);
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        WorkerManagerTableModel workerManagerTableModel = (WorkerManagerTableModel)(workerManagerTable.getModel());
-        String worker_id = workerManagerTableModel.getWorkerList().get(deleteRowIndex).getWorkerId();
+        ProcedureManagerTableModel procedureManagerTableModel = (ProcedureManagerTableModel)(procedureManagerTable.getModel());
+        String procedure_id = procedureManagerTableModel.getProcedureList().get(deleteRowIndex).getProcedureId();
 
-        if(worker_id.equals("")) {
-            workerManagerTableModel.getWorkerList().remove(deleteRowIndex);
-            workerManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
+        if(procedure_id.equals("")) {                 //直接删除还没有保存的行
+            procedureManagerTableModel.getProcedureList().remove(deleteRowIndex);
+            procedureManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
             addButton.setEnabled(true);
             deleteButton.setEnabled(false);
             return;
         }
 
         int choice = JOptionPane.showConfirmDialog(this,"你确定要删除此条记录吗","警告",JOptionPane.WARNING_MESSAGE);
-        System.out.println("worker_id : " + worker_id);
+        System.out.println("procedure_id : " + procedure_id);
         if(choice==JOptionPane.YES_OPTION) {
             System.out.println(deleteRowIndex);
-
-            String [] cleanTables = new String [] {"produce_work","worker"};
-            List<String> sqls = new ArrayList<String>();
-            for(String table : cleanTables) {
-                sqls.add("delete from " + table + " where worker_id = " + Integer.valueOf(worker_id));
-            }
-
-            boolean success =  ComponentDao.getInstance().executeTransaction(sqls);   //执行事务
+            
+            String sql = "delete from `procedure` where procedure_id = " + Integer.valueOf(procedure_id);
+            
+            boolean success =  ProcedureDao.getInstance().executeUpdate(sql);   //执行事务
 
             if(success) {
-                workerManagerTableModel.getWorkerList().remove(deleteRowIndex);
-                workerManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
+                procedureManagerTableModel.getProcedureList().remove(deleteRowIndex);
+                procedureManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
                 addButton.setEnabled(true);
                 deleteButton.setEnabled(false);
 
-                //-------------------------------------删除员工信息日志----------------------------
-                LoginWindow.logger.info("删除员工信息成功！ : ");
-                //-------------------------------------删除员工信息日志----------------------------
+                //-------------------------------------删除工序信息日志----------------------------
+                LoginWindow.logger.info("删除工序成功！ : ");
+                //-------------------------------------删除工序信息日志----------------------------
 
                 Util.showMessageDialog(this,"删除成功！！！");
             } else {
 
-                //-------------------------------------删除员工信息日志----------------------------
-                LoginWindow.logger.error("删除员工信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
-                //-------------------------------------删除员工信息日志----------------------------
+                //-------------------------------------删除工序信息日志----------------------------
+                LoginWindow.logger.error("删除工序信息失败！ : " + ProcedureDao.getInstance().getErrorMessage());
+                //-------------------------------------删除工序信息日志----------------------------
 
                 Util.showMessageDialog(this,"发生未知错误，无法删除！！请联系系统管理员");
             }
@@ -213,60 +216,76 @@ public class ProcedureManagerPanel extends javax.swing.JPanel {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-        Map<String,Worker> workers = ((WorkerManagerTableModel)workerManagerTable.getModel()).getModifiedWorkers();
-        Set<String> workerIds = workers.keySet();
+        Map<String,Procedure> procedures = ((ProcedureManagerTableModel)procedureManagerTable.getModel()).getModifiedProcedures();
+        Set<String> procedureIds = procedures.keySet();
         StringBuilder sb = new StringBuilder();
-        Worker worker = null;
-        for(String workerId : workerIds) {
+        Procedure procedure = null;
+        for(String procedureId : procedureIds) {
             if(sb.length()!=0) {
                 sb.append(";");
             }
-            worker = workers.get(workerId);
-            if(!workerId.equals("")) {
-                if(worker==null || !worker.valid()) {
+            procedure = procedures.get(procedureId);
+            if(!procedureId.equals("")) {    //modified procedure
+                if(procedure==null || !procedure.valid()) {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
                 }
-                sb.append("update worker set name = '" +worker.getWorkerName()+ "',info='"+(worker.getInfo()==null ? "" : worker.getInfo())+"',group_id="+worker.getGroup().getGroupId()+ " where worker_id="+ Integer.parseInt(workerId));
-            } else {
-                if(newProcedure==null || !newProcedure.valid()) {
+                sb.append("update `procedure` set name = '" +procedure.getProcedureName()+ "',factor="+ procedure.getFactor() + " where procedure_id="+ Integer.parseInt(procedureId));
+            } else {                       //new procedure
+                if(procedure==null || !procedure.valid()) {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
                 }
-                sb.append("insert into worker(name,info,group_id) values('" +  newWorker.getWorkerName() +"','"+(worker.getInfo()==null ? "" : worker.getInfo())+ "'," + newWorker.getGroup().getGroupId() + ")");
+                sb.append("insert into `procedure`(name,factor) values('" +  procedure.getProcedureName() + "'," + procedure.getFactor() + ")");
             }
         }
-
-        boolean success =  ComponentDao.getInstance().executeUpdate(sb.toString().split(";"));
+        
+        System.out.println(sb.toString());
+        
+        boolean success =  ProcedureDao.getInstance().executeUpdate(sb.toString().split(";"));
         if(success) {           //保存成功
 
-            //-------------------------------------修改员工信息日志----------------------------
-            LoginWindow.logger.info("修改员工信息成功！ : ");
-            //-------------------------------------修改员工信息日志----------------------------
+            //-------------------------------------修改工序信息日志----------------------------
+            LoginWindow.logger.info("修改工序信息成功！ : ");
+            //-------------------------------------修改工序信息日志----------------------------
 
             Util.showMessageDialog(this,"保存成功！！！");
             ((ProcedureManagerTableModel)procedureManagerTable.getModel()).getModifiedProcedures().clear();
             saveButton.setEnabled(false);
             addButton.setEnabled(true);
             isAdd=false;
+            
+            List<Procedure> procedure_list = ((ProcedureManagerTableModel)procedureManagerTable.getModel()).getProcedureList();
+            //assign id to the saved procedure
+            procedure_list.get(procedure_list.size()-1).setProcedureId(String.valueOf(ProcedureDao.getInstance().getProcedureId(procedure_list.get(procedure_list.size()-1).getProcedureName())));
+           
         } else {               //保存失败
 
-            //-------------------------------------修改员工信息日志----------------------------
-            LoginWindow.logger.error("修改员工信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
-            //-------------------------------------修改员工信息日志----------------------------
+            //-------------------------------------修改工序信息日志----------------------------
+            LoginWindow.logger.error("修改工序信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
+            //-------------------------------------修改工序信息日志----------------------------
 
             Util.showMessageDialogWithTitle(this,"警告", "发生未知错误，无法保存！！请联系系统管理员");
         }
-        }
+     }
 
-        public JButton getSaveButton() {
-            return saveButton;
-        }
+    public JButton getSaveButton() {
+        return saveButton;
+    }
 
-        public void setSaveButton(JButton saveButton) {
+    public void setSaveButton(JButton saveButton) {
             this.saveButton = saveButton;
     }//GEN-LAST:event_saveButtonActionPerformed
 
+     private class MyMouseAdapter extends MouseAdapter {      //listen for the componentProcedureTable click event 
+        public void mousePressed(MouseEvent e) {  
+            if (procedureManagerTable.equals(e.getSource())) {  
+                deleteRowIndex = procedureManagerTable.rowAtPoint(e.getPoint());  
+                deleteButton.setEnabled(true);
+            }  
+        }  
+    }     
+        
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JButton deleteButton;
