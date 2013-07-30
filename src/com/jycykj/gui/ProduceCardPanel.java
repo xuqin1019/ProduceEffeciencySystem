@@ -491,6 +491,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             componentProcedureTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
             
             //reset the num label
+             numOfRecords = componentProcedureTableModel.getWorks().size();
              refreshCountNumLabel();
            
             //删除成功后，addRowButton设置为true ， deleteRowButton设置为false
