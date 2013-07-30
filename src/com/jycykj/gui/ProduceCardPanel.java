@@ -29,7 +29,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
 import javax.swing.RowFilter;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
@@ -50,6 +49,8 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     private ComponentProcedureTableModel componentProcedureTableModel = null;
     private TableRowSorter<TableModel> sorter = null;     //sorter，用于排序
     
+    private int numOfRecords = 0;                  //记录条数
+    
     //String [] componentIds = null;     //used to show in the list
     
     boolean deleteRowButtonLastStatus = false;      //用来保存tab切换的时候deleteRowButton的状态
@@ -64,11 +65,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     public ProduceCardPanel(ProduceCardDialog produceCardDialog) {
         this.produceCardDialog = produceCardDialog;
         produceCardManager = ProduceCardManager.newInstance();
-        
-      //  int size = componentIdsString.size(); 
-     //   componentIds = (String [])componentIdsString.toArray(new String[size]);       //calculate the list in the construction method to save time
         initComponents();
-        
         this.timeLabel.setText(produceCardManager.getCurrentTime());
     }
 
@@ -100,6 +97,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         componentProcedureTable = new JTable();
         jPanel2 = new javax.swing.JPanel();
+        countNumLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
@@ -239,7 +237,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         componentProcedureTable.setModel(componentProcedureTableModel);
         //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(componentProcedureTableModel);
         //componentProcedureTable.setRowSorter(sorter);
-
+        //refreshCountNumLabel();
         componentProcedureTable.addMouseListener(new MyMouseAdapter());
         jScrollPane2.setViewportView(componentProcedureTable);
 
@@ -249,11 +247,14 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 475, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(281, 281, 281)
+                .addComponent(countNumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 23, Short.MAX_VALUE)
+            .addComponent(countNumLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
         );
 
         cancelButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
@@ -281,7 +282,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(163, 163, 163)
                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 200, Short.MAX_VALUE)
                 .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(154, 154, 154))
         );
@@ -292,7 +293,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(cancelButton))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         addRowButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
@@ -325,10 +326,10 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(addRowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
+                        .addGap(32, 32, 32)
                         .addComponent(deleteRowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -337,11 +338,11 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(addRowButton)
-                        .addComponent(deleteRowButton)))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addRowButton)
+                    .addComponent(deleteRowButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -351,9 +352,6 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         produceCardDialog.dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
-    
-        
-   
     
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         // TODO add your handling code here:
@@ -370,17 +368,24 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 System.out.println("deleteRowButtonLastStatus==true");
                 deleteRowButton.setEnabled(true);  //切换成true的状态
             }
-         
+            refreshCountNumLabel();              //刷新
         } else {                       //在第一个table tab中，所有按钮设置为false
+            countNumLabel.setText("");
             addRowButton.setEnabled(false);
             deleteRowButton.setEnabled(false);
             saveButton.setEnabled(false);
         }
-        
     }//GEN-LAST:event_jTabbedPane1StateChanged
-
+    
+    private void refreshCountNumLabel() {
+        if(jTabbedPane1.getSelectedIndex()==1) {
+            countNumLabel.setText("总共" + numOfRecords + "条记录");
+        } else {
+            countNumLabel.setText("");
+        }
+    }
+    
     private boolean notSaved() {
-      //  System.out.println("nothingAdded : " + nothingAdded + "    " + addedProducedProcedure!=null ? "not null" : "null");
         return nothingAdded==false && addedProducedProcedure!=null;
     }
     
@@ -406,8 +411,6 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         
         List<String> procedureNames = produceCardManager.getProcedureNames(componentIdTextField.getText().trim());    //add procedure in combox
         List<String> workerNames = produceCardManager.getWorkerNames();
-         
-         
        
          renderColumnAsCombox(1,procedureNames,addedProducedProcedure);
          renderColumnAsTextField(3,workerNames,addedProducedProcedure);
@@ -460,14 +463,12 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                   componentProcedureTableModel.fireTableDataChanged();
               }
         }
-        
     }
     
     private void deleteRowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteRowButtonActionPerformed
         // TODO add your handling code here:
         //删除某条记录
         int choice = JOptionPane.showConfirmDialog(this,"你确定要删除此条记录吗","警告",JOptionPane.WARNING_MESSAGE);
-        
         if(choice==JOptionPane.YES_OPTION) {
             System.out.println(deleteRowIndex);
             
@@ -484,11 +485,13 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                     LoginWindow.logger.info("删除记录成功 : " + componentProcedureTableModel.getWorks().get(deleteRowIndex).toString());
                     //------------------------------删除记录日志------------------------------
                     Util.showMessageDialog(this, "删除记录成功！！");
-                    
                 }
             }
             componentProcedureTableModel.getWorks().remove(deleteRowIndex);
             componentProcedureTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
+            
+            //reset the num label
+             refreshCountNumLabel();
            
             //删除成功后，addRowButton设置为true ， deleteRowButton设置为false
             addRowButton.setEnabled(true);       
@@ -546,6 +549,10 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 return;
             }
             
+            //reset the num label
+             numOfRecords = componentProcedureTableModel.getWorks().size();
+             refreshCountNumLabel();
+            
             //数据录入成功后，addRowButton设置为true,saveButton设置为false
             addedProducedProcedure=null;
             addRowButton.setEnabled(true);
@@ -565,6 +572,9 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         String batchName = batchIdTextField.getText().trim().length()==0 ? "" : batchIdTextField.getText().trim(); 
         componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),batchName);
         componentProcedureTable.setModel(componentProcedureTableModel);
+        
+        numOfRecords = componentProcedureTableModel.getWorks().size();
+        refreshCountNumLabel();
         
         setSorter(componentProcedureTableModel, componentProcedureTable);   //使得表格可以排序
 
@@ -590,6 +600,9 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         componentProcedureTableModel = new ComponentProcedureTableModel(componentIdTextField.getText().trim(),batchIdTextField.getText().trim());
         componentProcedureTable.setModel(componentProcedureTableModel);
         
+        numOfRecords = componentProcedureTableModel.getWorks().size();
+        refreshCountNumLabel();
+        
         setSorter(componentProcedureTableModel, componentProcedureTable);     //使得表格可以排序
 
         if(jTabbedPane1.getSelectedIndex()==1) {     //如果是在第二个table tab中
@@ -610,7 +623,10 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             //调用方法实现过滤内容
           sorter.setRowFilter(RowFilter.regexFilter(text));
         }
-      
+        
+       //refresh
+        numOfRecords =  sorter.getViewRowCount();
+        refreshCountNumLabel();
     }//GEN-LAST:event_filterButtonActionPerformed
 
     private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
@@ -695,6 +711,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     private javax.swing.JLabel componentLabel;
     private javax.swing.JLabel componentNameLabel;
     private javax.swing.JTable componentProcedureTable;
+    private javax.swing.JLabel countNumLabel;
     private javax.swing.JButton deleteRowButton;
     private javax.swing.JButton exportButton;
     private javax.swing.JButton filterButton;
