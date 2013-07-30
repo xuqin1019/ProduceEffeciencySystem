@@ -10,12 +10,13 @@ import com.jycykj.helper.ImageIconUtil;
  *
  * @author xuqin
  */
-public class ProcedureManagerDialog extends javax.swing.JFrame {
+public class ProcedureManagerDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form ProcedureManagerDialog
      */
     public ProcedureManagerDialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
         this.setIconImage(ImageIconUtil.getFrameIcon("pics/procedure_manage.png"));
         this.setResizable(false);
@@ -34,19 +35,17 @@ public class ProcedureManagerDialog extends javax.swing.JFrame {
 
         procedureManagerPanel1 = new com.jycykj.gui.ProcedureManagerPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(procedureManagerPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
+            .addComponent(procedureManagerPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(procedureManagerPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(procedureManagerPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
         );
 
         pack();
@@ -79,10 +78,17 @@ public class ProcedureManagerDialog extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ProcedureManagerDialog().setVisible(true);
+                ProcedureManagerDialog dialog = new ProcedureManagerDialog(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }

@@ -430,12 +430,13 @@ public class SystemWindow extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_checklogMenuActionPerformed
-
+    
+    //工序管理菜单
     private void procedureManageMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_procedureManageMenuActionPerformed
         // TODO add your handling code here:
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ProcedureManagerDialog dialog = new ProcedureManagerDialog();
+                ProcedureManagerDialog dialog = new ProcedureManagerDialog(SystemWindow.this, true);
                 dialog.setLocationRelativeTo(SystemWindow.this);
                 dialog.setResizable(false);
                 dialog.setVisible(true);
