@@ -6,20 +6,23 @@ package com.jycykj.gui;
 
 import com.jycykj.dao.ComponentDao;
 import com.jycykj.dao.ProcedureDao;
-import com.jycykj.helper.Util;
+import com.jycykj.tables.ComponentManagerTableModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 /**
  *
  * @author xuqin
  */
 public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
+    private JTable componentManagerTable;
     private String componentId = null;                     //选中的零件标号
+    private int modifiedIndex=-1;                             //正在修改工序的行
     private List<Integer> preModifiedProcedureIds = null;   //修改之前该零件的工序号集合   
     private List<Integer> postModifiedProcedureIds = null;  //修改之后该零件的工序号集合
     
@@ -35,9 +38,11 @@ public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
     /**
      * Creates new form ComponentProcedureSelectDialog
      */
-    public ComponentProcedureSelectDialog(java.awt.Frame parent, boolean modal,String componentId) {
+    public ComponentProcedureSelectDialog(java.awt.Frame parent, boolean modal,JTable componentManagerTable,String componentId,int modifiedIndex) {
         super(parent, modal);
         this.componentId = componentId;
+        this.componentManagerTable = componentManagerTable;
+        this.modifiedIndex=modifiedIndex;
         procedureNameIdMaps = procedureDao.getProceduresMap();
         procedureIdNameMaps = getProcedureIdNameMaps();
         
@@ -252,6 +257,16 @@ public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
         int choice = JOptionPane.showConfirmDialog(this,"你确定执行下列操作吗？\n\n" + confirmString,"警告",JOptionPane.WARNING_MESSAGE);
         if(choice==JOptionPane.YES_OPTION) {
             //-------------------------更改数据库操作-----------------------------------
+            List<String> procedureList = new ArrayList<String>();
+            procedureList.add("a");
+            
+            System.out.println("In dialog : " + componentManagerTable);
+            
+            //componentManagerTable.setModel(componentManagerTable.getModel().setValueAt(procedures, modifiedIndex, 5));
+            ((ComponentManagerTableModel)componentManagerTable.getModel()).getComponentList().get(modifiedIndex).setProcedures(procedureList);
+            ((ComponentManagerTableModel)componentManagerTable.getModel()).fireTableCellUpdated(modifiedIndex,5);
+            
+            this.dispose();
         }
     }//GEN-LAST:event_saveButtonActionPerformed
     
@@ -303,7 +318,7 @@ public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ComponentProcedureSelectDialog dialog = new ComponentProcedureSelectDialog(new javax.swing.JFrame(), true,"");
+                ComponentProcedureSelectDialog dialog = new ComponentProcedureSelectDialog(new javax.swing.JFrame(), true,null,"",1);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

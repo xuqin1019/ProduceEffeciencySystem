@@ -5,6 +5,7 @@
 package com.jycykj.gui;
 
 import com.jycykj.dao.ComponentDao;
+import com.jycykj.dao.ProcedureDao;
 import com.jycykj.helper.ImageIconUtil;
 import com.jycykj.helper.Util;
 import com.jycykj.model.Component;
@@ -12,7 +13,6 @@ import com.jycykj.tables.ComponentManagerTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JButton;
@@ -32,6 +32,7 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
     public ComponentManagerPanel() {
         initComponents();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -114,6 +115,7 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(componentManagerTable);
 
         editProcedureButton.setText("编辑工序");
+        editProcedureButton.setEnabled(false);
         editProcedureButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editProcedureButtonActionPerformed(evt);
@@ -179,9 +181,14 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         componentManagerTable.scrollRectToVisible(componentManagerTable.getCellRect(componentManagerTable.getRowCount()-1, 0, true));
         int lastRow = componentManagerTable.convertRowIndexToView(componentManagerTable.getRowCount()-1);
         componentManagerTable.changeSelection(lastRow, 0, false, false);
-
+        
         addButton.setEnabled(false);
         saveButton.setEnabled(true);
+        
+        
+        //set deleteRowIndex is the last row and enable the edit button
+        deleteRowIndex = lastRow; 
+        editProcedureButton.setEnabled(true);
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -250,10 +257,22 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
                 }
-      //          sb.append("insert into worker(name,info,group_id) values('" +  worker.getWorkerName() +"','"+(worker.getInfo()==null ? "" : worker.getInfo())+ "'," + worker.getGroup().getGroupId() + ")");
+                sb.append("insert into component(component_id,name,material,size,manufacturer) values('" +  
+                component.getComponentId() +"','"+  component.getName() + "','" + (component.getMaterial()==null ? "" : component.getMaterial())+ "','" + (component.getSize()==null ? "" : component.getSize())+ "','" + (component.getManufacturer()==null ? "" : component.getManufacturer()) + "')");
+                
+                if(component.getProcedures()!=null && component.getProcedures().size()>0) {    //插入零件的工序
+                    for(String procedureName : component.getProcedures()) {
+                        sb.append(";");
+                        int procedureId = ProcedureDao.getInstance().getProcedureId(procedureName);
+                        sb.append("insert into component_procedure(component_id,procedure_id) values ('" +
+                                 component.getComponentId() + "'," + procedureId + ")");
+                    }
+                    
+                }
             }
         }
-        // System.out.println(sb.toString());
+        System.out.println(sb.toString());
+        /*
         boolean success =  ComponentDao.getInstance().executeUpdate(sb.toString().split(";"));
         if(success) {           //保存成功
 
@@ -279,15 +298,15 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
             //-------------------------------------修改零件信息日志----------------------------
 
             Util.showMessageDialogWithTitle(this,"警告", "发生未知错误，无法保存！！请联系系统管理员");
-        }
-        }
+        } */
+    }
 
-        public JButton getSaveButton() {
-            return saveButton;
-        }
+    public JButton getSaveButton() {
+        return saveButton;
+    }
 
-        public void setSaveButton(JButton saveButton) {
-            this.saveButton = saveButton;
+    public void setSaveButton(JButton saveButton) {
+        this.saveButton = saveButton;
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void editProcedureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editProcedureButtonActionPerformed
@@ -296,7 +315,8 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         final String component_id = componentManagerTableModel.getComponentList().get(deleteRowIndex).getComponentId();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ComponentProcedureSelectDialog componentProcedureSelectDialog = new ComponentProcedureSelectDialog(null, true,component_id);
+                ComponentProcedureSelectDialog componentProcedureSelectDialog = new ComponentProcedureSelectDialog(null, true,componentManagerTable,component_id,deleteRowIndex);
+                System.out.println("In Panel : " + componentManagerTable);
                 componentProcedureSelectDialog.setLocationRelativeTo(null);
                 componentProcedureSelectDialog.setResizable(false);
                 componentProcedureSelectDialog.setVisible(true);
@@ -308,11 +328,22 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         public void mousePressed(MouseEvent e) {  
             if (componentManagerTable.equals(e.getSource())) {  
                 deleteRowIndex = componentManagerTable.rowAtPoint(e.getPoint());  
+                System.out.println(deleteRowIndex);
                 deleteButton.setEnabled(true);
+                editProcedureButton.setEnabled(true);
             }  
         }  
     }     
-        
+
+    public int getDeleteRowIndex() {
+        return deleteRowIndex;
+    }
+
+    public void setDeleteRowIndex(int deleteRowIndex) {
+        this.deleteRowIndex = deleteRowIndex;
+    }
+    
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;

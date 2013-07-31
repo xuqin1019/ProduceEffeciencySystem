@@ -79,6 +79,7 @@ public class Component {
     }
 
     public boolean valid() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return (componentId!=null && !componentId.equals("")) && 
+                (name!=null && !name.equals(""));
     }
 }

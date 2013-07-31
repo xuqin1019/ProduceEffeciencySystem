@@ -132,6 +132,9 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editProcedureButtonActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="editProcedureButton.setEnabled(false);"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="saveButton">
       <Properties>
