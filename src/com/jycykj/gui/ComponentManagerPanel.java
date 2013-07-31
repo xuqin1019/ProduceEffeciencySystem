@@ -47,6 +47,7 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         deleteButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         componentManagerTable = new javax.swing.JTable();
+        editProcedureButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
 
         addButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
@@ -72,18 +73,17 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addButton)
-                .addGap(50, 50, 50)
-                .addComponent(deleteButton)
-                .addContainerGap(488, Short.MAX_VALUE))
+                .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
+                .addComponent(deleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(761, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                    .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE))
+                    .addComponent(deleteButton)
+                    .addComponent(addButton))
                 .addContainerGap())
         );
 
@@ -102,8 +102,23 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
             }
         ));
         */
-        componentManagerTable.setModel(new ComponentManagerTableModel(this,componentManagerTable));
+        ComponentManagerTableModel componentManagerTableModel = new ComponentManagerTableModel(this,componentManagerTable);
+        componentManagerTable.setModel(componentManagerTableModel);
+        componentManagerTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        componentManagerTable.getColumn(componentManagerTableModel.getColumnName(0)).setPreferredWidth(130);
+        componentManagerTable.getColumn(componentManagerTableModel.getColumnName(1)).setPreferredWidth(130);
+        componentManagerTable.getColumn(componentManagerTableModel.getColumnName(2)).setPreferredWidth(130);
+        componentManagerTable.getColumn(componentManagerTableModel.getColumnName(3)).setPreferredWidth(130);
+        componentManagerTable.getColumn(componentManagerTableModel.getColumnName(4)).setPreferredWidth(130);
+        componentManagerTable.getColumn(componentManagerTableModel.getColumnName(5)).setPreferredWidth(430);
         jScrollPane1.setViewportView(componentManagerTable);
+
+        editProcedureButton.setText("编辑工序");
+        editProcedureButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editProcedureButtonActionPerformed(evt);
+            }
+        });
 
         saveButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         saveButton.setText("保存");
@@ -118,26 +133,28 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveButton))
-                    .addComponent(jScrollPane1))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addComponent(jScrollPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(editProcedureButton))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
+                .addComponent(editProcedureButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                    .addComponent(saveButton))
+                .addGap(8, 8, 8))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -272,6 +289,20 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         public void setSaveButton(JButton saveButton) {
             this.saveButton = saveButton;
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void editProcedureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editProcedureButtonActionPerformed
+        // TODO add your handling code here:
+        ComponentManagerTableModel componentManagerTableModel = (ComponentManagerTableModel)(componentManagerTable.getModel());
+        final String component_id = componentManagerTableModel.getComponentList().get(deleteRowIndex).getComponentId();
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                ComponentProcedureSelectDialog componentProcedureSelectDialog = new ComponentProcedureSelectDialog(null, true,component_id);
+                componentProcedureSelectDialog.setLocationRelativeTo(null);
+                componentProcedureSelectDialog.setResizable(false);
+                componentProcedureSelectDialog.setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_editProcedureButtonActionPerformed
      
      private class MyMouseAdapter extends MouseAdapter {      //listen for the componentProcedureTable click event 
         public void mousePressed(MouseEvent e) {  
@@ -287,8 +318,11 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
     private javax.swing.JButton addButton;
     private javax.swing.JTable componentManagerTable;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JButton editProcedureButton;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables
 }
+
+

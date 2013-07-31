@@ -37,20 +37,12 @@ public class ComponentManagerTableModel extends AbstractTableModel{
     
     private List<Component> componentList = null;
     
-   // private JComboBox jComboBox = new JComboBox();
-   // private  Map<String,Integer> groups = null;
-    
     public ComponentManagerTableModel(ComponentManagerPanel componentManagerPanel,JTable table) {
         this.componentManagerPanel = componentManagerPanel;
         this.table = table;
         componentManager = ComponentManager.getInstance();
         System.out.println("initialized");
-      //  groups = workerManager.getGroups();
         componentList = componentManager.getComponents();
-    //    Set<String> group_names = groups.keySet();
-     //   for(String g : group_names) {
-     //       jComboBox.addItem(g);
-     //   }
     }
 
     @Override
@@ -76,7 +68,7 @@ public class ComponentManagerTableModel extends AbstractTableModel{
     }
 
     @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
+    public Object getValueAt(final int rowIndex, final int columnIndex) {
         Component component = componentList.get(rowIndex);
         String proceduresString = componentManager.getProceduresString(component.getComponentId());   //获取工序的拼接字符串
         if(columnIndex==0) {       //图号
@@ -91,7 +83,7 @@ public class ComponentManagerTableModel extends AbstractTableModel{
             return component.getManufacturer()==null ? "" : component.getManufacturer();
         } else {   //工序
             return (proceduresString==null || proceduresString.equals("")) ? "" : proceduresString;
-        }
+        } 
     }
 
     @Override
@@ -131,8 +123,9 @@ public class ComponentManagerTableModel extends AbstractTableModel{
                     component.setManufacturer((String)value);
                 }
             } else if(columnIndex==5) {    //工序 TODO
-            
+                
             }
+            
             componentList.set(rowIndex, component);
             fireTableCellUpdated(rowIndex, columnIndex);
             
@@ -189,3 +182,4 @@ public class ComponentManagerTableModel extends AbstractTableModel{
         this.isAdd = isAdd;
     }
 }
+

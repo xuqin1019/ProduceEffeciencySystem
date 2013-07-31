@@ -3,7 +3,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
- 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -147,8 +146,7 @@ public class MyFrame extends JFrame {
         */
        private void addItem() {
               if (field.getText() != null && !field.getText().equals("")) {
-                     ((DefaultListModel) leftList.getModel())
-                                   .addElement(field.getText());
+                     ((DefaultListModel) leftList.getModel()).addElement(field.getText());
                      field.setText("");
               }
        }

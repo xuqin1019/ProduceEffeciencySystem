@@ -719,7 +719,6 @@ public class ComponentDao {
 
     public List<Component> getComponents() {
         List<Component> components = new ArrayList<Component>();
-        Component component = new Component();
         PreparedStatement statement = null;
         Connection connection;
         ResultSet rs = null;
@@ -729,6 +728,7 @@ public class ComponentDao {
             statement = connection.prepareStatement(sql);
             rs = statement.executeQuery();
             while (rs.next()) {
+                Component component = new Component();
                 String compoenent_id = rs.getString(1);
                 component.setComponentId(compoenent_id);
                 component.setName(rs.getString(2));

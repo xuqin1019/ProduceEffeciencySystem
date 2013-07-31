@@ -4,15 +4,15 @@
  */
 package com.jycykj.dao;
 
-import com.jycykj.model.Group;
 import com.jycykj.model.Procedure;
-import com.jycykj.model.Worker;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -55,6 +55,31 @@ public class ProcedureDao {
             DBManager.close(rs, statement);
         }
         return -1;
+    }
+    
+    public Map<String,Integer> getProceduresMap() {
+        Map<String,Integer> map = new HashMap<String, Integer>();
+        PreparedStatement statement = null;
+        Connection connection;
+        ResultSet rs = null;
+        try {
+            connection = DBManager.getDBManager().getConnection();
+            String sql = "select procedure_id,name from `procedure`";
+            statement = connection.prepareStatement(sql);
+            rs = statement.executeQuery();
+            while(rs.next()) {
+                int procedure_id = rs.getInt(1);
+                String name = rs.getString(2);
+                map.put(name, procedure_id);
+            }
+          
+        } catch (SQLException e) {
+            errorMessage = e.getMessage();
+            e.printStackTrace();
+        } finally {
+            DBManager.close(rs, statement);
+        }
+        return map;
     }
     
     public boolean executeUpdate(String sql) {
@@ -118,7 +143,6 @@ public class ProcedureDao {
     }
 
     public List<Procedure> getProcedures() {
-      
         List<Procedure> procedures = new ArrayList<Procedure>();
         PreparedStatement statement = null;
         Connection connection;
