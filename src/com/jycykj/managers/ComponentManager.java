@@ -32,19 +32,7 @@ public class ComponentManager {
     public List<Component> getComponents() {
         return componentDao.getComponents();
     }
-    
-    public String getProceduresString(String componentId) {
-        List<String> procedures = getProcedures(componentId);
-        StringBuilder result = new StringBuilder();
-        for(String procedure : procedures) {
-            if(result.length()>0) {
-                result.append(",");
-            }
-            result.append(procedure);
-        }
-        return result.toString();
-    }
-    
+   
     public List<String> getProcedures(String componentId) {
         return componentDao.getProcedureNames(componentId);
     }

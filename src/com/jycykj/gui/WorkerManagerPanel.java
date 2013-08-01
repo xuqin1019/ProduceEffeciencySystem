@@ -208,7 +208,11 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
          int lastRow = workerManagerTable.convertRowIndexToView(workerManagerTable.getRowCount()-1);
          workerManagerTable.changeSelection(lastRow, 0, false, false);
          
+         deleteRowIndex = lastRow;
+       //  System.out.println(deleteRowIndex);
+         
          addButton.setEnabled(false);
+         deleteButton.setEnabled(true);
          saveButton.setEnabled(true);
     }//GEN-LAST:event_addButtonActionPerformed
 

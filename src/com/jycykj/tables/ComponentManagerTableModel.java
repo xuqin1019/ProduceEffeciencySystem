@@ -23,7 +23,7 @@ public class ComponentManagerTableModel extends AbstractTableModel{
    
     private JTable table;
     
-    private Map<String,Component> modifiedComponents = new HashMap<String,Component>();
+  //  private Map<String,Component> modifiedComponents = new HashMap<String,Component>();
     
     private String [] headers = new String [] {"零件图号","零件名称","材料","规格","制造商","工序"};
     
@@ -70,7 +70,7 @@ public class ComponentManagerTableModel extends AbstractTableModel{
     @Override
     public Object getValueAt(final int rowIndex, final int columnIndex) {
         Component component = componentList.get(rowIndex);
-        String proceduresString = componentManager.getProceduresString(component.getComponentId());   //获取工序的拼接字符串
+        String proceduresString = getProceduresString(rowIndex);   //获取工序的拼接字符串
         if(columnIndex==0) {       //图号
             return component.getComponentId()==null ? "" : component.getComponentId();
         } else if(columnIndex==1) {   //零件名称
@@ -129,23 +129,29 @@ public class ComponentManagerTableModel extends AbstractTableModel{
             componentList.set(rowIndex, component);
             fireTableCellUpdated(rowIndex, columnIndex);
             
-            if(!modifiedComponents.containsKey(component.getComponentId())) {
-                modifiedComponents.put(component.getComponentId(), component);
-            } else {
-                modifiedComponents.remove(component.getComponentId());
-                modifiedComponents.put(component.getComponentId(), component);
-            }
+       //     modifiedComponents.put(component.getComponentId(), component);
             componentManagerPanel.getSaveButton().setEnabled(true);
         }
         
-      //  print(workerList);
-        print(modifiedComponents);
+    //    print(modifiedComponents);
     }
 
     private void print(List<Component> componentList) {
         for(Component component : componentList) {
             System.out.println(component);
         }
+    }
+    
+    private String getProceduresString(int index) {
+        List<String> procedures = componentList.get(index).getProcedures();
+        StringBuilder result = new StringBuilder();
+        for(String procedure : procedures) {
+            if(result.length()>0) {
+                result.append(",");
+            }
+            result.append(procedure);
+        }
+        return result.toString();
     }
 
     private void print(Map<String, Component> modifiedComponents) {
@@ -156,13 +162,13 @@ public class ComponentManagerTableModel extends AbstractTableModel{
        } 
     }
 
-    public Map<String, Component> getModifiedComponents() {
-        return modifiedComponents;
-    }
-
-    public void setModifiedComponents(Map<String, Component> modifiedComponents) {
-        this.modifiedComponents = modifiedComponents;
-    }
+//    public Map<String, Component> getModifiedComponents() {
+//        return modifiedComponents;
+//    }
+//
+//    public void setModifiedComponents(Map<String, Component> modifiedComponents) {
+//        this.modifiedComponents = modifiedComponents;
+//    }
 
     public List<Component> getComponentList() {
         return componentList;
@@ -181,5 +187,7 @@ public class ComponentManagerTableModel extends AbstractTableModel{
     public void setIsAdd(boolean isAdd) {
         this.isAdd = isAdd;
     }
+
+    
 }
 

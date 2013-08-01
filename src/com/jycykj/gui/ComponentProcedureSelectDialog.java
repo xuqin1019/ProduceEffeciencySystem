@@ -23,6 +23,8 @@ public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
     private JTable componentManagerTable;
     private String componentId = null;                     //选中的零件标号
     private int modifiedIndex=-1;                             //正在修改工序的行
+    private ComponentManagerPanel componentManagerPanel;
+    
     private List<Integer> preModifiedProcedureIds = null;   //修改之前该零件的工序号集合   
     private List<Integer> postModifiedProcedureIds = null;  //修改之后该零件的工序号集合
     
@@ -38,11 +40,12 @@ public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
     /**
      * Creates new form ComponentProcedureSelectDialog
      */
-    public ComponentProcedureSelectDialog(java.awt.Frame parent, boolean modal,JTable componentManagerTable,String componentId,int modifiedIndex) {
+    public ComponentProcedureSelectDialog(java.awt.Frame parent, boolean modal,String componentId,ComponentManagerPanel componentManagerPanel) {
         super(parent, modal);
+        this.componentManagerPanel = componentManagerPanel;
         this.componentId = componentId;
-        this.componentManagerTable = componentManagerTable;
-        this.modifiedIndex=modifiedIndex;
+        this.componentManagerTable = componentManagerPanel.getComponentManagerTable();
+        this.modifiedIndex=componentManagerPanel.getDeleteRowIndex();
         procedureNameIdMaps = procedureDao.getProceduresMap();
         procedureIdNameMaps = getProcedureIdNameMaps();
         
@@ -56,7 +59,6 @@ public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
         //--------------------------------设置初始零件的工序号-----------------------------
         preModifiedProcedureIds = getProcedureIds();
         postModifiedProcedureIds = new ArrayList<Integer>(preModifiedProcedureIds);
-        myprint(postModifiedProcedureIds);
         initComponents();
     }
     
@@ -252,21 +254,24 @@ public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-        
+        boolean setEnable = true;
         String confirmString = getConfirmString();    //确认信息（删除和添加工序的详细信息）
+        if(confirmString.equals("")) {
+            setEnable = false;
+            confirmString = "工序未作出任何修改";
+        }
         int choice = JOptionPane.showConfirmDialog(this,"你确定执行下列操作吗？\n\n" + confirmString,"警告",JOptionPane.WARNING_MESSAGE);
         if(choice==JOptionPane.YES_OPTION) {
             //-------------------------更改数据库操作-----------------------------------
             List<String> procedureList = new ArrayList<String>();
-            procedureList.add("a");
+            for(int procedure_id : postModifiedProcedureIds) {
+                procedureList.add(procedureIdNameMaps.get(procedure_id));
+            }
             
-            System.out.println("In dialog : " + componentManagerTable);
-            
-            //componentManagerTable.setModel(componentManagerTable.getModel().setValueAt(procedures, modifiedIndex, 5));
             ((ComponentManagerTableModel)componentManagerTable.getModel()).getComponentList().get(modifiedIndex).setProcedures(procedureList);
-            ((ComponentManagerTableModel)componentManagerTable.getModel()).fireTableCellUpdated(modifiedIndex,5);
-            
+            ((ComponentManagerTableModel)componentManagerTable.getModel()).fireTableRowsUpdated(modifiedIndex, modifiedIndex);
             this.dispose();
+            componentManagerPanel.getSaveButton().setEnabled(setEnable);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
     
@@ -318,7 +323,7 @@ public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ComponentProcedureSelectDialog dialog = new ComponentProcedureSelectDialog(new javax.swing.JFrame(), true,null,"",1);
+                ComponentProcedureSelectDialog dialog = new ComponentProcedureSelectDialog(new javax.swing.JFrame(), true,"",null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
