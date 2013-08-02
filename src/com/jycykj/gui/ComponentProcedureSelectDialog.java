@@ -30,6 +30,7 @@ public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
     
     private List<String> initialNotSelectedProcedureNames = null;     //初始化的未选择的工序名称
     private List<String> initialSelectedProcedureNames = null;       //初始化的选择的工序名称
+    private StringBuilder procedureChange;   //用来记录工序的添加和删除ID
     //private List<String> allProcedureNames = null;
     
     private Map<String,Integer> procedureNameIdMaps = null;
@@ -43,6 +44,7 @@ public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
     public ComponentProcedureSelectDialog(java.awt.Frame parent, boolean modal,String componentId,ComponentManagerPanel componentManagerPanel) {
         super(parent, modal);
         this.componentManagerPanel = componentManagerPanel;
+        this.procedureChange = new StringBuilder();
         this.componentId = componentId;
         this.componentManagerTable = componentManagerPanel.getComponentManagerTable();
         this.modifiedIndex=componentManagerPanel.getDeleteRowIndex();
@@ -260,7 +262,7 @@ public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
             setEnable = false;
             confirmString = "工序未作出任何修改";
         }
-        int choice = JOptionPane.showConfirmDialog(this,"你确定执行下列操作吗？\n\n" + confirmString,"警告",JOptionPane.WARNING_MESSAGE);
+        int choice = JOptionPane.showConfirmDialog(this,"你确定执行下列操作吗？\n\n" + confirmString ,"警告",JOptionPane.WARNING_MESSAGE);
         if(choice==JOptionPane.YES_OPTION) {
             //-------------------------更改数据库操作-----------------------------------
             List<String> procedureList = new ArrayList<String>();
@@ -272,6 +274,9 @@ public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
             ((ComponentManagerTableModel)componentManagerTable.getModel()).fireTableRowsUpdated(modifiedIndex, modifiedIndex);
             this.dispose();
             componentManagerPanel.getSaveButton().setEnabled(setEnable);
+            componentManagerPanel.getModifiedProcedureIds().put(componentManagerPanel.getDeleteRowIndex()+1,new String(procedureChange.toString()));
+        } else {
+            procedureChange = new StringBuilder();
         }
     }//GEN-LAST:event_saveButtonActionPerformed
     
@@ -283,12 +288,26 @@ public class ComponentProcedureSelectDialog extends javax.swing.JDialog {
         postModifiedProcedureIdsCopy.removeAll(preModifiedProcedureIds);
         for(int id : postModifiedProcedureIdsCopy) {
             confirmString.append("添加工序 : " + procedureIdNameMaps.get(id) + "\n");
+            
+            if(procedureChange.length()>0) {
+                procedureChange.append("|");
+            }
+            procedureChange.append(id);
         }
+        
+        procedureChange.append(",");
+        
+        int size = procedureChange.length();
         
         postModifiedProcedureIdsCopy =  new ArrayList<Integer>(postModifiedProcedureIds);   //还原
         preModifiedProcedureIdsCopy.removeAll(postModifiedProcedureIdsCopy);
         for(int id : preModifiedProcedureIdsCopy) {
             confirmString.append("删除工序 : " + procedureIdNameMaps.get(id) + "\n");
+            
+            if(procedureChange.length()>size) {
+                procedureChange.append("|");
+            }
+            procedureChange.append(id);
         }
         return confirmString.toString();
     }

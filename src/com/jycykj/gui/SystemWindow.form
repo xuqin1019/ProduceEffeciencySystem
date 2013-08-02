@@ -263,6 +263,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="&#x96f6;&#x4ef6;&#x7ba1;&#x7406;"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="componentManageMenuActionPerformed"/>
+                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="componentManageMenu.setIcon(ImageIconUtil.getIcon(&quot;pics/component_manage.png&quot;));"/>
                   </AuxValues>

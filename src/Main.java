@@ -16,16 +16,17 @@ import javax.swing.JTable;
 public class Main {
     public static void main(String[] args)
 {
-    JFrame frame = new JFrame();
-    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    frame.setLocationRelativeTo(null);
-    frame.setSize(800, 600);
-
-    JTable table = new JTable(new Object[][]{{50, 50},{50, 50}} , new Object[]{"1", "2"});
-    table.setDefaultRenderer(Object.class, new ProgressBarRender());
-    frame.getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
-
-    frame.setVisible(true);
+    String str = " 22|6,";
+    String [] parts = str.split(",");
+    String [] addProcedureIds = parts[0].split("\\|");
+    String [] delProcedureIds = (parts.length==2 ? parts[1].split("\\|") : new String[0]);
+                
+               for(String id : addProcedureIds) {
+                     if(!id.trim().equals("")) {
+                         System.out.println("ADD_ID : " + id);
+                     }
+                }
+   
 }
 
 }

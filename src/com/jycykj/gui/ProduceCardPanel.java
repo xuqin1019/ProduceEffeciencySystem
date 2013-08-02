@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.Comparator;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -703,6 +704,16 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             }  
         }  
     } 
+
+    public JButton getSaveButton() {
+        return saveButton;
+    }
+
+    public void setSaveButton(JButton saveButton) {
+        this.saveButton = saveButton;
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addRowButton;
     private javax.swing.JTextField batchIdTextField;

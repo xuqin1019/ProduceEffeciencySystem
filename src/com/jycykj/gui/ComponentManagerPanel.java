@@ -14,7 +14,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JButton;
@@ -30,6 +29,7 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
     private int deleteRowIndex=-1;
     private int recoreNumInDb=0;
     private Map<Integer,Component> modifiedComponents = new HashMap<Integer, Component>();    //line_no ---> component
+    private Map<Integer,String> modifiedProcedureIds = new HashMap<Integer, String>();     //line_no ---->del_id1 del_id2,add_id1,add_id2
     /**
      * Creates new form ComponentManagerPanel
      */
@@ -55,7 +55,6 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         deleteButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         componentManagerTable = new javax.swing.JTable();
-        editProcedureButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
 
         addButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
@@ -122,14 +121,6 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         componentManagerTable.getColumn(componentManagerTableModel.getColumnName(5)).setPreferredWidth(430);
         jScrollPane1.setViewportView(componentManagerTable);
 
-        editProcedureButton.setText("编辑工序");
-        editProcedureButton.setEnabled(false);
-        editProcedureButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editProcedureButtonActionPerformed(evt);
-            }
-        });
-
         saveButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         saveButton.setText("保存");
         saveButton.setIcon(ImageIconUtil.getIcon("pics/save.png"));
@@ -150,16 +141,11 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
                 .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addComponent(jScrollPane1)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(editProcedureButton))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(editProcedureButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -198,7 +184,6 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         
         //set deleteRowIndex is the last row and enable the edit button
        deleteRowIndex = lastRow; 
-       editProcedureButton.setEnabled(true);
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
@@ -213,7 +198,7 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
             return;
         }
 
-        int choice = JOptionPane.showConfirmDialog(this,"你确定要删除此条记录吗","警告",JOptionPane.WARNING_MESSAGE);
+        int choice = JOptionPane.showConfirmDialog(this,"所有与该零件相关的信息都会被删除\n\n你确定要删除此条记录吗？","警告",JOptionPane.WARNING_MESSAGE);
         System.out.println("component_id : " + component_id);
         
         if(choice==JOptionPane.YES_OPTION) {
@@ -221,27 +206,28 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
 
             String sql = "delete from `component` where component_id = '" + component_id + "'";
             System.out.println(sql);
-//            boolean success =  ComponentDao.getInstance().executeUpdate(sql);   //执行事务
-//
-//            if(success) {
-//                componentManagerTableModel.getComponentList().remove(deleteRowIndex);
-//                componentManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
-//                addButton.setEnabled(true);
-//                deleteButton.setEnabled(false);
-//
-//                //-------------------------------------删除零件信息日志----------------------------
-//                LoginWindow.logger.info("删除零件信息成功！ : ");
-//                //-------------------------------------删除零件信息日志----------------------------
-//
-//                Util.showMessageDialog(this,"删除成功！！！");
-//            } else {
-//
-//                //-------------------------------------删除零件信息日志----------------------------
-//                LoginWindow.logger.error("删除零件信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
-//                //-------------------------------------删除员工信息日志----------------------------
-//
-//                Util.showMessageDialog(this,"发生未知错误，无法删除！！请联系系统管理员");
-//            }
+            
+            boolean success =  ComponentDao.getInstance().executeUpdate(sql);   //执行事务
+
+            if(success) {
+                componentManagerTableModel.getComponentList().remove(deleteRowIndex);
+                componentManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
+                addButton.setEnabled(true);
+                deleteButton.setEnabled(false);
+
+                //-------------------------------------删除零件信息日志----------------------------
+                LoginWindow.logger.info("删除零件信息成功！ : ");
+                //-------------------------------------删除零件信息日志----------------------------
+
+                Util.showMessageDialog(this,"删除成功！！！");
+            } else {
+
+                //-------------------------------------删除零件信息日志----------------------------
+                LoginWindow.logger.error("删除零件信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
+                //-------------------------------------删除员工信息日志----------------------------
+
+                Util.showMessageDialog(this,"发生未知错误，无法删除！！请联系系统管理员");
+            }
         }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -264,13 +250,29 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
                 }
                 sb.append("update component set name = '" +component.getName()+ "',material='"+(component.getMaterial()==null ? "" : component.getMaterial())+"',size='"+(component.getSize()==null ? "" : component.getSize())+ "',manufacturer='" + (component.getManufacturer()==null ? "" : component.getManufacturer()) + "' where component_id='"+ component.getComponentId()+"'");
                 
-                List<String> procedures = component.getProcedures();
-                for(String procedure : procedures) {
-                    System.out.print(procedure + " ");
-                }
-                System.out.println();
+                if(modifiedProcedureIds.containsKey(lineNo)) {    //修改过procedure
+                    String [] parts = modifiedProcedureIds.get(lineNo).split(",");
+                    String [] addProcedureIds = parts[0].split("\\|");
+                    String [] delProcedureIds = (parts.length==2 ? parts[1].split("\\|") : new String[0]);
                 
-            } else {       // new component
+                    for(String id : addProcedureIds) {
+                        if(!id.trim().equals("")) {
+                            System.out.println("ADD_ID : " + id);
+                            sb.append(";");
+                            sb.append("insert into component_procedure(component_id,procedure_id)values('" + component.getComponentId() + "'," + id + ")");
+                        }
+                    }
+                
+                    for(String id : delProcedureIds) {
+                        if(!id.trim().equals("")) {
+                            System.out.println("DEL_ID : " + id);
+                            sb.append(";");
+                            sb.append("delete from component_procedure where component_id='" + component.getComponentId()+ "' and procedure_id=" + id);
+                        }
+                    } 
+                 }
+                
+           } else {       // new component
                 if(component==null || !component.valid()) {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
@@ -285,32 +287,33 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
                         sb.append("insert into component_procedure(component_id,procedure_id) values ('" +
                                  component.getComponentId() + "'," + procedureId + ")");
                     }
-                    
-                }
-            }
+               }
+          }
         }
         
-        System.out.println("SQL : " +  sb.toString());
+     //   System.out.println("SQL : " +  sb.toString());
         
-//        boolean success =  ComponentDao.getInstance().executeUpdate(sb.toString().split(";"));
-//        if(success) {           //保存成功
-//            //-------------------------------------修改零件信息日志----------------------------
-//            LoginWindow.logger.info("修改零件信息成功！ : ");
-//            //-------------------------------------修改零件信息日志----------------------------
-//
-//            Util.showMessageDialog(this,"保存成功！！！");
-//            ((ComponentManagerTableModel)componentManagerTable.getModel()).getModifiedComponents().clear();
-//            ++recoreNumInDb;    
-//            saveButton.setEnabled(false);
-//            addButton.setEnabled(true);
-//            isAdd=false;
-//
-//        } else {               //保存失败
-//            //-------------------------------------修改零件信息日志----------------------------
-//            LoginWindow.logger.error("修改零件信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
-//            //-------------------------------------修改零件信息日志----------------------------
-//            Util.showMessageDialogWithTitle(this,"警告", "发生未知错误，无法保存！！请联系系统管理员");
-//        } 
+        boolean success =  ComponentDao.getInstance().executeUpdate(sb.toString().split(";"));
+        if(success) {           //保存成功
+            //-------------------------------------修改零件信息日志----------------------------
+            LoginWindow.logger.info("修改零件信息成功！ : ");
+            //-------------------------------------修改零件信息日志----------------------------
+
+            Util.showMessageDialog(this,"保存成功！！！");
+            modifiedComponents.clear();
+            modifiedProcedureIds.clear();
+            ++recoreNumInDb;  
+            
+            saveButton.setEnabled(false);
+            addButton.setEnabled(true);
+            isAdd=false;
+
+        } else {               //保存失败
+            //-------------------------------------修改零件信息日志----------------------------
+            LoginWindow.logger.error("修改零件信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
+            //-------------------------------------修改零件信息日志----------------------------
+            Util.showMessageDialogWithTitle(this,"警告", "发生未知错误，无法保存！！请联系系统管理员");
+        } 
     }
 
     public JButton getSaveButton() {
@@ -320,22 +323,6 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
     public void setSaveButton(JButton saveButton) {
         this.saveButton = saveButton;
     }//GEN-LAST:event_saveButtonActionPerformed
-
-    private void editProcedureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editProcedureButtonActionPerformed
-        // TODO add your handling code here:
-        ComponentManagerTableModel componentManagerTableModel = (ComponentManagerTableModel)(componentManagerTable.getModel());
-        final String component_id = componentManagerTableModel.getComponentList().get(deleteRowIndex).getComponentId();
-        final ComponentManagerPanel componentManagerPanel = this;
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                ComponentProcedureSelectDialog componentProcedureSelectDialog = new ComponentProcedureSelectDialog(null, true,component_id,componentManagerPanel);
-                System.out.println("In Panel : " + componentManagerTable);
-                componentProcedureSelectDialog.setLocationRelativeTo(null);
-                componentProcedureSelectDialog.setResizable(false);
-                componentProcedureSelectDialog.setVisible(true);
-            }
-        });
-    }//GEN-LAST:event_editProcedureButtonActionPerformed
      
      private class MyMouseAdapter extends MouseAdapter {      //listen for the componentProcedureTable click event 
         public void mousePressed(MouseEvent e) { 
@@ -347,7 +334,7 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
                     modifiedComponents.put(deleteRowIndex+1,((ComponentManagerTableModel)componentManagerTable.getModel()).getComponentList().get(deleteRowIndex));
                 }
                 deleteButton.setEnabled(true);
-                editProcedureButton.setEnabled(true);
+             //   editProcedureButton.setEnabled(true);
                 
                 int deleteColumn = componentManagerTable.columnAtPoint(e.getPoint());
                 if(deleteColumn==5) {    //点击的是工序一栏
@@ -385,19 +372,20 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         this.componentManagerTable = componentManagerTable;
     }
 
-    public JButton getEditProcedureButton() {
-        return editProcedureButton;
+    public Map<Integer, String> getModifiedProcedureIds() {
+        return modifiedProcedureIds;
     }
 
-    public void setEditProcedureButton(JButton editProcedureButton) {
-        this.editProcedureButton = editProcedureButton;
+    public void setModifiedProcedureIds(Map<Integer, String> modifiedProcedureIds) {
+        this.modifiedProcedureIds = modifiedProcedureIds;
     }
+    
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JTable componentManagerTable;
     private javax.swing.JButton deleteButton;
-    private javax.swing.JButton editProcedureButton;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton saveButton;

@@ -262,6 +262,11 @@ public class SystemWindow extends javax.swing.JFrame {
         componentManageMenu.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
         componentManageMenu.setText("零件管理");
         componentManageMenu.setIcon(ImageIconUtil.getIcon("pics/component_manage.png"));
+        componentManageMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                componentManageMenuActionPerformed(evt);
+            }
+        });
         systemMaintainMenu.add(componentManageMenu);
 
         operateMenu.add(systemMaintainMenu);
@@ -365,7 +370,6 @@ public class SystemWindow extends javax.swing.JFrame {
         
         int a = JOptionPane.showConfirmDialog(null, "确定关闭吗？", "温馨提示", JOptionPane.YES_NO_OPTION);
         if(a==0) {
-        
             //----------------------------------系统登陆日志---------------------------
             LoginWindow.logger.info("-----------本次登录结束--------------\n\n\n\n");
             this.dispose();
@@ -443,6 +447,18 @@ public class SystemWindow extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_procedureManageMenuActionPerformed
+
+    private void componentManageMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_componentManageMenuActionPerformed
+        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                ComponentManagerDialog dialog = new ComponentManagerDialog(SystemWindow.this, true);
+                dialog.setLocationRelativeTo(SystemWindow.this);
+                dialog.setResizable(false);
+                dialog.setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_componentManageMenuActionPerformed
 
     /**
      * @param args the command line arguments

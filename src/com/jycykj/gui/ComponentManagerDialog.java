@@ -4,6 +4,11 @@
  */
 package com.jycykj.gui;
 
+import com.jycykj.helper.ImageIconUtil;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author xuqin
@@ -16,6 +21,19 @@ public class ComponentManagerDialog extends javax.swing.JDialog {
     public ComponentManagerDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setTitle("工序管理");
+        this.setIconImage(ImageIconUtil.getFrameIcon("pics/procedure_manage.png"));
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                if(componentManagerPanel1.getSaveButton().isEnabled()) {             //存在未保存的修改
+                    int a = JOptionPane.showConfirmDialog(null, "有未保存的修改，确定关闭吗？", "温馨提示", JOptionPane.YES_NO_OPTION);
+                    if (a == 0) {  
+                        System.out.println("yes");
+                        dispose();
+                    } 
+                }
+           }    
+        });
     }
 
     /**

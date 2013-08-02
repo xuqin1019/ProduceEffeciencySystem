@@ -5,6 +5,9 @@
 package com.jycykj.gui;
 
 import com.jycykj.helper.ImageIconUtil;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,6 +23,21 @@ public class ProduceCardDialog extends javax.swing.JDialog {
         initComponents();
         this.setIconImage(ImageIconUtil.getFrameIcon("pics/write.png"));
         this.setFont(new java.awt.Font("宋体", 0, 14));
+        
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                if(produceCardPanel.getSaveButton().isEnabled()) {             //存在未保存的修改
+                    int a = JOptionPane.showConfirmDialog(null, "有未保存的修改，确定关闭吗？", "温馨提示", JOptionPane.YES_NO_OPTION);
+                    if (a == 0) {  
+                        System.out.println("yes");
+                        dispose();
+                    } else {
+                        System.out.println("no");
+                        return;
+                    }
+                }
+           }    
+        });
     }
 
     /**
