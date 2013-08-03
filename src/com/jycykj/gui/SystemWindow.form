@@ -22,11 +22,6 @@
         <Property name="text" type="java.lang.String" value="jMenuItem1"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JMenuItem" name="jMenuItem2">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jMenuItem2"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JSeparator" name="jSeparator2">
     </Component>
     <Menu class="javax.swing.JMenuBar" name="menuBar">
@@ -236,6 +231,20 @@
                   </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="workerProfileMenu.setIcon(ImageIconUtil.getIcon(&quot;pics/worker_list.png&quot;));"/>
+                  </AuxValues>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="groupManageMenu">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="&#x5fae;&#x8f6f;&#x96c5;&#x9ed1;" size="14" style="0"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="&#x73ed;&#x7ec4;&#x7ba1;&#x7406;"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="groupManageMenuActionPerformed"/>
+                  </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="groupManageMenu.setIcon(ImageIconUtil.getIcon(&quot;pics/group_manage.png&quot;));"/>
                   </AuxValues>
                 </MenuItem>
                 <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">

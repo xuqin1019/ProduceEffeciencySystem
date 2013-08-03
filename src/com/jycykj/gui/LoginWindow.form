@@ -46,10 +46,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="loginPanel" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="titlePanel" min="-2" pref="495" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="13" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="titlePanel" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -77,7 +74,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="&#x6977;&#x4f53;" size="24" style="3"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&#x751f;&#x4ea7;&#x6548;&#x7387;&#x7ba1;&#x7406;&#x7cfb;&#x7edf;"/>
+                <Property name="text" type="java.lang.String" value="&#x751f;&#x4ea7;&#x7ba1;&#x7406;&#x7cfb;&#x7edf;"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -88,7 +85,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="imageLabel" max="32767" attributes="0"/>
+                      <Component id="imageLabel" pref="251" max="32767" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="typeLabel" min="-2" max="-2" attributes="0"/>

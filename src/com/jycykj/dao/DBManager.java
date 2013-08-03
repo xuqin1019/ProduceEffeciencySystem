@@ -13,7 +13,7 @@ import java.sql.Statement;
 public class DBManager {
 
     private String driver = "com.mysql.jdbc.Driver";
-    private String url = "jdbc:mysql://localhost:3306/system_db?useUnicode=true&amp;characterEncoding=utf-8";
+    private String url = "jdbc:mysql://localhost:3306/system_db_test?useUnicode=true&amp;characterEncoding=utf-8";
     private String username = "root";
     private String password = "891019";
     private Connection connection = null;

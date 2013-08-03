@@ -4,32 +4,30 @@
  */
 package com.jycykj.gui;
 
-import com.jycykj.dao.ComponentDao;
-import com.jycykj.dao.ProcedureDao;
+import com.jycykj.dao.GroupDao;
 import com.jycykj.helper.ImageIconUtil;
 import com.jycykj.helper.Util;
-import com.jycykj.model.Procedure;
-import com.jycykj.tables.ProcedureManagerTableModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import com.jycykj.model.Group;
+import com.jycykj.tables.GroupManagerTableModel;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 /**
  *
  * @author xuqin
  */
-public class ProcedureManagerPanel extends javax.swing.JPanel {
+public class GroupManagerPanel extends javax.swing.JPanel {
     
     private boolean isAdd = false;
     private int deleteRowIndex=-1;
     /**
-     * Creates new form ProcedureManagerPanel
+     * Creates new form GroupManagerPanel
      */
-    public ProcedureManagerPanel() {
+    public GroupManagerPanel() {
         initComponents();
         addButton.setEnabled(true);
         deleteButton.setEnabled(false);
@@ -50,7 +48,7 @@ public class ProcedureManagerPanel extends javax.swing.JPanel {
         deleteButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        procedureManagerTable = new javax.swing.JTable();
+        groupManagerTable = new javax.swing.JTable();
 
         addButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         addButton.setText("添加");
@@ -102,10 +100,9 @@ public class ProcedureManagerPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        procedureManagerTable.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
-        procedureManagerTable.addMouseListener(new MyMouseAdapter());
+        groupManagerTable.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         /*
-        procedureManagerTable.setModel(new javax.swing.table.DefaultTableModel(
+        groupManagerTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -116,11 +113,14 @@ public class ProcedureManagerPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        procedureManagerTable.setRowHeight(20);
+        groupManagerTable.setRowHeight(20);
         */
 
-        procedureManagerTable.setModel(new ProcedureManagerTableModel(this,procedureManagerTable));
-        jScrollPane1.setViewportView(procedureManagerTable);
+        GroupManagerTableModel groupManagerTableModel = new GroupManagerTableModel(this,groupManagerTable);
+        groupManagerTable.setModel(groupManagerTableModel);
+        groupManagerTable.getColumn(groupManagerTableModel.getColumnName(0)).setPreferredWidth(122);
+        groupManagerTable.getColumn(groupManagerTableModel.getColumnName(1)).setPreferredWidth(280);
+        jScrollPane1.setViewportView(groupManagerTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -131,17 +131,15 @@ public class ProcedureManagerPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 18, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -150,66 +148,64 @@ public class ProcedureManagerPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         isAdd = true;
 
-        Procedure newProcedure = new Procedure();  // the new line added
-       // newProcedure.setProcedureName(TOOL_TIP_TEXT_KEY);
-        
-        newProcedure.setProcedureId(ProcedureDao.getInstance().getNextProcedureId());
-        
-        ProcedureManagerTableModel procedureManagerTableMode = (ProcedureManagerTableModel)(procedureManagerTable.getModel());
+        Group newGroup = new Group();  // the new line added
 
-        procedureManagerTableMode.getModifiedProcedures().put(newProcedure.getProcedureId(),newProcedure);     //add one line to the table
-        procedureManagerTableMode.getProcedureList().add(newProcedure);                                       //procedureList : 用于显示的list
+        newGroup.setGroupId(GroupDao.getInstance().getNextGroupId());     // -1
 
-        procedureManagerTableMode.fireTableRowsInserted(procedureManagerTableMode.getRowCount()-1, procedureManagerTableMode.getRowCount()-1);   //refresh
-        procedureManagerTableMode.setIsAdd(isAdd);
+        GroupManagerTableModel groupManagerTableMode = (GroupManagerTableModel)(groupManagerTable.getModel());
+
+        groupManagerTableMode.getModifiedGroups().put(String.valueOf(newGroup.getGroupId()),newGroup);     //add one line to the table
+        groupManagerTableMode.getGroupList().add(newGroup);                                       //groupList : 用于显示的list
+
+        groupManagerTableMode.fireTableRowsInserted(groupManagerTableMode.getRowCount()-1, groupManagerTableMode.getRowCount()-1);   //refresh
+        groupManagerTableMode.setIsAdd(isAdd);
 
         //跳转到最后一行并且选中
-        procedureManagerTable.scrollRectToVisible(procedureManagerTable.getCellRect(procedureManagerTable.getRowCount()-1, 0, true));
-        int lastRow = procedureManagerTable.convertRowIndexToView(procedureManagerTable.getRowCount()-1);
-        procedureManagerTable.changeSelection(lastRow, 0, false, false);
+        groupManagerTable.scrollRectToVisible(groupManagerTable.getCellRect(groupManagerTable.getRowCount()-1, 0, true));
+        int lastRow = groupManagerTable.convertRowIndexToView(groupManagerTable.getRowCount()-1);
+        groupManagerTable.changeSelection(lastRow, 0, false, false);
 
         addButton.setEnabled(false);
         saveButton.setEnabled(true);
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        ProcedureManagerTableModel procedureManagerTableModel = (ProcedureManagerTableModel)(procedureManagerTable.getModel());
-        String procedure_id = procedureManagerTableModel.getProcedureList().get(deleteRowIndex).getProcedureId();
+        GroupManagerTableModel groupManagerTableModel = (GroupManagerTableModel)(groupManagerTable.getModel());
+        String group_id = String.valueOf(groupManagerTableModel.getGroupList().get(deleteRowIndex).getGroupId());
 
-        if(procedure_id.equals("")) {                 //直接删除还没有保存的行
-            procedureManagerTableModel.getProcedureList().remove(deleteRowIndex);
-            procedureManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
+        if(group_id.equals("-1")) {                 //直接删除还没有保存的行
+            groupManagerTableModel.getGroupList().remove(deleteRowIndex);
+            groupManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
             addButton.setEnabled(true);
             deleteButton.setEnabled(false);
             return;
         }
 
         int choice = JOptionPane.showConfirmDialog(this,"你确定要删除此条记录吗","警告",JOptionPane.WARNING_MESSAGE);
-        System.out.println("procedure_id : " + procedure_id);
+        System.out.println("group_id : " + group_id);
         if(choice==JOptionPane.YES_OPTION) {
             System.out.println(deleteRowIndex);
-            
-            String sql = "delete from `procedure` where procedure_id = " + Integer.valueOf(procedure_id);
-            
-            boolean success =  ProcedureDao.getInstance().executeUpdate(sql);   //执行事务
+
+            String sql = "delete from `group` where group_id = " + Integer.valueOf(group_id);
+
+            boolean success =  GroupDao.getInstance().executeUpdate(sql);   //执行事务
 
             if(success) {
-                procedureManagerTableModel.getProcedureList().remove(deleteRowIndex);
-                procedureManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
+                groupManagerTableModel.getGroupList().remove(deleteRowIndex);
+                groupManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
                 addButton.setEnabled(true);
                 deleteButton.setEnabled(false);
 
-                
-                //-------------------------------------删除工序信息日志----------------------------
-                LoginWindow.logger.info("删除工序成功！ : ");
-                //-------------------------------------删除工序信息日志----------------------------
+                //-------------------------------------删除班组信息日志----------------------------
+                LoginWindow.logger.info("删除班组成功！ : ");
+                //-------------------------------------删除班组信息日志----------------------------
 
                 Util.showMessageDialog(this,"删除成功！！！");
             } else {
 
-                //-------------------------------------删除工序信息日志----------------------------
-                LoginWindow.logger.error("删除工序信息失败！ : " + ProcedureDao.getInstance().getErrorMessage());
-                //-------------------------------------删除工序信息日志----------------------------
+                //-------------------------------------删除班组信息日志----------------------------
+                LoginWindow.logger.error("删除班组信息失败！ : " + GroupDao.getInstance().getErrorMessage());
+                //-------------------------------------删除班组信息日志----------------------------
 
                 Util.showMessageDialog(this,"发生未知错误，无法删除！！请联系系统管理员");
             }
@@ -218,82 +214,73 @@ public class ProcedureManagerPanel extends javax.swing.JPanel {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-        Map<String,Procedure> procedures = ((ProcedureManagerTableModel)procedureManagerTable.getModel()).getModifiedProcedures();
-        Set<String> procedureIds = procedures.keySet();
+        Map<String,Group> groups = ((GroupManagerTableModel)groupManagerTable.getModel()).getModifiedGroups();
+        Set<String> groupIds = groups.keySet();
         StringBuilder sb = new StringBuilder();
-        Procedure procedure = null;
-        for(String procedureId : procedureIds) {
+        Group group = null;
+        for(String groupId : groupIds) {
             if(sb.length()!=0) {
                 sb.append(";");
             }
-            procedure = procedures.get(procedureId);
-            if(!procedureId.equals("")) {    //modified procedure
-                if(procedure==null || !procedure.valid()) {
+            group = groups.get(groupId);
+            if(!groupId.equals("-1")) {    //modified group
+                if(group==null || !group.valid()) {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
                 }
-                sb.append("update `procedure` set name = '" +procedure.getProcedureName()+ "',factor="+ procedure.getFactor() + " where procedure_id="+ Integer.parseInt(procedureId));
-            } else {                       //new procedure
-                if(procedure==null || !procedure.valid()) {
+                sb.append("update `group` set name = '" +group.getGroupName()+ "',info='"+ group.getInfo() + "' where group_id="+ Integer.parseInt(groupId));
+            } else {                       //new group
+                if(group==null || !group.valid()) {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
                 }
-                sb.append("insert into `procedure`(name,factor) values('" +  procedure.getProcedureName() + "'," + procedure.getFactor() + ")");
+                sb.append("insert into `group`(name,info) values('" +  group.getGroupName() + "','" + group.getInfo() + "')");
             }
         }
-        
+
         System.out.println(sb.toString());
-        
-        boolean success =  ProcedureDao.getInstance().executeUpdate(sb.toString().split(";"));
+
+        boolean success =  GroupDao.getInstance().executeUpdate(sb.toString().split(";"));
         if(success) {           //保存成功
 
-            //-------------------------------------修改工序信息日志----------------------------
-            LoginWindow.logger.info("修改工序信息成功！ : ");
-            //-------------------------------------修改工序信息日志----------------------------
+            //-------------------------------------修改班组信息日志----------------------------
+            LoginWindow.logger.info("修改班组信息成功！ : ");
+            //-------------------------------------修改班组信息日志----------------------------
 
             Util.showMessageDialog(this,"保存成功！！！");
-            ((ProcedureManagerTableModel)procedureManagerTable.getModel()).getModifiedProcedures().clear();
+            ((GroupManagerTableModel)groupManagerTable.getModel()).getModifiedGroups().clear();
             saveButton.setEnabled(false);
             addButton.setEnabled(true);
             isAdd=false;
-            
-            List<Procedure> procedure_list = ((ProcedureManagerTableModel)procedureManagerTable.getModel()).getProcedureList();
-            //assign id to the saved procedure
-            procedure_list.get(procedure_list.size()-1).setProcedureId(String.valueOf(ProcedureDao.getInstance().getProcedureId(procedure_list.get(procedure_list.size()-1).getProcedureName())));
-           
+
+            List<Group> group_list = ((GroupManagerTableModel)groupManagerTable.getModel()).getGroupList();
+            //assign id to the saved group
+            group_list.get(group_list.size()-1).setGroupId(GroupDao.getInstance().getGroupId(group_list.get(group_list.size()-1).getGroupName()));
+
         } else {               //保存失败
 
-            //-------------------------------------修改工序信息日志----------------------------
-            LoginWindow.logger.error("修改工序信息失败！ : " + ComponentDao.getInstance().getErrorMessage());
-            //-------------------------------------修改工序信息日志----------------------------
+            //-------------------------------------修改班组信息日志----------------------------
+            LoginWindow.logger.error("修改班组信息失败！ : " + GroupDao.getInstance().getErrorMessage());
+            //-------------------------------------修改班组信息日志----------------------------
 
             Util.showMessageDialogWithTitle(this,"警告", "发生未知错误，无法保存！！请联系系统管理员");
         }
-     }
+        }
 
-    public JButton getSaveButton() {
-        return saveButton;
-    }
+        public JButton getSaveButton() {
+            return saveButton;
+        }
 
-    public void setSaveButton(JButton saveButton) {
+        public void setSaveButton(JButton saveButton) {
             this.saveButton = saveButton;
     }//GEN-LAST:event_saveButtonActionPerformed
 
-     private class MyMouseAdapter extends MouseAdapter {      //listen for the componentProcedureTable click event 
-        public void mousePressed(MouseEvent e) {  
-            if (procedureManagerTable.equals(e.getSource())) {  
-                deleteRowIndex = procedureManagerTable.rowAtPoint(e.getPoint());  
-                deleteButton.setEnabled(true);
-            }  
-        }  
-    }     
-        
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JTable groupManagerTable;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable procedureManagerTable;
     private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables
 }

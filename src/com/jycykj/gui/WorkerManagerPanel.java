@@ -106,6 +106,7 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
 
         workerManagerTable.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         workerManagerTable.setModel(new WorkerManagerTableModel(this,workerManagerTable));
+        workerManagerTable.setRowHeight(20);
         workerManagerTable.addMouseListener(new MyMouseAdapter());
         jScrollPane3.setViewportView(workerManagerTable);
 

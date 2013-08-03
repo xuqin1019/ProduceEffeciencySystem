@@ -130,8 +130,10 @@ public class ReportPanel extends javax.swing.JPanel {
             }
         });
 
+        reportTable.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         reportTable.setCellSelectionEnabled(true);
         reportTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        reportTable.setRowHeight(20);
         jScrollPane1.setViewportView(reportTable);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);

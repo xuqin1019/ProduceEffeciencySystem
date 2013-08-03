@@ -16,26 +16,25 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="saveButton" min="-2" pref="90" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Component id="jScrollPane1" alignment="1" pref="0" max="32767" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
-          <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <Component id="jScrollPane1" pref="441" max="32767" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                  <Component id="saveButton" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="394" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -47,10 +46,13 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="addButton" min="-2" pref="90" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
-                  <Component id="deleteButton" min="-2" pref="90" max="-2" attributes="0"/>
-                  <EmptySpace pref="761" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="addButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                  <Component id="deleteButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="135" max="32767" attributes="0"/>
+                  <Component id="saveButton" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -58,8 +60,9 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="deleteButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="addButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="deleteButton" alignment="3" pref="33" max="32767" attributes="0"/>
+                      <Component id="addButton" alignment="3" pref="33" max="32767" attributes="0"/>
+                      <Component id="saveButton" alignment="3" pref="33" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -95,47 +98,41 @@
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="deleteButton.setIcon(ImageIconUtil.getIcon(&quot;pics/delete.png&quot;));"/>
           </AuxValues>
         </Component>
+        <Component class="javax.swing.JButton" name="saveButton">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="&#x5b8b;&#x4f53;" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="&#x4fdd;&#x5b58;"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveButtonActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="saveButton.setIcon(ImageIconUtil.getIcon(&quot;pics/save.png&quot;));"/>
+          </AuxValues>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="componentManagerTable">
+        <Component class="javax.swing.JTable" name="groupManagerTable">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor" postCode="/*">
               <Font name="&#x5b8b;&#x4f53;" size="14" style="0"/>
             </Property>
-            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="4">
-                <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                <Column editable="true" title="Title 4" type="java.lang.Object"/>
-              </Table>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null},&#xa;        {null, null, null, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;Title 1&quot;, &quot;Title 2&quot;, &quot;Title 3&quot;, &quot;Title 4&quot;&#xa;    }&#xa;)" type="code"/>
             </Property>
             <Property name="rowHeight" type="int" value="20"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="*/&#xa;ComponentManagerTableModel componentManagerTableModel = new ComponentManagerTableModel(this,componentManagerTable);&#xa;componentManagerTable.setModel(componentManagerTableModel);&#xa;recoreNumInDb = componentManagerTableModel.getRowCount();   //&#x6570;&#x636e;&#x5e93;&#x91cc;&#x6709;&#x7684;&#x8bb0;&#x5f55;&#x6570;&#xa;componentManagerTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);&#xa;componentManagerTable.getColumn(componentManagerTableModel.getColumnName(0)).setPreferredWidth(130);&#xa;componentManagerTable.getColumn(componentManagerTableModel.getColumnName(1)).setPreferredWidth(130);&#xa;componentManagerTable.getColumn(componentManagerTableModel.getColumnName(2)).setPreferredWidth(130);&#xa;componentManagerTable.getColumn(componentManagerTableModel.getColumnName(3)).setPreferredWidth(130);&#xa;componentManagerTable.getColumn(componentManagerTableModel.getColumnName(4)).setPreferredWidth(130);&#xa;componentManagerTable.getColumn(componentManagerTableModel.getColumnName(5)).setPreferredWidth(433);"/>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="componentManagerTable.setFont(new java.awt.Font(&quot;&#x5b8b;&#x4f53;&quot;, 0, 14)); // NOI18N&#xa;componentManagerTable.addMouseListener(new MyMouseAdapter());&#xa;/*"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="*/&#xa;&#xa;GroupManagerTableModel groupManagerTableModel = new GroupManagerTableModel(this,groupManagerTable);&#xa;groupManagerTable.setModel(groupManagerTableModel);&#xa;groupManagerTable.getColumn(groupManagerTableModel.getColumnName(0)).setPreferredWidth(122);&#xa;groupManagerTable.getColumn(groupManagerTableModel.getColumnName(1)).setPreferredWidth(280);"/>
           </AuxValues>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="saveButton">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="&#x5b8b;&#x4f53;" size="14" style="0"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="&#x4fdd;&#x5b58;"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveButtonActionPerformed"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="saveButton.setIcon(ImageIconUtil.getIcon(&quot;pics/save.png&quot;));"/>
-      </AuxValues>
-    </Component>
   </SubComponents>
 </Form>

@@ -31,9 +31,9 @@ public class SystemWindow extends javax.swing.JFrame {
             registerNewUserMenu.setEnabled(false);
             systemMaintainMenu.setEnabled(false);
             checklogMenu.setEnabled(false);
-            this.setTitle("生产效率管理系统(操作员登录)");
+            this.setTitle("生产管理系统(操作员登录)");
         } else {
-            this.setTitle("生产效率管理系统(管理员登录)");
+            this.setTitle("生产管理系统(管理员登录)");
         }
         this.setFont(new java.awt.Font("宋体", 0, 14));
         
@@ -63,7 +63,6 @@ public class SystemWindow extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JSeparator();
         imagePanel = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
@@ -88,6 +87,7 @@ public class SystemWindow extends javax.swing.JFrame {
         registerNewUserMenu = new javax.swing.JMenuItem();
         systemMaintainMenu = new javax.swing.JMenu();
         workerProfileMenu = new javax.swing.JMenuItem();
+        groupManageMenu = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         procedureManageMenu = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
@@ -104,8 +104,6 @@ public class SystemWindow extends javax.swing.JFrame {
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
         jMenuItem1.setText("jMenuItem1");
-
-        jMenuItem2.setText("jMenuItem2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("生产效率管理系统");
@@ -246,6 +244,16 @@ public class SystemWindow extends javax.swing.JFrame {
             }
         });
         systemMaintainMenu.add(workerProfileMenu);
+
+        groupManageMenu.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
+        groupManageMenu.setText("班组管理");
+        groupManageMenu.setIcon(ImageIconUtil.getIcon("pics/group_manage.png"));
+        groupManageMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                groupManageMenuActionPerformed(evt);
+            }
+        });
+        systemMaintainMenu.add(groupManageMenu);
         systemMaintainMenu.add(jSeparator1);
 
         procedureManageMenu.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
@@ -447,7 +455,8 @@ public class SystemWindow extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_procedureManageMenuActionPerformed
-
+    
+    //零件管理菜单
     private void componentManageMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_componentManageMenuActionPerformed
         // TODO add your handling code here:
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -459,7 +468,20 @@ public class SystemWindow extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_componentManageMenuActionPerformed
-
+    
+    //班组管理菜单
+    private void groupManageMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_groupManageMenuActionPerformed
+        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                GroupManagerDialog dialog = new GroupManagerDialog(SystemWindow.this, true);
+                dialog.setLocationRelativeTo(SystemWindow.this);
+                dialog.setResizable(false);
+                dialog.setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_groupManageMenuActionPerformed
+    
     /**
      * @param args the command line arguments
      */
@@ -505,13 +527,13 @@ public class SystemWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenu;
     private javax.swing.JMenuItem fillProduceCardMenu;
     private javax.swing.JMenuItem gWLRMenu;
+    private javax.swing.JMenuItem groupManageMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JPanel imagePanel;
     private javax.swing.JMenuItem importMenu;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;

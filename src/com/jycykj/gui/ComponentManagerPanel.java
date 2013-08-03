@@ -97,6 +97,7 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         componentManagerTable.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         componentManagerTable.addMouseListener(new MyMouseAdapter());
         /*
+        componentManagerTable.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         componentManagerTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -108,6 +109,7 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        componentManagerTable.setRowHeight(20);
         */
         ComponentManagerTableModel componentManagerTableModel = new ComponentManagerTableModel(this,componentManagerTable);
         componentManagerTable.setModel(componentManagerTableModel);
@@ -118,7 +120,7 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
         componentManagerTable.getColumn(componentManagerTableModel.getColumnName(2)).setPreferredWidth(130);
         componentManagerTable.getColumn(componentManagerTableModel.getColumnName(3)).setPreferredWidth(130);
         componentManagerTable.getColumn(componentManagerTableModel.getColumnName(4)).setPreferredWidth(130);
-        componentManagerTable.getColumn(componentManagerTableModel.getColumnName(5)).setPreferredWidth(430);
+        componentManagerTable.getColumn(componentManagerTableModel.getColumnName(5)).setPreferredWidth(433);
         jScrollPane1.setViewportView(componentManagerTable);
 
         saveButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N

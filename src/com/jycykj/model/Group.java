@@ -11,6 +11,7 @@ package com.jycykj.model;
 public class Group {
     private int groupId;
     private String groupName;
+    private String info;
 
     public Group() {
     }
@@ -19,7 +20,11 @@ public class Group {
         this.groupId = groupId;
         this.groupName = groupName;
     }
-    
+     public Group(int groupId, String groupName,String info) {
+        this.groupId = groupId;
+        this.groupName = groupName;
+        this.info = info;
+    }
     
     public int getGroupId() {
         return groupId;
@@ -36,5 +41,16 @@ public class Group {
     public void setGroupName(String groupName) {
         this.groupName = groupName;
     }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
     
+    public boolean valid() {
+       return groupName!=null && !groupName.equals("");
+    }
 }

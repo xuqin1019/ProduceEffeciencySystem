@@ -227,6 +227,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         componentInfoTable.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         componentInfoTable.setModel(componentInfoTableModel);
         componentNameLabel.setText(componentInfoTableModel.getComponent().getName());
+        componentInfoTable.setRowHeight(20);
         jScrollPane1.setViewportView(componentInfoTable);
 
         jTabbedPane1.addTab("零件原材料", jScrollPane1);
@@ -240,6 +241,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         //componentProcedureTable.setRowSorter(sorter);
         //refreshCountNumLabel();
         componentProcedureTable.addMouseListener(new MyMouseAdapter());
+        componentProcedureTable.setRowHeight(20);
         jScrollPane2.setViewportView(componentProcedureTable);
 
         jTabbedPane1.addTab("零件工序", jScrollPane2);
