@@ -690,10 +690,13 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     }
     
     private class MyMouseAdapter extends MouseAdapter {      //listen for the componentProcedureTable click event 
-        public void mousePressed(MouseEvent e) {  
+      
+        public void mousePressed(final MouseEvent e) {  
             if (componentProcedureTable.equals(e.getSource())) {  
+                
                 deleteRowIndex = componentProcedureTable.rowAtPoint(e.getPoint());    //选择某行后
                 System.out.println("Mouse pressed : " + deleteRowIndex);
+                
                 if(componentProcedureTable.columnAtPoint(e.getPoint())!=1) {       //如果不是工序的那一列被选中（因为选择工序后会自动取消选中的行）
                     deleteRowButton.setEnabled(true);     //选择某行后,deleteRowButton设置为true             
                     deleteRowButtonLastStatus = true;
@@ -701,6 +704,17 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                      deleteRowButton.setEnabled(false);
                      deleteRowButtonLastStatus = false;
                 }   
+                
+                int deleteColumnIndex = componentProcedureTable.columnAtPoint(e.getPoint());
+                if(deleteColumnIndex==6) {   //点击的是日期那一列
+                    java.awt.EventQueue.invokeLater(new Runnable() {
+                        public void run() {
+                            ProduceCardDatePickerDialog produceCardDatePickerDialog = new ProduceCardDatePickerDialog(null, true,componentProcedureTableModel,deleteRowIndex,e.getXOnScreen(),e.getYOnScreen()+componentProcedureTable.getRowHeight());
+                            produceCardDatePickerDialog.setResizable(false);
+                            produceCardDatePickerDialog.setVisible(true);
+                        }
+                    });
+                }
             }  
         }  
     } 

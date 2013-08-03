@@ -34,6 +34,11 @@ public class DatePickerPanel extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(140, 40));
 
         jButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jycykj/gui/cal.jpg"))); // NOI18N
+        jButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -53,6 +58,11 @@ public class DatePickerPanel extends javax.swing.JPanel {
                     .addComponent(dateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.jycykj.gui.DateTextField dateTextField;
     private javax.swing.JButton jButton;

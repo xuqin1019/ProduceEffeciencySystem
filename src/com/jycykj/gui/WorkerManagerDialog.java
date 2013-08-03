@@ -5,6 +5,9 @@
 package com.jycykj.gui;
 
 import com.jycykj.helper.ImageIconUtil;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,6 +25,21 @@ public class WorkerManagerDialog extends javax.swing.JDialog {
         this.setResizable(false);
         setTitle("员工花名册");
         this.setFont(new java.awt.Font("宋体", 0, 14));
+        
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                if(workerManagerPanel1.getSaveButton().isEnabled()) {             //存在未保存的修改
+                    int a = JOptionPane.showConfirmDialog(null,"有未保存的修改，确定关闭吗？", "温馨提示", JOptionPane.YES_NO_OPTION);
+                    if (a == 0) {  
+                        System.out.println("yes");
+                        dispose();
+                    } else {
+                        System.out.println("no");
+                     //   return;
+                    }
+                }
+           }    
+        });
     }
 
     /**
@@ -94,12 +112,12 @@ public class WorkerManagerDialog extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 WorkerManagerDialog dialog = new WorkerManagerDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
+//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//                    @Override
+//                    public void windowClosing(java.awt.event.WindowEvent e) {
+//                        System.exit(0);
+//                    }
+//                });
                 dialog.setVisible(true);
             }
         });

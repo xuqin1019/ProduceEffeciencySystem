@@ -32,29 +32,27 @@ public class ReportPanel extends javax.swing.JPanel {
      */
     private static final String exportRootPath = "reportExportPath";       //文件选择器的根目录
     private ReportDialog jDialog = null;
-    private String[] years = new String[]{"2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020"};
-    private String[] months = new String[] {"1","2","3","4","5","6","7","8","9","10","11","12"};
             
     public ReportPanel(ReportDialog jDialog) {
         this.jDialog = jDialog;
         initComponents();
         exportButton.setEnabled(false);
         
-        addListenerToDatePickerButton(startDatePickerButton,startDateTextField);
-        addListenerToDatePickerButton(endDatePickerButton,endDateTextField);
+      //  addListenerToDatePickerButton(startDatePickerButton,startDateTextField);
+      //  addListenerToDatePickerButton(endDatePickerButton,endDateTextField);
     }
     
-    private void  addListenerToDatePickerButton(JButton button , final DateTextField dateTextField) {
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                 DatePicker dp = new DatePicker(dateTextField, Locale.CHINA);
-                 Date selectedDate = dp.parseDate(dateTextField.getText());
-                 dp.setSelectedDate(selectedDate);
-                 dp.start(dateTextField);
-            }
-        });
-    }
+//    private void  addListenerToDatePickerButton(JButton button , final DateTextField dateTextField) {
+//        button.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                 DatePicker dp = new DatePicker(dateTextField, Locale.CHINA);
+//                 Date selectedDate = dp.parseDate(dateTextField.getText());
+//                 dp.setSelectedDate(selectedDate);
+//                 dp.start(dateTextField);
+//            }
+//        });
+//    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -93,6 +91,11 @@ public class ReportPanel extends javax.swing.JPanel {
 
         startDatePickerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jycykj/gui/cal.jpg"))); // NOI18N
         //startDatePickerButton.setIcon(ImageIconUtil.getIcon("pics/cal.png"));
+        startDatePickerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startDatePickerButtonActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         jLabel2.setText("终止：");
@@ -100,6 +103,11 @@ public class ReportPanel extends javax.swing.JPanel {
         endDateTextField.setEditable(false);
 
         endDatePickerButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jycykj/gui/cal.jpg"))); // NOI18N
+        endDatePickerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                endDatePickerButtonActionPerformed(evt);
+            }
+        });
 
         searchButton.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         searchButton.setText("查询");
@@ -313,6 +321,28 @@ public class ReportPanel extends javax.swing.JPanel {
             System.out.println("cancel");
         }
     }//GEN-LAST:event_exportButtonActionPerformed
+
+    private void startDatePickerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startDatePickerButtonActionPerformed
+        // TODO add your handling code here:
+         java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                ProduceCardDatePickerDialog produceCardDatePickerDialog = new ProduceCardDatePickerDialog(null, true,startDateTextField,startDatePickerButton.getLocationOnScreen().x+10,startDatePickerButton.getLocationOnScreen().y+startDatePickerButton.getHeight()+10);
+                produceCardDatePickerDialog.setResizable(false);
+                produceCardDatePickerDialog.setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_startDatePickerButtonActionPerformed
+
+    private void endDatePickerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endDatePickerButtonActionPerformed
+        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                ProduceCardDatePickerDialog produceCardDatePickerDialog = new ProduceCardDatePickerDialog(null, true,endDateTextField,endDatePickerButton.getLocationOnScreen().x+10,endDatePickerButton.getLocationOnScreen().y+endDatePickerButton.getHeight()+10);
+                produceCardDatePickerDialog.setResizable(false);
+                produceCardDatePickerDialog.setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_endDatePickerButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;

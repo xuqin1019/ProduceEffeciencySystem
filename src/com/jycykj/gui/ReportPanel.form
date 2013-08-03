@@ -122,6 +122,9 @@
               <Image iconType="3" name="/com/jycykj/gui/cal.jpg"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startDatePickerButtonActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JButton()"/>
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="//startDatePickerButton.setIcon(ImageIconUtil.getIcon(&quot;pics/cal.png&quot;));"/>
@@ -146,6 +149,9 @@
               <Image iconType="3" name="/com/jycykj/gui/cal.jpg"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="endDatePickerButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="searchButton">
           <Properties>
