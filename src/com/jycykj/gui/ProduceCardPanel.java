@@ -709,7 +709,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 if(deleteColumnIndex==6) {   //点击的是日期那一列
                     java.awt.EventQueue.invokeLater(new Runnable() {
                         public void run() {
-                            ProduceCardDatePickerDialog produceCardDatePickerDialog = new ProduceCardDatePickerDialog(null, true,componentProcedureTableModel,deleteRowIndex,e.getXOnScreen(),e.getYOnScreen()+componentProcedureTable.getRowHeight());
+                            DatePickerDialog produceCardDatePickerDialog = new DatePickerDialog(null, true,componentProcedureTableModel,deleteRowIndex,e.getXOnScreen(),e.getYOnScreen()+componentProcedureTable.getRowHeight());
                             produceCardDatePickerDialog.setResizable(false);
                             produceCardDatePickerDialog.setVisible(true);
                         }

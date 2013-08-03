@@ -14,6 +14,8 @@ import javax.swing.JTextField;
  *
  * @author xuqin
  */
+
+//used in the ReportPanel for association date picker button and textField if using com.qt.datapicker.DatePicker
 public class DateTextField extends JTextField implements Observer{
     @Override
     public void update(Observable o, Object arg) {

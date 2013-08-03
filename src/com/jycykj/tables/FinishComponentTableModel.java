@@ -6,8 +6,6 @@ package com.jycykj.tables;
 
 import com.jycykj.managers.ReportManager;
 import com.jycykj.model.FinishedComponent;
-import com.jycykj.model.WorkLoad;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;

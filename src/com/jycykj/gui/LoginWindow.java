@@ -7,7 +7,6 @@ package com.jycykj.gui;
 import com.jycykj.helper.ImageIconUtil;
 import com.jycykj.managers.LoginManager;
 import com.jycykj.model.User;
-import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;

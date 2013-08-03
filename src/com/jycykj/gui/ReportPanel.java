@@ -12,13 +12,7 @@ import com.jycykj.helper.Util;
 import com.jycykj.tables.GroupWorkLoadTableModel;
 import com.jycykj.tables.WorkLoadTableModel;
 import com.jycykj.tables.WorkerWorkLoadTableModel;
-import com.qt.datapicker.DatePicker;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Date;
-import java.util.Locale;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 /**
@@ -326,7 +320,7 @@ public class ReportPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
          java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ProduceCardDatePickerDialog produceCardDatePickerDialog = new ProduceCardDatePickerDialog(null, true,startDateTextField,startDatePickerButton.getLocationOnScreen().x+10,startDatePickerButton.getLocationOnScreen().y+startDatePickerButton.getHeight()+10);
+                DatePickerDialog produceCardDatePickerDialog = new DatePickerDialog(null, true,startDateTextField,startDatePickerButton.getLocationOnScreen().x+10,startDatePickerButton.getLocationOnScreen().y+startDatePickerButton.getHeight()+10);
                 produceCardDatePickerDialog.setResizable(false);
                 produceCardDatePickerDialog.setVisible(true);
             }
@@ -337,7 +331,7 @@ public class ReportPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ProduceCardDatePickerDialog produceCardDatePickerDialog = new ProduceCardDatePickerDialog(null, true,endDateTextField,endDatePickerButton.getLocationOnScreen().x+10,endDatePickerButton.getLocationOnScreen().y+endDatePickerButton.getHeight()+10);
+                DatePickerDialog produceCardDatePickerDialog = new DatePickerDialog(null, true,endDateTextField,endDatePickerButton.getLocationOnScreen().x+10,endDatePickerButton.getLocationOnScreen().y+endDatePickerButton.getHeight()+10);
                 produceCardDatePickerDialog.setResizable(false);
                 produceCardDatePickerDialog.setVisible(true);
             }

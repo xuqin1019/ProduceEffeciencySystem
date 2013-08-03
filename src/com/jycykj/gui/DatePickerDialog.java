@@ -23,9 +23,9 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
  *
  * @author xuqin
  */
-public class ProduceCardDatePickerDialog extends javax.swing.JDialog {
+public class DatePickerDialog extends javax.swing.JDialog {
     
-    public ProduceCardDatePickerDialog(java.awt.Frame parent, boolean modal,final ComponentProcedureTableModel componentProcedureTableModel,final int selectRow,int screen_x, int screen_y) {
+    public DatePickerDialog(java.awt.Frame parent, boolean modal,final ComponentProcedureTableModel componentProcedureTableModel,final int selectRow,int screen_x, int screen_y) {
         super(parent, modal);
         final JDatePanel jp = JDateComponentFactory.createJDatePanel(new UtilDateModel(new Date()));
         jp.addActionListener(new ActionListener(){
@@ -54,7 +54,7 @@ public class ProduceCardDatePickerDialog extends javax.swing.JDialog {
     }
     
     
-       public ProduceCardDatePickerDialog(java.awt.Frame parent, boolean modal,final JTextField textField ,int screen_x, int screen_y) {
+       public DatePickerDialog(java.awt.Frame parent, boolean modal,final JTextField textField ,int screen_x, int screen_y) {
         super(parent, modal);
         final JDatePanel jp = JDateComponentFactory.createJDatePanel(new UtilDateModel(new Date()));
         jp.addActionListener(new ActionListener(){
@@ -122,20 +122,20 @@ public class ProduceCardDatePickerDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ProduceCardDatePickerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DatePickerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ProduceCardDatePickerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DatePickerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ProduceCardDatePickerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DatePickerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ProduceCardDatePickerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DatePickerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ProduceCardDatePickerDialog dialog = new ProduceCardDatePickerDialog(new javax.swing.JFrame(),true,null,0,0,0);
+                DatePickerDialog dialog = new DatePickerDialog(new javax.swing.JFrame(),true,null,0,0,0);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
