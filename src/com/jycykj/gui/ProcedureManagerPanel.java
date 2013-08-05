@@ -181,6 +181,7 @@ public class ProcedureManagerPanel extends javax.swing.JPanel {
             procedureManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
             addButton.setEnabled(true);
             deleteButton.setEnabled(false);
+            saveButton.setEnabled(false);
             return;
         }
 

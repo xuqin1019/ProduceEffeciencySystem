@@ -21,6 +21,7 @@ public class ComponentManagerDialog extends javax.swing.JDialog {
     public ComponentManagerDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         this.setTitle("工序管理");
         this.setIconImage(ImageIconUtil.getFrameIcon("pics/procedure_manage.png"));
         this.addWindowListener(new WindowAdapter() {
@@ -28,7 +29,6 @@ public class ComponentManagerDialog extends javax.swing.JDialog {
                 if(componentManagerPanel1.getSaveButton().isEnabled()) {             //存在未保存的修改
                     int a = JOptionPane.showConfirmDialog(null, "有未保存的修改，确定关闭吗？", "温馨提示", JOptionPane.YES_NO_OPTION);
                     if (a == 0) {  
-                        System.out.println("yes");
                         dispose();
                     } 
                 }

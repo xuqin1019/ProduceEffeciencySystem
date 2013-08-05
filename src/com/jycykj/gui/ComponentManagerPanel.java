@@ -197,6 +197,7 @@ public class ComponentManagerPanel extends javax.swing.JPanel {
             componentManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
             addButton.setEnabled(true);
             deleteButton.setEnabled(false);
+            saveButton.setEnabled(false);
             return;
         }
 

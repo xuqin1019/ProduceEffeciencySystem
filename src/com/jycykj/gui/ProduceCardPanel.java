@@ -52,16 +52,16 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     
     private int numOfRecords = 0;                  //记录条数
     
-    //String [] componentIds = null;     //used to show in the list
+    // //用来保存tab切换的时候deleteRowButton的状态
+    boolean deleteRowButtonStatus = false;     
+    boolean addRowButtonStatus = false;
+    boolean saveButtonStatuse = false;
     
-    boolean deleteRowButtonLastStatus = false;      //用来保存tab切换的时候deleteRowButton的状态
     int deleteRowIndex = -1;
     
     private ProducedProcedure addedProducedProcedure = null;
     
     private ProduceCardDialog produceCardDialog = null;
-    
-    private boolean nothingAdded = true;
     
     public ProduceCardPanel(ProduceCardDialog produceCardDialog) {
         this.produceCardDialog = produceCardDialog;
@@ -240,6 +240,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         //TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(componentProcedureTableModel);
         //componentProcedureTable.setRowSorter(sorter);
         //refreshCountNumLabel();
+
         componentProcedureTable.addMouseListener(new MyMouseAdapter());
         componentProcedureTable.setRowHeight(20);
         jScrollPane2.setViewportView(componentProcedureTable);
@@ -359,18 +360,10 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         // TODO add your handling code here:
         if(jTabbedPane1.getSelectedIndex()==1) {    //在第二个table tab中
-            if(nothingAdded) {
-                addRowButton.setEnabled(true);
-            }
-            if(notSaved()) {
-                System.out.println("notSaved()");
-                addRowButton.setEnabled(false);
-                saveButton.setEnabled(true);
-            }
-            if(deleteRowButtonLastStatus) {      
-                System.out.println("deleteRowButtonLastStatus==true");
-                deleteRowButton.setEnabled(true);  //切换成true的状态
-            }
+            addRowButton.setEnabled(addRowButtonStatus);
+            deleteRowButton.setEnabled(deleteRowButtonStatus);
+            saveButton.setEnabled(saveButtonStatuse);
+            
             refreshCountNumLabel();              //刷新
         } else {                       //在第一个table tab中，所有按钮设置为false
             countNumLabel.setText("");
@@ -387,15 +380,7 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             countNumLabel.setText("");
         }
     }
-    
-    private boolean notSaved() {
-        return nothingAdded==false && addedProducedProcedure!=null;
-    }
-    
-    private void save() {
-        addedProducedProcedure=null;
-    }
-    
+  
     private void addRowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRowButtonActionPerformed
         // TODO add your handling code here:
         if(batchIdTextField.getText().trim().length()==0) {
@@ -409,7 +394,8 @@ public class ProduceCardPanel extends javax.swing.JPanel {
         addedProducedProcedure = new ProducedProcedure(component,new Procedure() ,new Worker());    // the new line added
        
         componentProcedureTableModel.getWorks().add(addedProducedProcedure);    //add one line to the table
-        
+        numOfRecords = componentProcedureTableModel.getWorks().size();     //update the numOfRecords
+         
         componentProcedureTableModel.fireTableRowsInserted(componentProcedureTableModel.getRowCount()-1, componentProcedureTableModel.getRowCount()-1);   //refresh
         
         List<String> procedureNames = produceCardManager.getProcedureNames(componentIdTextField.getText().trim());    //add procedure in combox
@@ -418,10 +404,12 @@ public class ProduceCardPanel extends javax.swing.JPanel {
          renderColumnAsCombox(1,procedureNames,addedProducedProcedure);
          renderColumnAsTextField(3,workerNames,addedProducedProcedure);
          
-         nothingAdded = false;
-         
+         //disable the addRowButton and Enable the save button
          addRowButton.setEnabled(false);          //add record one by one
+         addRowButtonStatus = false;
+         
          saveButton.setEnabled(true);
+         saveButtonStatuse = true;
     }//GEN-LAST:event_addRowButtonActionPerformed
     
     void renderColumnAsTextField(int columnIndex , List<String> items, ProducedProcedure producedProcedure) {
@@ -471,42 +459,71 @@ public class ProduceCardPanel extends javax.swing.JPanel {
     private void deleteRowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteRowButtonActionPerformed
         // TODO add your handling code here:
         //删除某条记录
+        if(deleteRowIndex+1 == numOfRecords  && addedProducedProcedure!=null) {         //未保存的新记录
+            componentProcedureTableModel.getWorks().remove(deleteRowIndex);
+            numOfRecords = componentProcedureTableModel.getWorks().size();
+            componentProcedureTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
+            
+            addRowButton.setEnabled(true);
+            addRowButtonStatus = true;
+            
+            deleteRowButton.setEnabled(false);
+            deleteRowButtonStatus = false;
+            
+            saveButton.setEnabled(false);
+            saveButtonStatuse = false;
+            
+            addedProducedProcedure=null;
+            return;
+        }
+        
+        //delete the saved record
         int choice = JOptionPane.showConfirmDialog(this,"你确定要删除此条记录吗","警告",JOptionPane.WARNING_MESSAGE);
         if(choice==JOptionPane.YES_OPTION) {
             System.out.println(deleteRowIndex);
             
-            if(!notSaved()) { 
-                componentProcedureTableModel.getWorks().get(deleteRowIndex).getComponent().setComponentId(componentIdTextField.getText().trim());
-                if(!produceCardManager.deleteProduceWork(componentProcedureTableModel.getWorks().get(deleteRowIndex))) {
-                    //------------------------------删除记录日志------------------------------
-                    LoginWindow.logger.error("删除记录出错 : " + componentProcedureTableModel.getWorks().get(deleteRowIndex).toString());
-                    //------------------------------删除记录日志------------------------------
-                    Util.showMessageDialog(this, "删除记录出错，请联系开发人员！！");
-                    return;
-                } else {
-                    //------------------------------删除记录日志------------------------------
-                    LoginWindow.logger.info("删除记录成功 : " + componentProcedureTableModel.getWorks().get(deleteRowIndex).toString());
-                    //------------------------------删除记录日志------------------------------
-                    Util.showMessageDialog(this, "删除记录成功！！");
-                }
+            componentProcedureTableModel.getWorks().get(deleteRowIndex).getComponent().setComponentId(componentIdTextField.getText().trim());
+            if(!produceCardManager.deleteProduceWork(componentProcedureTableModel.getWorks().get(deleteRowIndex))) {
+                //------------------------------删除记录日志------------------------------
+                LoginWindow.logger.error("删除记录出错 : " + componentProcedureTableModel.getWorks().get(deleteRowIndex).toString());
+                //------------------------------删除记录日志------------------------------
+                Util.showMessageDialog(this, "删除记录出错，请联系开发人员！！");
+                return;
+            } else {
+                 //------------------------------删除记录日志------------------------------
+                LoginWindow.logger.info("删除记录成功 : " + componentProcedureTableModel.getWorks().get(deleteRowIndex).toString());
+                //------------------------------删除记录日志------------------------------
+                Util.showMessageDialog(this, "删除记录成功！！");
             }
+
             componentProcedureTableModel.getWorks().remove(deleteRowIndex);
             componentProcedureTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
             
             //reset the num label
              numOfRecords = componentProcedureTableModel.getWorks().size();
              refreshCountNumLabel();
-           
-            //删除成功后，addRowButton设置为true ， deleteRowButton设置为false
-            addRowButton.setEnabled(true);       
-            deleteRowButton.setEnabled(false);
             
-            nothingAdded = true;
-            deleteRowButtonLastStatus = false;
-            saveButton.setEnabled(false);
+            deleteRowButton.setEnabled(false);
+            deleteRowButtonStatus = false;
+            
+            //如果还有新添加的行存在
+            if(addedProducedProcedure!=null) {   //还有未保存的新行
+                addRowButton.setEnabled(false);
+                addRowButtonStatus = false;
+                
+                saveButton.setEnabled(true);
+                saveButtonStatuse = true;
+            } else {
+                addRowButton.setEnabled(true);
+                addRowButtonStatus = true;
+                
+                saveButton.setEnabled(false);
+                saveButtonStatuse = false;
+            }
             
             filterTextField.requestFocus();       //使得filterTextField获得焦点
         }
+        
     }//GEN-LAST:event_deleteRowButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
@@ -557,12 +574,19 @@ public class ProduceCardPanel extends javax.swing.JPanel {
              numOfRecords = componentProcedureTableModel.getWorks().size();
              refreshCountNumLabel();
             
-            //数据录入成功后，addRowButton设置为true,saveButton设置为false
+            //数据录入成功后，addRowButton设置为true,deleteRowButton设置为false , saveButton设置为false
             addedProducedProcedure=null;
+            
+            
             addRowButton.setEnabled(true);
+            addRowButtonStatus = true;
+            
+            deleteRowButton.setEnabled(false);
+            deleteRowButtonStatus = false;
+            
             saveButton.setEnabled(false);
+            saveButtonStatuse = false;
         }
-        save();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void componentIdTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_componentIdTextFieldFocusLost
@@ -588,7 +612,9 @@ public class ProduceCardPanel extends javax.swing.JPanel {
             System.out.print(str + " ");
         }
         System.out.println();
+        
         Util.setupAutoComplete(batchIdTextField, batchIdsString);
+        
     }//GEN-LAST:event_componentIdTextFieldFocusLost
 
     private void batchIdTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_batchIdTextFieldFocusLost
@@ -611,8 +637,19 @@ public class ProduceCardPanel extends javax.swing.JPanel {
 
         if(jTabbedPane1.getSelectedIndex()==1) {     //如果是在第二个table tab中
             addRowButton.setEnabled(true);
+            addRowButtonStatus = true;
+            
             deleteRowButton.setEnabled(false);
+            deleteRowButtonStatus = false;
+            
+            saveButton.setEnabled(false);
+            saveButtonStatuse = false;
+        } else {
+            addRowButton.setEnabled(false);
+            deleteRowButton.setEnabled(false);
+            saveButton.setEnabled(false);
         }
+        
     }//GEN-LAST:event_batchIdTextFieldFocusLost
 
     private void filterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterButtonActionPerformed
@@ -698,17 +735,13 @@ public class ProduceCardPanel extends javax.swing.JPanel {
                 
                 deleteRowIndex = componentProcedureTable.rowAtPoint(e.getPoint());    //选择某行后
                 System.out.println("Mouse pressed : " + deleteRowIndex);
-                
-                if(componentProcedureTable.columnAtPoint(e.getPoint())!=1) {       //如果不是工序的那一列被选中（因为选择工序后会自动取消选中的行）
-                    deleteRowButton.setEnabled(true);     //选择某行后,deleteRowButton设置为true             
-                    deleteRowButtonLastStatus = true;
-                }  else {
-                     deleteRowButton.setEnabled(false);
-                     deleteRowButtonLastStatus = false;
-                }   
+
+                deleteRowButton.setEnabled(true);     //选择某行后,deleteRowButton设置为true 
+                deleteRowButtonStatus = true;
                 
                 int deleteColumnIndex = componentProcedureTable.columnAtPoint(e.getPoint());
-                if(deleteColumnIndex==6) {   //点击的是日期那一列
+                System.out.println(deleteRowIndex + " : " + numOfRecords);
+                if(deleteColumnIndex==6 && deleteRowIndex+1==numOfRecords && addedProducedProcedure!=null) {   //点击的是新添加的日期那一列
                     java.awt.EventQueue.invokeLater(new Runnable() {
                         public void run() {
                             DatePickerDialog produceCardDatePickerDialog = new DatePickerDialog(null, true,componentProcedureTableModel,deleteRowIndex,e.getXOnScreen(),e.getYOnScreen()+componentProcedureTable.getRowHeight());

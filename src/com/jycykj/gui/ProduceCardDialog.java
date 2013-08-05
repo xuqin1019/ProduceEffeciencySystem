@@ -21,6 +21,7 @@ public class ProduceCardDialog extends javax.swing.JDialog {
     public ProduceCardDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         this.setIconImage(ImageIconUtil.getFrameIcon("pics/write.png"));
         this.setFont(new java.awt.Font("宋体", 0, 14));
         
@@ -29,11 +30,7 @@ public class ProduceCardDialog extends javax.swing.JDialog {
                 if(produceCardPanel.getSaveButton().isEnabled()) {             //存在未保存的修改
                     int a = JOptionPane.showConfirmDialog(null, "有未保存的修改，确定关闭吗？", "温馨提示", JOptionPane.YES_NO_OPTION);
                     if (a == 0) {  
-                        System.out.println("yes");
                         dispose();
-                    } else {
-                        System.out.println("no");
-                        return;
                     }
                 }
            }    

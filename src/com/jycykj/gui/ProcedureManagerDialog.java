@@ -5,6 +5,9 @@
 package com.jycykj.gui;
 
 import com.jycykj.helper.ImageIconUtil;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,10 +21,21 @@ public class ProcedureManagerDialog extends javax.swing.JDialog {
     public ProcedureManagerDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         this.setIconImage(ImageIconUtil.getFrameIcon("pics/procedure_manage.png"));
         this.setResizable(false);
         setTitle("工序管理");
         this.setFont(new java.awt.Font("宋体", 0, 14));
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                if(procedureManagerPanel1.getSaveButton().isEnabled()) {             //存在未保存的修改
+                    int a = JOptionPane.showConfirmDialog(null, "有未保存的修改，确定关闭吗？", "温馨提示", JOptionPane.YES_NO_OPTION);
+                    if (a == 0) {  
+                        dispose();
+                    } 
+                }
+           }    
+        });
     }
 
     /**

@@ -210,7 +210,6 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
          workerManagerTable.changeSelection(lastRow, 0, false, false);
          
          deleteRowIndex = lastRow;
-       //  System.out.println(deleteRowIndex);
          
          addButton.setEnabled(false);
          deleteButton.setEnabled(true);
@@ -226,6 +225,7 @@ public class WorkerManagerPanel extends javax.swing.JPanel {
             workerManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
             addButton.setEnabled(true);
             deleteButton.setEnabled(false);
+            saveButton.setEnabled(false);
             return;
         }
         

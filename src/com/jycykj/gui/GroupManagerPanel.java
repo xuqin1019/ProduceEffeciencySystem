@@ -178,6 +178,7 @@ public class GroupManagerPanel extends javax.swing.JPanel {
             groupManagerTableModel.fireTableRowsDeleted(deleteRowIndex, deleteRowIndex);
             addButton.setEnabled(true);
             deleteButton.setEnabled(false);
+             saveButton.setEnabled(false);
             return;
         }
 

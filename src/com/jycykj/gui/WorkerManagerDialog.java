@@ -21,6 +21,7 @@ public class WorkerManagerDialog extends javax.swing.JDialog {
     public WorkerManagerDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         this.setIconImage(ImageIconUtil.getFrameIcon("pics/worker_list.png"));
         this.setResizable(false);
         setTitle("员工花名册");
@@ -31,11 +32,7 @@ public class WorkerManagerDialog extends javax.swing.JDialog {
                 if(workerManagerPanel1.getSaveButton().isEnabled()) {             //存在未保存的修改
                     int a = JOptionPane.showConfirmDialog(null,"有未保存的修改，确定关闭吗？", "温馨提示", JOptionPane.YES_NO_OPTION);
                     if (a == 0) {  
-                        System.out.println("yes");
                         dispose();
-                    } else {
-                        System.out.println("no");
-                     //   return;
                     }
                 }
            }    
