@@ -130,6 +130,7 @@
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="*/&#xa;&#xa;GroupManagerTableModel groupManagerTableModel = new GroupManagerTableModel(this,groupManagerTable);&#xa;groupManagerTable.setModel(groupManagerTableModel);&#xa;groupManagerTable.getColumn(groupManagerTableModel.getColumnName(0)).setPreferredWidth(122);&#xa;groupManagerTable.getColumn(groupManagerTableModel.getColumnName(1)).setPreferredWidth(280);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="groupManagerTable.addMouseListener(new MyMouseAdapter());"/>
           </AuxValues>
         </Component>
       </SubComponents>

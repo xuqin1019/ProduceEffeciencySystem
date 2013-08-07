@@ -4,6 +4,7 @@
  */
 package com.jycykj.gui;
 
+import com.jycykj.helper.ConfigurePropertyEditor;
 import com.jycykj.helper.ImageIconUtil;
 import com.jycykj.helper.Util;
 import java.io.File;
@@ -16,7 +17,7 @@ import javax.swing.JTextArea;
  * @author xuqin
  */
 public class CheckLogPanel extends javax.swing.JPanel {
-    
+    private final String logImportPath = "logImportPath";       //文件选择器的根目录
     private File importFile = null;
     private String logText = "";           //保存最开始导入的日志
     /**
@@ -156,7 +157,7 @@ public class CheckLogPanel extends javax.swing.JPanel {
 
     private void selectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtonActionPerformed
         // TODO add your handling code here:
-        JFileChooser jFileChooser = new JFileChooser("e://");
+        JFileChooser jFileChooser = new JFileChooser(ConfigurePropertyEditor.get(logImportPath));
         jFileChooser.setAcceptAllFileFilterUsed(false);
         ExportFileFilter excelFilter = new ExportFileFilter(".log", "日志文件 (*.log)");
         jFileChooser.addChoosableFileFilter(excelFilter);
@@ -165,7 +166,9 @@ public class CheckLogPanel extends javax.swing.JPanel {
         if(rVal == JFileChooser.APPROVE_OPTION) {
             importFile = jFileChooser.getSelectedFile();
             importFileProgress(this);
+            ConfigurePropertyEditor.set(logImportPath,importFile.getParent());     //写回配置文件
         }
+        
         if(rVal == JFileChooser.CANCEL_OPTION) {
             System.out.println("cancel");
         }

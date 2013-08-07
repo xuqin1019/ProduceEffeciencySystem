@@ -69,6 +69,7 @@ public class GroupManagerTableModel extends AbstractTableModel {
         } else {
            return (group.getInfo()==null ? "" : group.getInfo());
         } 
+        
     }
 
     @Override
@@ -88,7 +89,11 @@ public class GroupManagerTableModel extends AbstractTableModel {
             if(columnIndex==0) {
                 group.setGroupName((String)value);
             } else {
-               group.setInfo((String)value);
+              if(value==null || ((String)value).trim().length()==0) {
+                    group.setInfo("");
+                } else {
+                    group.setInfo((String)value);
+                }
             } 
             
             groupList.set(rowIndex, group);

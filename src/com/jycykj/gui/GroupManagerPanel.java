@@ -9,6 +9,8 @@ import com.jycykj.helper.ImageIconUtil;
 import com.jycykj.helper.Util;
 import com.jycykj.model.Group;
 import com.jycykj.tables.GroupManagerTableModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -100,6 +102,7 @@ public class GroupManagerPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        groupManagerTable.addMouseListener(new MyMouseAdapter());
         groupManagerTable.setFont(new java.awt.Font("宋体", 0, 14)); // NOI18N
         /*
         groupManagerTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -229,13 +232,13 @@ public class GroupManagerPanel extends javax.swing.JPanel {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
                 }
-                sb.append("update `group` set name = '" +group.getGroupName()+ "',info='"+ group.getInfo() + "' where group_id="+ Integer.parseInt(groupId));
+                sb.append("update `group` set name = '" +group.getGroupName()+ "',info='"+(group.getInfo()==null ? "" : group.getInfo())+ "' where group_id="+ Integer.parseInt(groupId));
             } else {                       //new group
                 if(group==null || !group.valid()) {
                     Util.showMessageDialogWithTitle(this,"警告", "数据不完整！！！请补全数据再保存");
                     return;
                 }
-                sb.append("insert into `group`(name,info) values('" +  group.getGroupName() + "','" + group.getInfo() + "')");
+                sb.append("insert into `group`(name,info) values('" +  group.getGroupName() + "','" + (group.getInfo()==null ? "" : group.getInfo()) + "')");
             }
         }
 
@@ -276,6 +279,17 @@ public class GroupManagerPanel extends javax.swing.JPanel {
             this.saveButton = saveButton;
     }//GEN-LAST:event_saveButtonActionPerformed
 
+     
+     private class MyMouseAdapter extends MouseAdapter {      //listen for the componentProcedureTable click event 
+        public void mousePressed(MouseEvent e) {  
+            if (groupManagerTable.equals(e.getSource())) {  
+                deleteRowIndex = groupManagerTable.rowAtPoint(e.getPoint());  
+                deleteButton.setEnabled(true);
+            }  
+        }  
+    }      
+     
+     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JButton deleteButton;

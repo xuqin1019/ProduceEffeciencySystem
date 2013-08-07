@@ -7,6 +7,11 @@ import com.jycykj.helper.ImageIconUtil;
 import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
  
 /**
@@ -65,60 +70,67 @@ public class SystemWindow extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JSeparator();
         imagePanel = new javax.swing.JPanel();
-        menuBar = new javax.swing.JMenuBar();
-        operateMenu = new javax.swing.JMenu();
-        dataRecordMenu = new javax.swing.JMenu();
-        makeProduceCardMenu = new javax.swing.JMenuItem();
-        fillProduceCardMenu = new javax.swing.JMenuItem();
-        washMenu = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        ImExportMenu = new javax.swing.JMenu();
-        importMenu = new javax.swing.JMenuItem();
-        ReportMenu = new javax.swing.JMenu();
-        wWLRMenu = new javax.swing.JMenuItem();
-        jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        gWLRMenu = new javax.swing.JMenuItem();
-        jSeparator6 = new javax.swing.JPopupMenu.Separator();
-        workTimeMenu = new javax.swing.JMenuItem();
-        jSeparator7 = new javax.swing.JPopupMenu.Separator();
-        FinishComponentMenu = new javax.swing.JMenuItem();
-        jSeparator8 = new javax.swing.JPopupMenu.Separator();
-        workerEvaluationMenu = new javax.swing.JMenuItem();
-        registerNewUserMenu = new javax.swing.JMenuItem();
-        systemMaintainMenu = new javax.swing.JMenu();
-        workerProfileMenu = new javax.swing.JMenuItem();
-        groupManageMenu = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        procedureManageMenu = new javax.swing.JMenuItem();
-        jSeparator9 = new javax.swing.JPopupMenu.Separator();
-        componentManageMenu = new javax.swing.JMenuItem();
-        checklogMenu = new javax.swing.JMenuItem();
-        jSeparator4 = new javax.swing.JPopupMenu.Separator();
-        exitMenu = new javax.swing.JMenuItem();
-        helpMenu = new javax.swing.JMenu();
-        aboutMenuItem = new javax.swing.JMenuItem();
+        try {
+            Icon icon = new ImageIcon("pics/home4.jpg");
+            imageLabel = new javax.swing.JLabel(icon);
+            menuBar = new javax.swing.JMenuBar();
+            operateMenu = new javax.swing.JMenu();
+            dataRecordMenu = new javax.swing.JMenu();
+            makeProduceCardMenu = new javax.swing.JMenuItem();
+            fillProduceCardMenu = new javax.swing.JMenuItem();
+            washMenu = new javax.swing.JMenuItem();
+            jSeparator3 = new javax.swing.JPopupMenu.Separator();
+            ImExportMenu = new javax.swing.JMenu();
+            importMenu = new javax.swing.JMenuItem();
+            ReportMenu = new javax.swing.JMenu();
+            wWLRMenu = new javax.swing.JMenuItem();
+            jSeparator5 = new javax.swing.JPopupMenu.Separator();
+            gWLRMenu = new javax.swing.JMenuItem();
+            jSeparator6 = new javax.swing.JPopupMenu.Separator();
+            workTimeMenu = new javax.swing.JMenuItem();
+            jSeparator7 = new javax.swing.JPopupMenu.Separator();
+            FinishComponentMenu = new javax.swing.JMenuItem();
+            jSeparator8 = new javax.swing.JPopupMenu.Separator();
+            workerEvaluationMenu = new javax.swing.JMenuItem();
+            registerNewUserMenu = new javax.swing.JMenuItem();
+            systemMaintainMenu = new javax.swing.JMenu();
+            workerProfileMenu = new javax.swing.JMenuItem();
+            groupManageMenu = new javax.swing.JMenuItem();
+            jSeparator1 = new javax.swing.JPopupMenu.Separator();
+            procedureManageMenu = new javax.swing.JMenuItem();
+            jSeparator9 = new javax.swing.JPopupMenu.Separator();
+            componentManageMenu = new javax.swing.JMenuItem();
+            checklogMenu = new javax.swing.JMenuItem();
+            jSeparator4 = new javax.swing.JPopupMenu.Separator();
+            exitMenu = new javax.swing.JMenuItem();
+            helpMenu = new javax.swing.JMenu();
+            aboutMenuItem = new javax.swing.JMenuItem();
 
-        jMenu1.setText("jMenu1");
+            jMenu1.setText("jMenu1");
 
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
+            jCheckBoxMenuItem1.setSelected(true);
+            jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
-        jMenuItem1.setText("jMenuItem1");
+            jMenuItem1.setText("jMenuItem1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("生产效率管理系统");
-        setPreferredSize(new java.awt.Dimension(800, 600));
-        setResizable(false);
+            setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+            setTitle("生产效率管理系统");
+            setPreferredSize(new java.awt.Dimension(800, 600));
+            setResizable(false);
+
+        } catch (Exception e ) {
+
+        }
 
         javax.swing.GroupLayout imagePanelLayout = new javax.swing.GroupLayout(imagePanel);
         imagePanel.setLayout(imagePanelLayout);
         imagePanelLayout.setHorizontalGroup(
             imagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 491, Short.MAX_VALUE)
+            .addComponent(imageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
         );
         imagePanelLayout.setVerticalGroup(
             imagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 379, Short.MAX_VALUE)
+            .addComponent(imageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
         );
 
         operateMenu.setMnemonic('f');
@@ -531,6 +543,7 @@ public class SystemWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem gWLRMenu;
     private javax.swing.JMenuItem groupManageMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JLabel imageLabel;
     private javax.swing.JPanel imagePanel;
     private javax.swing.JMenuItem importMenu;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;

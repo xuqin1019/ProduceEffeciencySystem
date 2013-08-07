@@ -1,9 +1,5 @@
 
 import com.jycykj.helper.ConfigFile;
-import java.awt.BorderLayout;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 /*
  * To change this template, choose Tools | Templates
