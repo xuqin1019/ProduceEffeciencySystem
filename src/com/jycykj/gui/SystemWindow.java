@@ -504,7 +504,7 @@ public class SystemWindow extends javax.swing.JFrame {
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "生产管理系统v1.0\n\n            Copyright (C)2013", "关于", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "生产管理系统v1.0\n\n            作者:Xuqin\n           Copyright (C)2013", "关于", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
     
     /**
