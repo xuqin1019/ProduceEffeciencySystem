@@ -34,6 +34,8 @@ public class WorkerManagerDialog extends javax.swing.JDialog {
                     if (a == 0) {  
                         dispose();
                     }
+                } else {
+                    dispose();
                 }
            }    
         });

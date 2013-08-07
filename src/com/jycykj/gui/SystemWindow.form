@@ -60,7 +60,8 @@
                     <Property name="text" type="java.lang.String" value="&#x5236;&#x4f5c;&#x751f;&#x4ea7;&#x5de5;&#x827a;&#x6d41;&#x7a0b;&#x5361;"/>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="makeProduceCardMenu.setIcon(ImageIconUtil.getIcon(&quot;pics/make.png&quot;));&#xa;&#xa;makeProduceCardMenu.setEnabled(false);"/>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="*/"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="makeProduceCardMenu.setIcon(ImageIconUtil.getIcon(&quot;pics/make.png&quot;));&#xa;&#xa;makeProduceCardMenu.setEnabled(false);&#xa;/*"/>
                   </AuxValues>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="fillProduceCardMenu">

@@ -1,4 +1,5 @@
 
+import com.jycykj.helper.ConfigFile;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -26,7 +27,7 @@ public class Main {
                          System.out.println("ADD_ID : " + id);
                      }
                 }
-   
+   System.out.println(ConfigFile.getConfig("configuration.txt", "SQLServerHost"));
 }
 
 }

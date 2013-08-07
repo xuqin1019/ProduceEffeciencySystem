@@ -4,6 +4,7 @@
  */
 package com.jycykj.dao;
 
+import com.jycykj.helper.ConfigFile;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,9 +14,13 @@ import java.sql.Statement;
 public class DBManager {
 
     private String driver = "com.mysql.jdbc.Driver";
-    private String url = "jdbc:mysql://localhost:3306/system_db_test?useUnicode=true&amp;characterEncoding=utf-8";
-    private String username = "root";
-    private String password = "891019";
+    private String host = ConfigFile.getConfig("configuration.txt", "MysqlHost");
+    private String port = ConfigFile.getConfig("configuration.txt", "MysqlPort");
+    private String db = ConfigFile.getConfig("configuration.txt", "MysqlDb");
+    private String url = "jdbc:mysql://" + host + ":" + port + "/" + db +  "?useUnicode=true&amp;characterEncoding=utf-8";
+    
+    private String username = ConfigFile.getConfig("configuration.txt", "MysqlUser");
+    private String password = ConfigFile.getConfig("configuration.txt", "MysqlPassword");
     private Connection connection = null;
     private static DBManager dbManager = null;
 

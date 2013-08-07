@@ -135,7 +135,9 @@ public class SystemWindow extends javax.swing.JFrame {
         makeProduceCardMenu.setIcon(ImageIconUtil.getIcon("pics/make.png"));
 
         makeProduceCardMenu.setEnabled(false);
+        /*
         dataRecordMenu.add(makeProduceCardMenu);
+        */
 
         fillProduceCardMenu.setFont(new java.awt.Font("微软雅黑", 0, 14)); // NOI18N
         fillProduceCardMenu.setText("填写生产工艺流程卡");

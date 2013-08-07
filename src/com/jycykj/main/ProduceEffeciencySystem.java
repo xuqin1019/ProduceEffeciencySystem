@@ -5,7 +5,6 @@
 package com.jycykj.main;
 
 import com.jycykj.gui.LoginWindow;
-import com.jycykj.gui.SystemWindow;
 
 /**
  *

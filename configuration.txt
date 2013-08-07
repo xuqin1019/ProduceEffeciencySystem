@@ -1,0 +1,18 @@
+
+# Mysql connection config
+[MysqlHost]
+localhost
+
+[MysqlPort]
+3306
+
+[MysqlUser]
+root
+
+[MysqlPassword]
+891019
+
+[MysqlDb]
+system_db
+
+

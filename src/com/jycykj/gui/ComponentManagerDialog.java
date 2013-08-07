@@ -31,6 +31,8 @@ public class ComponentManagerDialog extends javax.swing.JDialog {
                     if (a == 0) {  
                         dispose();
                     } 
+                }else {
+                    dispose();
                 }
            }    
         });

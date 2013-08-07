@@ -60,7 +60,13 @@ TODO
 
 11.将ProduceCardPanel中的表格点日期弹出日期选择框                       finished
 
-12. 添加班组的信息管理                                                                                   
+12. 添加班组的信息管理    
+
+
+
+
+
+comboBox双击修改                                                                               
 
 
   
