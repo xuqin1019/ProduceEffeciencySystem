@@ -151,8 +151,7 @@ CREATE TABLE `system_user` (
 -- ----------------------------
 -- Records of system_user
 -- ----------------------------
-INSERT INTO `system_user` VALUES ('berdy1019', '891019', '0');
-INSERT INTO `system_user` VALUES ('xuqin1019', '891019', '1');
+INSERT INTO `system_user` VALUES ('admin', 'admin', '1');
 
 -- ----------------------------
 -- Table structure for `worker`

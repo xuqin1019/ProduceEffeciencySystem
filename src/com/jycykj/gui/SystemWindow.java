@@ -4,13 +4,9 @@
  */
 package com.jycykj.gui;
 import com.jycykj.helper.ImageIconUtil;
-import com.jycykj.helper.Util;
 import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
