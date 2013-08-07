@@ -4,6 +4,7 @@
  */
 package com.jycykj.gui;
 import com.jycykj.helper.ImageIconUtil;
+import com.jycykj.helper.Util;
 import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -325,6 +326,11 @@ public class SystemWindow extends javax.swing.JFrame {
         aboutMenuItem.setMnemonic('a');
         aboutMenuItem.setText("关于");
         aboutMenuItem.setIcon(ImageIconUtil.getIcon("pics/about.png"));
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed(evt);
+            }
+        });
         helpMenu.add(aboutMenuItem);
 
         menuBar.add(helpMenu);
@@ -495,6 +501,11 @@ public class SystemWindow extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_groupManageMenuActionPerformed
+
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "生产管理系统v1.0\n\n            Copyright (C)2013", "关于", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_aboutMenuItemActionPerformed
     
     /**
      * @param args the command line arguments
